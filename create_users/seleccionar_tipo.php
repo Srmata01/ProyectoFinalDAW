@@ -11,7 +11,8 @@ session_start();
 </head>
 <body>
 <h2>Selecciona el tipo de usuario</h2>
-<a href="crear_usuario.php?tipo=2">Crear Cliente</a>
-<a href="crear_usuario.php?tipo=3">Crear Autónomo</a>
+<a href="crear_cliente.php">Crear Cliente</a>
+<a href="crear_autonomo.php">Crear Autónomo</a>
+<a href="crear_administrador.php">Crear Administrador</a>
 </body>
 </html>
