@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     Teléfono: <input type="text" name="telefono"><br>
     Dirección: <textarea name="direccion"></textarea><br>
     <button type="submit">Crear Cliente</button>
-    <button onclick="window.location.href='seleccionar_tipo.php'">Seleccionar otro tipo de usuario</button> 
+    <button onclick="window.location.href='index.php'">Seleccionar otro tipo de usuario</button> 
 </form>
 </body>
 </html>

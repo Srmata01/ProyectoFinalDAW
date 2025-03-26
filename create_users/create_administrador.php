@@ -1,7 +1,20 @@
 <?php
 require '../config/conexion.php';
 
-$tipo_usuario = 1; // Administrador
+$id_estado_usuario = $_POST['id_estado_usuario'] ?? null; // Asegurar que el dato existe
+if (!$id_estado_usuario) {
+    die("Error: No se ha recibido el ID del estado del usuario.");
+}
+
+// Comprobar si el estado existe en la base de datos
+$checkQuery = $pdo->prepare("SELECT COUNT(*) FROM estados_usuarios WHERE id_estado_usuario = :id_estado_usuario");
+$checkQuery->bindParam(':id_estado_usuario', $id_estado_usuario, PDO::PARAM_INT);
+$checkQuery->execute();
+$estadoExiste = $checkQuery->fetchColumn();
+
+if ($estadoExiste == 0) {
+    die("Error: El estado del usuario seleccionado no existe.");
+}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nombre = $_POST['nombre'];
@@ -47,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     Teléfono: <input type="text" name="telefono"><br>
     Dirección: <textarea name="direccion"></textarea><br>
     <button type="submit">Crear Administrador</button>
-    <button onclick="window.location.href='seleccionar_tipo.php'">Seleccionar otro tipo de usuario</button>
+    <button onclick="window.location.href='index.php'">Seleccionar otro tipo de usuario</button>
 </form>
 </body>
 </html>
