@@ -1,0 +1,150 @@
+/* Estilos generales */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Header */
+header {
+    background-color: #D2D2D2;
+    padding: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 80px;
+}
+
+.header-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Logo */
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: 200px;
+    margin-right: 16px;
+}
+
+/* Buscador */
+.search-container {
+    flex: 1;
+    max-width: 600px;
+    margin: 0 24px;
+}
+
+.search-box {
+    position: relative;
+    width: 100%;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 16px 10px 40px;
+    border-radius: 20px;
+    border: 1px solid #D2D2D2;
+    font-size: 14px;
+    color: #000000;
+    outline: none;
+    transition: all 0.3s;
+}
+
+.search-input:focus {
+    border-color: transparent;
+    box-shadow: 0 0 0 2px #FFC72C;
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #A5A5A5;
+}
+
+.search-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Área de usuario */
+.user-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.notification-btn {
+    padding: 8px;
+    border-radius: 50%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.notification-btn:hover {
+    background-color: #F5F5F5;
+}
+
+.notification-btn svg {
+    width: 24px;
+    height: 24px;
+    color: #000000;
+}
+
+.profile-container {
+    position: relative;
+}
+
+.profile-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 20px;
+    transition: background-color 0.3s;
+}
+
+.profile-btn:hover {
+    background-color: #F5F5F5;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #FFC72C;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+}
+
+.user-name {
+    color: #000000;
+    font-weight: 500;
+    display: none;
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+    .user-name {
+        display: inline-block;
+    }
+    
+    .logo {
+        height: 80px;
+    }
+}
