@@ -207,6 +207,7 @@ footer {
 .social-icons img {
     width: 30px;
     margin: 0 5px;
+    margin-top: 10px;
 }
 .footer-logo {
     text-align: center;
