@@ -1,18 +1,26 @@
-<?php
-session_start();
-?>
-
+<?php require_once '../config/database.php'; ?>
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
+    <title>Registro de Usuario</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seleccionar Tipo de Usuario</title>
 </head>
 <body>
-<h2>Selecciona el tipo de usuario</h2>
-<a href="crear_cliente.php">Crear Cliente</a>
-<a href="crear_autonomo.php">Crear Autónomo</a>
-<a href="crear_administrador.php">Crear Administrador</a>
+    <h1>Selecciona tu tipo de usuario</h1>
+    
+    <div>
+        <h2><a href="registro_cliente.php">Cliente</a></h2>
+        <p>Busca y contrata servicios</p>
+    </div>
+    
+    <div>
+        <h2><a href="registro_autonomo.php">Autónomo</a></h2>
+        <p>Ofrece tus servicios profesionales</p>
+    </div>
+    
+    <div>
+        <h2><a href="registro_admin.php">Administrador</a></h2>
+        <p>Gestiona la plataforma</p>
+    </div>
 </body>
 </html>
