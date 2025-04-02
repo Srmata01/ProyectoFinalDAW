@@ -192,12 +192,13 @@ footer {
 }
 
 .footer-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
     max-width: 1400px;
     margin: 0 auto;
+    padding: 0 24px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .footer-section {
