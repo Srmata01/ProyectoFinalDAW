@@ -58,6 +58,7 @@ header {
 /* Estilos para el input de búsqueda */
 .search-input {
     width: 100%;
+    height: 60px;
     padding: 10px 16px 10px 40px; /* Ajustamos el padding para dejar espacio para la lupa */
     border-radius: 20px;
     border: 1px solid #D2D2D2;
@@ -170,12 +171,11 @@ header {
 }
 
 .container1 .search-container {
-    display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     max-width: 1000px; /* Limita el ancho del buscador */
-    margin-top: 20px; /* Más cerca del título */
+    margin-top: 60px; /* Más cerca del título */
 }
 
 .subtitulo1 {
@@ -207,9 +207,11 @@ footer {
     margin: 10px;
 }
 
+
 .footer-section h4 {
     font-size: 13px;
     font-weight: bold;
+    color:#E08A00;
 }
 
 .footer-section ul {
