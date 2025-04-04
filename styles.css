@@ -1,0 +1,299 @@
+/* Variables CSS para mejorar la accesibilidad y reutilización */
+:root {
+    --color-primary: #FF9B00;
+    --color-primary-dark: #E08A00;
+    --color-primary-light: #FFC72C;
+    --color-text: #2d2d2d;
+    --color-text-light: #494949;
+    --color-text-lighter: #555;
+    --color-background: rgba(210, 210, 210, 0.5);
+    --color-background-content: rgba(210, 210, 210, 0.688);
+    --color-border: #D2D2D2;
+    --color-white: white;
+    --color-hover: #F5F5F5;
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --transition: all 0.3s ease;
+    --radius-sm: 5px;
+    --radius-md: 10px;
+    --radius-lg: 20px;
+    --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Reset y estilos base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-family);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-image: url(./ProyectoFinalDAW/media/wpfijo1.jpg);
+    backdrop-filter: blur(5px);
+    background-size: cover;
+    overflow: hidden;
+}
+
+/* Header */
+header {
+    background-color: var(--color-background);
+    padding: 0;
+    box-shadow: var(--shadow);
+}
+
+.header-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Logo */
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: 200px;
+    margin-right: 16px;
+}
+
+/* Buscador */
+.search-container {
+    flex: 1;
+    max-width: 600px;
+    margin: 0 24px;
+}
+
+.search-box {
+    position: relative;
+    display: flex;
+    width: 100%;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 16px 10px 40px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    font-size: 14px;
+    color: var(--color-text);
+    outline: none;
+    transition: var(--transition);
+}
+
+.search-box img {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+}
+
+.search-input:focus {
+    border-color: transparent;
+    box-shadow: 0 0 0 2px var(--color-primary-light);
+}
+
+/* Área de usuario */
+.user-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.notification-btn {
+    padding: 8px;
+    border-radius: 50%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.notification-btn:hover {
+    background-color: var(--color-hover);
+}
+
+.notification-btn svg {
+    width: 24px;
+    height: 24px;
+    color: var(--color-text);
+}
+
+.profile-container {
+    position: relative;
+}
+
+.profile-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: var(--radius-lg);
+    transition: var(--transition);
+}
+
+.profile-btn:hover {
+    background-color: var(--color-hover);
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--color-primary-light);
+    color: var(--color-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+}
+
+.user-name {
+    color: var(--color-text);
+    font-weight: 500;
+    display: none;
+}
+
+/* Contenedores principales */
+.container1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: calc(100vh - 100px - 60px);
+    padding-top: 40px;
+    padding-bottom: 20px;
+}
+
+.container1 .search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1000px;
+    margin-top: 20px;
+}
+
+.subtitulo1 {
+    margin-top: 10px;
+}
+
+/* Documentación */
+.document-container {
+    background-color: var(--color-background-content);
+    padding: 20px;
+    text-align: center;
+    border-radius: var(--radius-md);
+    width: 80%;
+    margin: 40px auto;
+}
+
+.download-button, .download-btn {
+    display: inline-block;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    font-size: 16px;
+    transition: var(--transition);
+}
+
+.download-button:hover, .download-btn:hover {
+    background-color: var(--color-primary-dark);
+}
+
+.textocookies, .document-text {
+    color: var(--color-text);
+    font-size: 16px;
+}
+
+.titulocookies, .document-title {
+    font-size: 26px;
+    color: var(--color-text-light);
+}
+
+/* Footer */
+footer {
+    background-color: var(--color-background);
+    padding: 20px 0;
+    width: 100%;
+    margin-top: auto;
+    position: absolute;
+    bottom: 0;
+}
+
+.footer-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 150px;
+    margin: 10px;
+}
+
+.footer-section h4, .footer-title {
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--color-primary-dark);
+}
+
+.footer-section ul, .footer-list {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li a, .footer-link {
+    text-decoration: none;
+    color: var(--color-text-lighter);
+    font-size: 12px;
+}
+
+.social-icons img, .social-icon {
+    width: 30px;
+    margin: 0 5px;
+}
+
+.footer-logo img, .footer-logo-img {
+    width: 100px;
+}
+
+.footer-logo p {
+    color: var(--color-primary);
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+    .user-name {
+        display: inline-block;
+    }
+    
+    .logo {
+        height: 80px;
+    }
+}

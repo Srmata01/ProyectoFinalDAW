@@ -5,7 +5,7 @@ $user = 'root';
 $password = '';
 
 // Código de administración (cámbialo en producción)
-define('ADMIN_CODE', 'AdminSecure123');
+define('ADMIN_CODE', '8869');
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
