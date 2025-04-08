@@ -196,12 +196,45 @@ header {
 
 /* Documentación */
 .document-container {
+    display: flex;
+    flex-direction: column;  /* Cambié esto para que sea columna */
+    justify-content: center;
     background-color: var(--color-background-content);
     padding: 20px;
     text-align: center;
     border-radius: var(--radius-md);
     width: 80%;
     margin: 40px auto;
+
+}
+
+/* Documentación */
+.document-container3 {
+    display: flex;
+    justify-content: center;
+    background-color: var(--color-background-content);
+    padding: 20px;
+    text-align: center;
+    border-radius: var(--radius-md);
+    width: 80%;
+    margin: 40px auto;
+    gap: 100px;
+
+}
+
+/* Documentación */
+.document-container2 {
+    display: flex;
+    display: block;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-background-content);
+    padding: 20px;
+    text-align: center;
+    border-radius: var(--radius-md);
+    width: 30%;
+    margin: 40px auto;
+
 }
 
 .download-button, .download-btn {
@@ -213,6 +246,8 @@ header {
     border-radius: var(--radius-sm);
     font-size: 16px;
     transition: var(--transition);
+    margin-right: 450px;
+    margin-left: 450px;
 }
 
 .download-button:hover, .download-btn:hover {
@@ -312,4 +347,9 @@ p.option-description{
     font-style: italic !important;
     color: var(--color-text-light);
     
+}
+
+.option-card .option-image {
+    width: 100px !important;
+    height: 100px !important;
 }

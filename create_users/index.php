@@ -1,13 +1,15 @@
 <?php require_once '../config/database.php'; ?>
 <!DOCTYPE html>
 <html class="app">
+
 <head>
     <title>Únete a nosotros</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../styles.css">
 </head>
+
 <body class="app-body">
-<header class="app-header">
+    <header class="app-header">
         <div class="header-container">
             <div class="logo-container">
                 <a href="../main.html" class="logo-link">
@@ -18,33 +20,36 @@
     </header>
 
     <main class="app-main">
-        <div class="document-container">
-            <h1 class="document-title">Como quieres unirte a nosotros?</h1> 
-            <br>
-            <div class="option-card">
-                <h2 class="option-title"><a href="registro_cliente.php" class="option-link" >Cliente</a></h2>
-                <br>
-                <img src="" alt="Cliente" class="option-image">
-                <br>
-                <p class="option-description">Busca y contrata servicios</p>
+        <div class="document-container2">
+            <h1 class="document-title">Cómo quieres unirte a nosotros?</h1>
             </div>
             <br>
-            <div class="option-card">
-                <h2 class="option-title"><a href="registro_autonomo.php" class="option-link" >Autónomo</a></h2>
+            <div class="document-container3">
+
+                <div class="option-card">
+                    <h2 class="option-title"><a href="registro_cliente.php" class="option-link">Cliente</a></h2>
+                    <br>
+                    <img src="../media/cliente.jpg" alt="Cliente" class="option-image">
+                    <br><br>
+                    <p class="option-description">Busca y contrata servicios</p>
+                </div>
                 <br>
-                <img src="" alt="Autónomo" class="option-image">
+                <div class="option-card">
+                    <h2 class="option-title"><a href="registro_autonomo.php" class="option-link">Autónomo</a></h2>
+                    <br>
+                    <img src="../media/autonomo.jpg" alt="Autónomo" class="option-image">
+                    <br><br>
+                    <p class="option-description">Ofrece tus servicios profesionales</p>
+                </div>
                 <br>
-                <p class="option-description">Ofrece tus servicios profesionales</p>
+                <div class="option-card">
+                    <h2 class="option-title"><a href="registro_admin.php" class="option-link">Administrador</a></h2>
+                    <br>
+                    <img src="../media/admin.jpg" alt="Administrador" class="option-image">
+                    <br><br>
+                    <p class="option-description">Gestiona la plataforma</p>
+                </div>
             </div>
-            <br>
-            <div class="option-card">
-                <h2 class="option-title"><a href="registro_admin.php" class="option-link" >Administrador</a></h2>
-                <br>
-                <img src="" alt="Administrador" class="option-image">
-                <br>
-                <p class="option-description">Gestiona la plataforma</p>
-            </div>
-        </div>
     </main>
 
     <footer class="app-footer">
@@ -92,4 +97,5 @@
         </div>
     </footer>
 </body>
+
 </html>
