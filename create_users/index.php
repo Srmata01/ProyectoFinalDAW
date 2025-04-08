@@ -19,20 +19,29 @@
 
     <main class="app-main">
         <div class="document-container">
-            <h1 class="document-title">Como quieres unirte a nosotros?</h1>
+            <h1 class="document-title">Como quieres unirte a nosotros?</h1> 
             <br>
             <div class="option-card">
-                <h2 class="option-title"><a href="registro_cliente.php" class="option-link" style="color:grey">Cliente</a></h2>
+                <h2 class="option-title"><a href="registro_cliente.php" class="option-link" >Cliente</a></h2>
+                <br>
+                <img src="" alt="Cliente" class="option-image">
+                <br>
                 <p class="option-description">Busca y contrata servicios</p>
             </div>
             <br>
             <div class="option-card">
-                <h2 class="option-title"><a href="registro_autonomo.php" class="option-link" style="color:grey">Autónomo</a></h2>
+                <h2 class="option-title"><a href="registro_autonomo.php" class="option-link" >Autónomo</a></h2>
+                <br>
+                <img src="" alt="Autónomo" class="option-image">
+                <br>
                 <p class="option-description">Ofrece tus servicios profesionales</p>
             </div>
             <br>
             <div class="option-card">
-                <h2 class="option-title"><a href="registro_admin.php" class="option-link" style="color:grey">Administrador</a></h2>
+                <h2 class="option-title"><a href="registro_admin.php" class="option-link" >Administrador</a></h2>
+                <br>
+                <img src="" alt="Administrador" class="option-image">
+                <br>
                 <p class="option-description">Gestiona la plataforma</p>
             </div>
         </div>
