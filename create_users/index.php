@@ -6,6 +6,7 @@
     <title>Únete a nosotros</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" type="image/png" href="../media/logo.png">
 </head>
 
 <body class="app-body">
@@ -74,7 +75,7 @@
             <div class="footer-section">
                 <h4 class="footer-title">Eres miembro?</h4>
                 <ul class="footer-list">
-                    <li><a href="create_users/index.php" class="footer-link">Únete a Nosotros</a></li>
+                    <li><a href="index.php" class="footer-link">Únete a Nosotros</a></li>
                 </ul>
             </div>
 
