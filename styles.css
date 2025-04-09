@@ -32,10 +32,25 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-image: url('media/wpfijo1.jpg');
-    backdrop-filter: blur(5px);
-    background-size: cover;
+    position: relative; /* necesario para posicionar el pseudo-elemento */
     overflow: hidden;
+    z-index: 0; /* asegura que el fondo esté detrás */
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('media/wpfijo1.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.6;
+    z-index: -1; /* detrás del contenido del body */
+    pointer-events: none; /* evita interferencias con clicks */
+    backdrop-filter: blur(5px); /* si quieres mantener el blur */
 }
 
 /* Header */
@@ -177,7 +192,6 @@ header {
     align-items: center;
     width: 100%;
     height: calc(100vh - 100px - 60px);
-    padding-top: 40px;
     padding-bottom: 20px;
 }
 
@@ -262,7 +276,7 @@ header {
 
 .titulocookies, .document-title {
     font-size: 26px;
-    color: var(--color-text-light);
+    color: var(--color-primary-dark);
 }
 
 /* Footer */
@@ -355,4 +369,152 @@ p.option-description{
     object-fit: cover;
     border-radius: var(--radius-sm);
     margin-bottom: 0.5rem;
+}
+
+.form-container {
+    background-color: var(--color-background-content);
+    padding: 30px;
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(5px);
+}
+
+.form-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-title {
+    color: var(--color-primary-dark);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+label {
+    font-weight: 500;
+    color: var(--color-text);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+textarea {
+    padding: 10px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    background-color: white;
+    transition: var(--transition);
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px var(--color-primary-light);
+}
+
+.submit-btn {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.submit-btn:hover {
+    background-color: var(--color-primary-dark);
+}
+
+.error-message {
+    background-color: #ffcccc;
+    color: #a40000;
+    padding: 10px;
+    border: 1px solid #a40000;
+    border-radius: var(--radius-sm);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-column label {
+    display: flex;
+    flex-direction: column;
+    font-weight: 500;
+    color: var(--color-text);
+}
+
+.form-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 80%;
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: var(--color-background-content);
+    padding: 30px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.form-row label {
+    display: flex;
+    flex-direction: column;
+    font-weight: 500;
+    color: var(--color-text);
+    gap: 6px;
+}
+
+.form-row input,
+.form-row textarea {
+    padding: 10px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background-color: white;
+    font-size: 14px;
+}
+
+.form-row input:focus,
+.form-row textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px var(--color-primary-light);
+}
+
+.form-actions {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.form-actions button {
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.form-actions button:hover {
+    background-color: var(--color-primary-dark);
 }
