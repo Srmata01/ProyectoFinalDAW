@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 19-02-2025 a las 08:46:51
+-- Tiempo de generación: 10-04-2025 a las 10:27:40
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -31,6 +31,15 @@ CREATE TABLE `estados_usuarios` (
   `id_estado_usuario` int(11) NOT NULL,
   `estado` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `estados_usuarios`
+--
+
+INSERT INTO `estados_usuarios` (`id_estado_usuario`, `estado`) VALUES
+(1, 'Activo'),
+(2, 'Inactivo'),
+(3, 'Pendiente');
 
 -- --------------------------------------------------------
 
@@ -101,6 +110,35 @@ CREATE TABLE `tipos_usuarios` (
   `tipo` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `tipos_usuarios`
+--
+
+INSERT INTO `tipos_usuarios` (`id_tipo_usuario`, `tipo`) VALUES
+(1, 'Moderador'),
+(2, 'Cliente'),
+(3, 'Autónomo');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tipo_usuario`
+--
+
+CREATE TABLE `tipo_usuario` (
+  `id_tipo_usuario` int(11) NOT NULL,
+  `tipo` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `tipo_usuario`
+--
+
+INSERT INTO `tipo_usuario` (`id_tipo_usuario`, `tipo`) VALUES
+(1, 'Moderador'),
+(2, 'Cliente'),
+(3, 'Autónomo');
+
 -- --------------------------------------------------------
 
 --
@@ -115,9 +153,18 @@ CREATE TABLE `usuarios` (
   `contraseña` varchar(255) NOT NULL,
   `telefono` varchar(255) DEFAULT NULL,
   `direccion` text DEFAULT NULL,
+  `NIF` varchar(9) NOT NULL,
   `id_tipo_usuario` int(11) DEFAULT NULL,
   `id_estado_usuario` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`id_usuario`, `nombre`, `apellido`, `email`, `contraseña`, `telefono`, `direccion`, `NIF`, `id_tipo_usuario`, `id_estado_usuario`) VALUES
+(6, 'Sergio', 'Mata', 's@gmail.com', '$2y$10$HWPmGzUhIC5TimOASFeFWOha0vp6VNoSN9Bq.roxl7ebQw6LTX9He', '62134567', 'Cava 4', '', 2, 1),
+(7, 'Jordi', 'Torrella', 'j@gmail.com', '$2y$10$RpoJlnX/Gj.1qSNZp/qmpuzTVwGnTWEL23dmhpwILBLCuYeNFC.DG', '654445897', 'Jaume 2', '', 3, 1);
 
 -- --------------------------------------------------------
 
@@ -179,6 +226,12 @@ ALTER TABLE `tipos_usuarios`
   ADD PRIMARY KEY (`id_tipo_usuario`);
 
 --
+-- Indices de la tabla `tipo_usuario`
+--
+ALTER TABLE `tipo_usuario`
+  ADD PRIMARY KEY (`id_tipo_usuario`);
+
+--
 -- Indices de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
@@ -203,7 +256,7 @@ ALTER TABLE `valoraciones`
 -- AUTO_INCREMENT de la tabla `estados_usuarios`
 --
 ALTER TABLE `estados_usuarios`
-  MODIFY `id_estado_usuario` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_estado_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `incidencias`
@@ -227,19 +280,19 @@ ALTER TABLE `reservas`
 -- AUTO_INCREMENT de la tabla `servicios`
 --
 ALTER TABLE `servicios`
-  MODIFY `id_servicio` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_servicio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `tipos_usuarios`
 --
 ALTER TABLE `tipos_usuarios`
-  MODIFY `id_tipo_usuario` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_tipo_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `valoraciones`
