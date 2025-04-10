@@ -36,7 +36,10 @@ body {
     overflow: hidden;
     z-index: 0; /* asegura que el fondo esté detrás */
 }
-
+a{
+    color: grey;
+    text-decoration: none;
+}
 body::before {
     content: '';
     position: fixed;

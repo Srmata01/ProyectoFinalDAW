@@ -1,56 +1,33 @@
 <?php
 session_start();
-require_once 'config/database.php';
+require_once __DIR__ . '/config/database.php';
 
-$error = '';
+$error = "";
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $email = trim($_POST["email"] ?? '');
+    $password = $_POST["password"] ?? '';
 
-    try {
-        // Buscar usuario en la base de datos
-        $stmt = $pdo->prepare("SELECT * FROM usuarios 
-                             INNER JOIN tipos_usuarios ON usuarios.id_tipo_usuario = tipos_usuarios.id_tipo_usuario
-                             INNER JOIN estados_usuarios ON usuarios.id_estado_usuario = estados_usuarios.id_estado_usuario
-                             WHERE email = ?");
+    if (!empty($email) && !empty($password)) {
+        $stmt = $pdo->prepare("SELECT id_usuario, nombre, contraseña, id_estado_usuario, id_tipo_usuario FROM usuarios WHERE email = ?");
         $stmt->execute([$email]);
-        $user = $stmt->fetch();
+        $usuario = $stmt->fetch();
 
-        if ($user && password_verify($password, $user['contraseña'])) {
-            // Verificar si el usuario está activo
-            if ($user['id_estado_usuario'] == 1) { // 1 = Activo
-                $_SESSION['user'] = [
-                    'id' => $user['id_usuario'],
-                    'nombre' => $user['nombre'],
-                    'email' => $user['email'],
-                    'tipo' => $user['tipo'],
-                    'id_tipo' => $user['id_tipo_usuario']
-                ];
-
-                // Redirigir según tipo de usuario
-                switch ($user['id_tipo_usuario']) {
-                    case 1: // Moderador
-                        header('Location: admin/dashboard.php');
-                        break;
-                    case 2: // Cliente
-                        header('Location: cliente/dashboard.php');
-                        break;
-                    case 3: // Autónomo
-                        header('Location: autonomo/dashboard.php');
-                        break;
-                    default:
-                        header('Location: perfil.php');
-                }
+        if ($usuario && password_verify($password, $usuario['contraseña'])) {
+            if ($usuario['id_estado_usuario'] == 1) {
+                $_SESSION["usuario_id"] = $usuario["id_usuario"];
+                $_SESSION["usuario_nombre"] = $usuario["nombre"];
+                $_SESSION["usuario_tipo"] = $usuario["id_tipo_usuario"];
+                header("Location: main.html"); // Redirige a tu página principal
                 exit();
             } else {
-                $error = "Tu cuenta no está activa";
+                $error = "Tu cuenta no está activa.";
             }
         } else {
-            $error = "Email o contraseña incorrectos";
+            $error = "Credenciales incorrectas.";
         }
-    } catch (PDOException $e) {
-        $error = "Error al iniciar sesión: " . $e->getMessage();
+    } else {
+        $error = "Por favor, rellena todos los campos.";
     }
 }
 ?>
@@ -59,34 +36,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Asegúrate que esta ruta es correcta -->
 </head>
 <body>
-    <div class="login-container">
-        <h1>Iniciar Sesión</h1>
-        
+    <div class="form-container">
+        <h2 class="form-title">Iniciar Sesión</h2>
+
         <?php if (!empty($error)): ?>
-            <div class="error"><?= $error ?></div>
+            <div class="error-message"><?= htmlspecialchars($error) ?></div>
         <?php endif; ?>
 
-        <form method="POST">
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="password">Contraseña:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            
-            <button type="submit">Ingresar</button>
-        </form>
+        <form method="POST" action="">
+            <label for="email">Correo electrónico:</label>
+            <input type="text" name="email" id="email" required>
 
-        <div class="register-link">
-            <p>¿No tienes cuenta? <a href="create_users/index.php">Regístrate aquí</a></p>
-        </div>
+            <label for="password">Contraseña:</label>
+            <input type="password" name="password" id="password" required>
+
+            <button type="submit" class="submit-btn">Entrar</button>
+        </form>
+        <br>
+        <p class="option-description"><a href="create_users/index.php">No tienes cuenta? Registrate!</a></p>
     </div>
 </body>
 </html>

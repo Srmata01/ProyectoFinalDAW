@@ -23,6 +23,7 @@
     <main class="app-main">
         <div class="document-container2">
             <h1 class="document-title">Cómo quieres unirte a nosotros?</h1>
+            <p class="option-description"><a href="../login.php">Ya tienes cuenta?</a></p>
             </div>
             <br>
             <div class="document-container3">
