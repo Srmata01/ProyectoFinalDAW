@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 10-04-2025 a las 10:27:40
+-- Tiempo de generación: 11-04-2025 a las 11:50:53
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -153,7 +153,7 @@ CREATE TABLE `usuarios` (
   `contraseña` varchar(255) NOT NULL,
   `telefono` varchar(255) DEFAULT NULL,
   `direccion` text DEFAULT NULL,
-  `NIF` varchar(9) NOT NULL,
+  `CIF` varchar(9) NOT NULL,
   `id_tipo_usuario` int(11) DEFAULT NULL,
   `id_estado_usuario` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -162,7 +162,7 @@ CREATE TABLE `usuarios` (
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id_usuario`, `nombre`, `apellido`, `email`, `contraseña`, `telefono`, `direccion`, `NIF`, `id_tipo_usuario`, `id_estado_usuario`) VALUES
+INSERT INTO `usuarios` (`id_usuario`, `nombre`, `apellido`, `email`, `contraseña`, `telefono`, `direccion`, `CIF`, `id_tipo_usuario`, `id_estado_usuario`) VALUES
 (6, 'Sergio', 'Mata', 's@gmail.com', '$2y$10$HWPmGzUhIC5TimOASFeFWOha0vp6VNoSN9Bq.roxl7ebQw6LTX9He', '62134567', 'Cava 4', '', 2, 1),
 (7, 'Jordi', 'Torrella', 'j@gmail.com', '$2y$10$RpoJlnX/Gj.1qSNZp/qmpuzTVwGnTWEL23dmhpwILBLCuYeNFC.DG', '654445897', 'Jaume 2', '', 3, 1);
 
