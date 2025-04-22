@@ -2,7 +2,7 @@
 require_once 'config/database.php';
 session_start();
 
-if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['id_tipo_usuario'] != 1) {
+if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['tipo'] != 1) {
     header('Location: login.php');
     exit();
 }
@@ -50,10 +50,11 @@ try {
             </div>
             <div class="user-container">
                 <div class="profile-container">
-                    <button class="profile-btn">
-                        <div class="user-avatar">A</div>
-                        <span class="user-name">Admin</span>
-                    </button>
+                    <a href="admin_dashboard.php" class="profile-btn" style="text-decoration: none;">
+                        <div class="user-avatar"><?= strtoupper(substr($_SESSION['usuario']['nombre'], 0, 1)) ?></div>
+                        <span class="user-name"><?= htmlspecialchars($_SESSION['usuario']['nombre']) ?></span>
+                    </a>
+                    <a href="includes/logout.php" class="submit-btn" style="margin-left: 10px;">Cerrar sesión</a>
                 </div>
             </div>
         </div>

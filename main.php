@@ -17,7 +17,7 @@ session_start();
         <div class="header-container">
             <!-- Logo a la izquierda -->
             <div class="logo-container">
-                <a href="main.html">
+                <a href="main.html.php">
                     <img src="media/logo.png" alt="Logo FixItNow" class="logo">
                 </a>
             </div>

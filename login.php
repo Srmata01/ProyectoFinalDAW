@@ -11,6 +11,8 @@ $error = "";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = filter_var(trim($_POST["email"] ?? ''), FILTER_SANITIZE_EMAIL);
     $password = $_POST["password"] ?? '';
+    
+    error_log("Intento de login - Email: " . $email);
 
     if (empty($email) || empty($password)) {
         $error = "Por favor, rellena todos los campos.";
@@ -26,10 +28,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt->execute([$email]);
             $usuario = $stmt->fetch();
 
+            error_log("Resultado de búsqueda de usuario: " . ($usuario ? "Usuario encontrado" : "Usuario no encontrado"));
+
             if ($usuario) {
+                error_log("Tipo de usuario: " . $usuario['id_tipo_usuario']);
+                error_log("Estado de usuario: " . $usuario['id_estado_usuario']);
+
                 if (password_verify($password, $usuario['contraseña'])) {
                     if ($usuario['id_estado_usuario'] == 1) { // 1 = Activo
-                        // Configuración completa de la sesión
+                        // Limpiamos cualquier sesión anterior
+                        session_unset();
+                        session_regenerate_id(true);
+                        
+                        // Configuración de la sesión
                         $_SESSION['usuario'] = [
                             'id' => $usuario['id_usuario'],
                             'nombre' => $usuario['nombre'],
@@ -41,28 +52,41 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             'direccion' => $usuario['direccion']
                         ];
 
-                        // Depuración: Verifica los datos antes de redirigir
-                        error_log("Login exitoso para: " . $email);
-                        error_log("Datos de sesión: " . print_r($_SESSION['usuario'], true));
+                        error_log("Sesión creada exitosamente: " . print_r($_SESSION['usuario'], true));
 
                         // Redirección basada en tipo de usuario
-                        switch ($_SESSION['usuario']['tipo']) {
-                            case 1: header("Location: admin_dashboard.php"); exit();
-                            case 2: header("Location: perfil_cliente.php"); exit();
-                            case 3: header("Location: perfil_autonomo.php"); exit();
-                            default: header("Location: index.php"); exit();
+                        switch ((int)$_SESSION['usuario']['tipo']) {
+                            case 1:
+                                error_log("Redirigiendo a admin_dashboard.php");
+                                header("Location: admin_dashboard.php");
+                                break;
+                            case 2:
+                                error_log("Redirigiendo a perfil_cliente.php");
+                                header("Location: perfil_cliente.php");
+                                break;
+                            case 3:
+                                error_log("Redirigiendo a perfil_autonomo.php");
+                                header("Location: perfil_autonomo.php");
+                                break;
+                            default:
+                                error_log("Tipo de usuario desconocido, redirigiendo a index.php");
+                                header("Location: index.php");
+                                break;
                         }
                         exit();
                     } else {
                         $error = "Tu cuenta no está activa.";
+                        error_log("Intento de login con cuenta inactiva");
                     }
                 } else {
                     $error = "Credenciales incorrectas.";
-                    usleep(rand(500000, 1000000)); // Retraso para seguridad
+                    error_log("Contraseña incorrecta para el usuario: " . $email);
+                    usleep(rand(500000, 1000000));
                 }
             } else {
                 $error = "Credenciales incorrectas.";
-                usleep(rand(500000, 1000000)); // Retraso para seguridad
+                error_log("Usuario no encontrado: " . $email);
+                usleep(rand(500000, 1000000));
             }
         } catch (PDOException $e) {
             error_log("Error de base de datos: " . $e->getMessage());

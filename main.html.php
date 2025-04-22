@@ -17,25 +17,39 @@ session_start();
         <div class="header-container">
             <!-- Logo a la izquierda -->
             <div class="logo-container">
-                <a href="main.html">
+                <a href="main.html.php">
                     <img src="media/logo.png" alt="Logo FixItNow" class="logo">
                 </a>
             </div>
 
             <!-- Perfil de usuario a la derecha -->
             <div class="user-container">
-                <div class="profile-container">
-                    <?php if (isset($_SESSION['usuario'])): ?>
-                        <button class="profile-btn">
+                <?php if (isset($_SESSION['usuario'])): ?>
+                    <?php
+                    $perfil_url = '';
+                    switch ($_SESSION['usuario']['tipo']) {
+                        case 1:
+                            $perfil_url = 'admin_dashboard.php';
+                            break;
+                        case 2:
+                            $perfil_url = 'perfil_cliente.php';
+                            break;
+                        case 3:
+                            $perfil_url = 'perfil_autonomo.php';
+                            break;
+                    }
+                    ?>
+                    <div class="profile-container">
+                        <a href="<?= $perfil_url ?>" class="profile-btn" style="text-decoration: none;">
                             <div class="user-avatar"><?= strtoupper(substr($_SESSION['usuario']['nombre'], 0, 1)) ?></div>
                             <span class="user-name"><?= htmlspecialchars($_SESSION['usuario']['nombre'] . ' ' . $_SESSION['usuario']['apellido']) ?></span>
-                        </button>
-                    <?php else: ?>
-                        <a href="login.php" class="profile-btn">
-                            <span class="user-name">Iniciar Sesión</span>
                         </a>
-                    <?php endif; ?>
-                </div>
+                    </div>
+                <?php else: ?>
+                    <a href="login.php" class="profile-btn">
+                        <span class="user-name">Iniciar Sesión</span>
+                    </a>
+                <?php endif; ?>
             </div>
         </div>
     </header>

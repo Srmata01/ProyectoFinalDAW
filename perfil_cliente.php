@@ -56,16 +56,17 @@ try {
     <header>
         <div class="header-container">
         <div class="logo-container">
-                <a href="main.html">
+                <a href="main.html.php">
                     <img src="media/logo.png" alt="Logo FixItNow" class="logo">
                 </a>
             </div>
             <div class="user-container">
                 <div class="profile-container">
-                    <button class="profile-btn">
-                        <div class="user-avatar"><?= strtoupper(substr($cliente['nombre'], 0, 1)) ?></div>
-                        <span class="user-name"><?= htmlspecialchars($cliente['nombre']) ?></span>
-                    </button>
+                    <a href="perfil_cliente.php" class="profile-btn" style="text-decoration: none;">
+                        <div class="user-avatar"><?= strtoupper(substr($_SESSION['usuario']['nombre'], 0, 1)) ?></div>
+                        <span class="user-name"><?= htmlspecialchars($_SESSION['usuario']['nombre']) ?></span>
+                    </a>
+                    <a href="includes/logout.php" class="submit-btn" style="margin-left: 10px;">Cerrar sesión</a>
                 </div>
             </div>
         </div>
