@@ -8,9 +8,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST['password'];
     $telefono = $_POST['telefono'] ?? '';
     $direccion = $_POST['direccion'] ?? '';
+    $dni_nie = $_POST['dni_nie'] ?? '';
 
     // Validación básica
-    if (empty($nombre) || empty($apellido) || empty($email) || empty($password)) {
+    if (empty($nombre) || empty($apellido) || empty($email) || empty($password) || empty($dni_nie)) {
         $error = "Todos los campos obligatorios deben ser completados";
     } else {
         try {
@@ -23,18 +24,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             } else {
                 // Insertar nuevo cliente
                 $stmt = $pdo->prepare("INSERT INTO usuarios 
-                      (nombre, apellido, email, contraseña, telefono, direccion, id_tipo_usuario, id_estado_usuario) 
-                      VALUES (?, ?, ?, ?, ?, ?, 2, 1)");
+                      (nombre, apellido, email, contraseña, telefono, direccion, CIF, id_tipo_usuario, id_estado_usuario) 
+                      VALUES (?, ?, ?, ?, ?, ?, ?, 2, 1)");
                 $stmt->execute([
                     $nombre,
                     $apellido,
                     $email,
                     password_hash($password, PASSWORD_DEFAULT),
                     $telefono,
-                    $direccion
+                    $direccion,
+                    $dni_nie
                 ]);
 
-                header("Location: registro_exitoso.php?tipo=" . urlencode($tipo_usuario));
+                header("Location: registro_exitoso.php?tipo=cliente");
                 exit();
             }
         } catch (PDOException $e) {
@@ -133,6 +135,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
 
             <form method="post" class="form-grid">
+                <?php if (isset($error)): ?>
+                    <div class="error-message"><?= htmlspecialchars($error) ?></div>
+                <?php endif; ?>
+                
                 <div class="form-row">
                     <label>Nombre:
                         <input type="text" name="nombre" required>
@@ -140,23 +146,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <label>Apellido:
                         <input type="text" name="apellido" required>
                     </label>
-                    <label>Email:
-                        <input type="email" name="email" required>
+                    <label>DNI/NIE:
+                        <input type="text" name="dni_nie" required placeholder="Ejemplo: 12345678A">
                     </label>
                 </div>
                 <div class="form-row">
+                    <label>Email:
+                        <input type="email" name="email" required>
+                    </label>
                     <label>Contraseña:
                         <input type="password" name="password" required>
                     </label>
                     <label>Teléfono:
                         <input type="tel" name="telefono">
                     </label>
+                </div>
+                <div class="form-row">
                     <label>Dirección:
                         <textarea name="direccion" rows="1"></textarea>
                     </label>
                 </div>
                 <div class="form-actions">
-                    <button type="submit">Registrarse</button>
+                    <button type="submit" class="submit-btn">Registrarse</button>
                 </div>
             </form>
 

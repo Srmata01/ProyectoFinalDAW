@@ -20,12 +20,9 @@ try {
 
     // Obtener incidencias
     $stmt = $pdo->prepare("
-        SELECT i.*, 
-               CONCAT(u.nombre, ' ', u.apellido) as nombre_usuario,
-               u.email
+        SELECT i.*
         FROM incidencias i
-        JOIN usuarios u ON i.id_usuario = u.id_usuario
-        ORDER BY i.fecha DESC
+        ORDER BY i.titulo_incidencia DESC
     ");
     $stmt->execute();
     $incidencias = $stmt->fetchAll();
@@ -96,21 +93,19 @@ try {
                     <table>
                         <thead>
                             <tr>
-                                <th>Usuario</th>
+                                <th>Persona</th>
                                 <th>Email</th>
+                                <th>Título</th>
                                 <th>Descripción</th>
-                                <th>Fecha</th>
-                                <th>Estado</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($incidencias as $incidencia): ?>
                                 <tr>
-                                    <td><?= htmlspecialchars($incidencia['nombre_usuario']) ?></td>
-                                    <td><?= htmlspecialchars($incidencia['email']) ?></td>
-                                    <td><?= htmlspecialchars($incidencia['descripcion']) ?></td>
-                                    <td><?= date('d/m/Y H:i', strtotime($incidencia['fecha'])) ?></td>
-                                    <td><?= ucfirst(htmlspecialchars($incidencia['estado'])) ?></td>
+                                    <td><?= htmlspecialchars($incidencia['persona_incidencia']) ?></td>
+                                    <td><?= htmlspecialchars($incidencia['mail_contacto']) ?></td>
+                                    <td><?= htmlspecialchars($incidencia['titulo_incidencia']) ?></td>
+                                    <td><?= htmlspecialchars($incidencia['cuerpo_incidencia']) ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
