@@ -8,8 +8,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST['password'];
     $telefono = $_POST['telefono'] ?? '';
     $direccion = $_POST['direccion'] ?? '';
+    $nif = $_POST['nif'] ?? '';
 
-    if (empty($nombre) || empty($apellido) || empty($email) || empty($password)) {
+    if (empty($nombre) || empty($apellido) || empty($email) || empty($password) || empty($nif)) {
         $error = "Todos los campos obligatorios deben ser completados";
     } else {
         try {
@@ -20,18 +21,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $error = "Este email ya está registrado";
             } else {
                 $stmt = $pdo->prepare("INSERT INTO usuarios 
-                      (nombre, apellido, email, contraseña, telefono, direccion, id_tipo_usuario, id_estado_usuario) 
-                      VALUES (?, ?, ?, ?, ?, ?, 3, 1)");
+                      (nombre, apellido, email, contraseña, telefono, direccion, CIF, id_tipo_usuario, id_estado_usuario) 
+                      VALUES (?, ?, ?, ?, ?, ?, ?, 3, 1)");
                 $stmt->execute([
                     $nombre,
                     $apellido,
                     $email,
                     password_hash($password, PASSWORD_DEFAULT),
                     $telefono,
-                    $direccion
+                    $direccion,
+                    $nif
                 ]);
                 
-                header("Location: registro_exitoso.php?tipo=" . urlencode($tipo_usuario));
+                header("Location: registro_exitoso.php?tipo=autonomo");
                 exit();
             }
         } catch (PDOException $e) {
@@ -42,40 +44,69 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Registro de Autónomo</title>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Autónomo - FixItNow</title>
+    <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-    <h1>Registro de Autónomo</h1>
-    
-    <?php if (!empty($error)): ?>
-        <p style="color:red;"><?= $error ?></p>
-    <?php endif; ?>
-    
-    <form method="post">
-        <p>
-            <label>Nombre: <input type="text" name="nombre" required></label>
-        </p>
-        <p>
-            <label>Apellido: <input type="text" name="apellido" required></label>
-        </p>
-        <p>
-            <label>Email: <input type="email" name="email" required></label>
-        </p>
-        <p>
-            <label>Contraseña: <input type="password" name="password" required></label>
-        </p>
-        <p>
-            <label>Teléfono: <input type="tel" name="telefono" required></label>
-        </p>
-        <p>
-            <label>Dirección: <textarea name="direccion" required></textarea></label>
-        </p>
-        <p>
-            <button type="submit">Registrarse</button>
-        </p>
-    </form>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../main.html.php">
+                    <img src="../media/logo.png" alt="Logo FixItNow" class="logo">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container1">
+        <div class="content">
+            <h1>Registro de Autónomo</h1>
+        </div>
+        
+        <form method="post" class="form-grid">
+            <?php if (isset($error)): ?>
+                <div class="error-message"><?= htmlspecialchars($error) ?></div>
+            <?php endif; ?>
+            
+            <div class="form-row">
+                <label>Nombre:
+                    <input type="text" name="nombre" required>
+                </label>
+                <label>Apellido:
+                    <input type="text" name="apellido" required>
+                </label>
+                <label>NIF/CIF:
+                    <input type="text" name="nif" required placeholder="NIF personal o CIF de empresa">
+                </label>
+            </div>
+            <div class="form-row">
+                <label>Email:
+                    <input type="email" name="email" required>
+                </label>
+                <label>Contraseña:
+                    <input type="password" name="password" required>
+                </label>
+                <label>Teléfono:
+                    <input type="tel" name="telefono" required>
+                </label>
+            </div>
+            <div class="form-row">
+                <label>Dirección:
+                    <textarea name="direccion" rows="1" required></textarea>
+                </label>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="submit-btn">Registrarse</button>
+            </div>
+        </form>
+    </div>
+
+    <footer>
+        // ...existing code...
+    </footer>
 </body>
 </html>
