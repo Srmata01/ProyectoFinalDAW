@@ -121,6 +121,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             font-size: 2rem;
             padding: 20px;
         }
+
+        
     </style>
     </head>
 

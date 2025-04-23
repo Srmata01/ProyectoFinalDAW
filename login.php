@@ -11,7 +11,7 @@ $error = "";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = filter_var(trim($_POST["email"] ?? ''), FILTER_SANITIZE_EMAIL);
     $password = $_POST["password"] ?? '';
-    
+
     error_log("Intento de login - Email: " . $email);
 
     if (empty($email) || empty($password)) {
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         // Limpiamos cualquier sesión anterior
                         session_unset();
                         session_regenerate_id(true);
-                        
+
                         // Configuración de la sesión
                         $_SESSION['usuario'] = [
                             'id' => $usuario['id_usuario'],
@@ -101,12 +101,30 @@ error_log("Flujo inesperado - ¿Redirección falló?");
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión</title>
     <link rel="stylesheet" href="styles.css">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .option-description {
+        margin-top: 20px;
+        text-align: center;
+    }
+    </style>
 </head>
+
 <body>
     <div class="form-container">
         <h2 class="form-title">Iniciar Sesión</h2>
@@ -119,19 +137,20 @@ error_log("Flujo inesperado - ¿Redirección falló?");
 
         <form method="POST" action="">
             <label for="email">Correo electrónico:</label>
-            <input type="email" name="email" id="email" required 
-                   value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
+            <input type="email" name="email" id="email" required
+                value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
 
             <label for="password">Contraseña:</label>
             <input type="password" name="password" id="password" required minlength="8">
 
             <button type="submit" class="submit-btn">Entrar</button>
         </form>
-        
+
         <p class="option-description">
             <a href="create_users/index.php">¿No tienes cuenta? Regístrate!</a><br>
             <a href="recuperar_password.php">¿Olvidaste tu contraseña?</a>
         </p>
     </div>
 </body>
+
 </html>
