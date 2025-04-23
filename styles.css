@@ -216,7 +216,7 @@ header {
     display: flex;
     flex-direction: column;  /* Cambié esto para que sea columna */
     justify-content: center;
-    background-color: var(--color-background-content);
+    /* background-color: var(--color-background-content); */
     padding: 20px;
     text-align: center;
     border-radius: var(--radius-md);
@@ -229,7 +229,6 @@ header {
 .document-container3 {
     display: flex;
     justify-content: center;
-    background-color: var(--color-background-content);
     padding: 20px;
     text-align: center;
     border-radius: var(--radius-md);
@@ -245,7 +244,7 @@ header {
     display: block;
     align-items: center;
     justify-content: center;
-    background-color: var(--color-background-content);
+    /* background-color: var(--color-background-content); */
     padding: 20px;
     text-align: center;
     border-radius: var(--radius-md);
