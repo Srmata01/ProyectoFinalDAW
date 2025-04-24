@@ -24,18 +24,7 @@ session_start();
 
             <!-- Perfil de usuario a la derecha -->
             <div class="user-container">
-                <div class="profile-container">
-                    <?php if (isset($_SESSION['usuario'])): ?>
-                        <button class="profile-btn">
-                            <div class="user-avatar"><?= strtoupper(substr($_SESSION['usuario']['nombre'], 0, 1)) ?></div>
-                            <span class="user-name"><?= htmlspecialchars($_SESSION['usuario']['nombre'] . ' ' . $_SESSION['usuario']['apellido']) ?></span>
-                        </button>
-                    <?php else: ?>
-                        <a href="login.php" class="profile-btn">
-                            <span class="user-name">Iniciar Sesión</span>
-                        </a>
-                    <?php endif; ?>
-                </div>
+                <?php include 'includes/profile_header.php'; ?>
             </div>
         </div>
     </header>

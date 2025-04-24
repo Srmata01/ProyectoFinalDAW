@@ -1,10 +1,10 @@
 <?php
-require_once __DIR__ . '/config/database.php';
+require_once '../config/database.php';
 session_start();
 
 // Corregido: usamos 'tipo' en vez de 'id_tipo_usuario'
 if (!isset($_SESSION['usuario']) || !isset($_SESSION['usuario']['id']) || $_SESSION['usuario']['tipo'] != 2) {
-    header('Location: login.php');
+    header('Location: ../login.php');
     exit();
 }
 
@@ -50,23 +50,20 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Perfil - Cliente</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
     <header>
         <div class="header-container">
         <div class="logo-container">
-                <a href="main.html.php">
-                    <img src="media/logo.png" alt="Logo FixItNow" class="logo">
+                <a href="../main.php">
+                    <img src="../media/logo.png" alt="Logo FixItNow" class="logo">
                 </a>
             </div>
             <div class="user-container">
                 <div class="profile-container">
-                    <a href="perfil_cliente.php" class="profile-btn" style="text-decoration: none;">
-                        <div class="user-avatar"><?= strtoupper(substr($_SESSION['usuario']['nombre'], 0, 1)) ?></div>
-                        <span class="user-name"><?= htmlspecialchars($_SESSION['usuario']['nombre']) ?></span>
-                    </a>
-                    <a href="includes/logout.php" class="submit-btn" style="margin-left: 10px;">Cerrar sesión</a>
+                    <?php include '../includes/profile_header.php'; ?>
+                    <a href="../includes/logout.php" class="submit-btn" style="margin-left: 10px;">Cerrar sesión</a>
                 </div>
             </div>
         </div>
