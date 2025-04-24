@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             text-align: center;
             font-size: 2rem;
             padding: 20px;
-        }
+        } 
         .form-grid {
             background-color: #8585855c;
             backdrop-filter: blur(10px);

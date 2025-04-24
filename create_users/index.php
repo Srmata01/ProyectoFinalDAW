@@ -132,7 +132,7 @@
                 <a href="../login.php" class="register-link">Inicia Sesión</a>
             </p>
         </div>
-    </main>
+    </main> 
 
     <footer class="app-footer">
         <div class="footer-container">

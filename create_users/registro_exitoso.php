@@ -12,4 +12,4 @@ $tipo = isset($_GET['tipo']) ? htmlspecialchars($_GET['tipo']) : 'usuario';
     <p>Tu cuenta como <?= ucfirst($tipo) ?> ha sido creada y está <strong>activa</strong>.</p>
     <p><a href="../login.php">Volver al inicio</a></p>
 </body>
-</html>
+</html> 
