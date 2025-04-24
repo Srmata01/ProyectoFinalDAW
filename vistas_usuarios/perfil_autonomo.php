@@ -46,7 +46,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil de Autónomo</title>
-    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="vistas.css">
 </head>
 <body>
     <header>
@@ -66,10 +66,11 @@ try {
     </header>
 
     <div class="container1">
-        <div class="document-container">
-            <h2 class="document-title">Mi Perfil</h2>
-            <div class="form-grid">
-                <div class="profile-photo-container" style="text-align: center; margin-bottom: 20px;">
+        <div class="profile-columns-container">
+            <!-- Columna izquierda: Datos del autónomo -->
+            <div class="profile-column">
+                <h2 class="document-title">Mis Datos</h2>
+                <div class="profile-photo-container">
                     <?php if (!empty($autonomo['foto_perfil'])): ?>
                         <img src="data:image/jpeg;base64,<?= base64_encode($autonomo['foto_perfil']) ?>" 
                              alt="Foto de perfil" 
@@ -88,113 +89,136 @@ try {
                         <label>Email: <input type="email" name="email" value="<?= htmlspecialchars($_SESSION['usuario']['email']) ?>"></label>
                         <label>Teléfono: <input type="tel" name="telefono" value="<?= htmlspecialchars($_SESSION['usuario']['telefono']) ?>"></label>
                         <label>Dirección: <input type="text" name="direccion" value="<?= htmlspecialchars($_SESSION['usuario']['direccion']) ?>"></label>
-                        <label>CIF: <input type="text" name="CIF" value="<?= htmlspecialchars($autonomo['CIF'] ?? '') ?>"></label>
+                        <label>DNI/NIF: <input type="text" name="DNI" value="<?= htmlspecialchars($autonomo['DNI'] ?? '') ?>"></label>
                         <label>Foto de perfil: <input type="file" name="foto_perfil" accept="image/*"></label>
                     </div>
-                    <button type="submit" class="submit-btn">Guardar Cambios</button>
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Guardar Cambios</button>
+                    </div>
                 </form>
-            </div>
-        </div>
-
-        <div class="document-container">
-            <h2 class="document-title">Mis Servicios</h2>
-            <div class="form-actions">
-                <a href="nuevo_servicio.php" class="submit-btn">Añadir nuevo servicio</a>
-            </div>
-            <?php if ($servicios): ?>
-                <div class="form-grid">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Descripción</th>
-                                <th>Precio (€)</th>
-                                <th>Duración (min)</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($servicios as $servicio): ?>
-                                <tr>
-                                    <td><?= htmlspecialchars($servicio['nombre']) ?></td>
-                                    <td><?= htmlspecialchars($servicio['descripcion']) ?></td>
-                                    <td><?= number_format($servicio['precio'], 2) ?></td>
-                                    <td><?= $servicio['duracion'] ?></td>
-                                    <td><?= ucfirst($servicio['estado']) ?></td>
-                                    <td class="form-actions">
-                                        <a href="editar_servicio.php?id=<?= $servicio['id_servicio'] ?>" class="submit-btn">Editar</a>
-                                        <a href="eliminar_servicio.php?id=<?= $servicio['id_servicio'] ?>" onclick="return confirm('¿Eliminar este servicio?')" class="submit-btn" style="background-color: #dc3545;">Eliminar</a>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
+                
+                <!-- Servicios del autónomo -->
+                <h2 class="document-title" style="margin-top: 30px;">Mis Servicios</h2>
+                <div class="form-actions" style="margin-bottom: 20px;">
+                    <a href="nuevo_servicio.php" class="submit-btn">Añadir nuevo servicio</a>
                 </div>
-            <?php else: ?>
-                <p class="document-text">No tienes servicios registrados.</p>
-            <?php endif; ?>
-        </div>
-
-        <div class="document-container">
-            <h2 class="document-title">Reservas de Clientes</h2>
-            <?php if ($reservas): ?>
-                <div class="form-grid">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Servicio</th>
-                                <th>Cliente</th>
-                                <th>Teléfono</th>
-                                <th>Fecha y Hora</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($reservas as $reserva): ?>
+                <?php if ($servicios): ?>
+                    <div class="form-grid">
+                        <table>
+                            <thead>
                                 <tr>
-                                    <td><?= htmlspecialchars($reserva['servicio']) ?></td>
-                                    <td><?= htmlspecialchars($reserva['cliente']) ?></td>
-                                    <td><?= htmlspecialchars($reserva['telefono_cliente']) ?></td>
-                                    <td><?= date('d/m/Y H:i', strtotime($reserva['fecha_hora'])) ?></td>
-                                    <td><?= ucfirst($reserva['estado']) ?></td>
-                                    <td class="form-actions">
-                                        <?php if ($reserva['estado'] == 'pendiente'): ?>
-                                            <a href="aceptar_reserva.php?id=<?= $reserva['id_reserva'] ?>" class="submit-btn">Aceptar</a>
-                                            <a href="rechazar_reserva.php?id=<?= $reserva['id_reserva'] ?>" class="submit-btn" style="background-color: #dc3545;">Rechazar</a>
-                                        <?php elseif ($reserva['estado'] == 'aceptada'): ?>
-                                            <a href="completar_reserva.php?id=<?= $reserva['id_reserva'] ?>" class="submit-btn">Completar</a>
-                                        <?php else: ?>
-                                            -
-                                        <?php endif; ?>
-                                    </td>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th>Precio (€)</th>
+                                    <th>Duración (min)</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
                                 </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
-            <?php else: ?>
-                <p class="document-text">No tienes reservas activas.</p>
-            <?php endif; ?>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($servicios as $servicio): ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars($servicio['nombre']) ?></td>
+                                        <td><?= htmlspecialchars($servicio['descripcion']) ?></td>
+                                        <td><?= number_format($servicio['precio'], 2) ?></td>
+                                        <td><?= $servicio['duracion'] ?></td>
+                                        <td><?= ucfirst($servicio['estado']) ?></td>
+                                        <td class="form-actions">
+                                            <a href="editar_servicio.php?id=<?= $servicio['id_servicio'] ?>" class="submit-btn">Editar</a>
+                                            <a href="eliminar_servicio.php?id=<?= $servicio['id_servicio'] ?>" onclick="return confirm('¿Eliminar este servicio?')" class="submit-btn" style="background-color: #dc3545;">Eliminar</a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php else: ?>
+                    <p class="document-text">No tienes servicios registrados.</p>
+                <?php endif; ?>
+            </div>
+
+            <!-- Columna derecha: Reservas de clientes -->
+            <div class="profile-column">
+                <h2 class="document-title">Reservas de Clientes</h2>
+                <?php if ($reservas): ?>
+                    <div class="form-grid">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Servicio</th>
+                                    <th>Cliente</th>
+                                    <th>Teléfono</th>
+                                    <th>Fecha y Hora</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($reservas as $reserva): ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars($reserva['servicio']) ?></td>
+                                        <td><?= htmlspecialchars($reserva['cliente']) ?></td>
+                                        <td><?= htmlspecialchars($reserva['telefono_cliente']) ?></td>
+                                        <td><?= date('d/m/Y H:i', strtotime($reserva['fecha_hora'])) ?></td>
+                                        <td><?= ucfirst($reserva['estado']) ?></td>
+                                        <td class="form-actions">
+                                            <?php if ($reserva['estado'] == 'pendiente'): ?>
+                                                <a href="aceptar_reserva.php?id=<?= $reserva['id_reserva'] ?>" class="submit-btn">Aceptar</a>
+                                                <a href="rechazar_reserva.php?id=<?= $reserva['id_reserva'] ?>" class="submit-btn" style="background-color: #dc3545;">Rechazar</a>
+                                            <?php elseif ($reserva['estado'] == 'aceptada'): ?>
+                                                <a href="completar_reserva.php?id=<?= $reserva['id_reserva'] ?>" class="submit-btn">Completar</a>
+                                            <?php else: ?>
+                                                -
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php else: ?>
+                    <p class="document-text">No tienes reservas activas.</p>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
 
     <footer>
         <div class="footer-container">
             <div class="footer-section">
-                <h4 class="footer-title">Contacto</h4>
-                <ul class="footer-list">
-                    <li><a href="#" class="footer-link">info@empresa.com</a></li>
-                    <li><a href="#" class="footer-link">Tel: 123 456 789</a></li>
+                <h4>Información Personal</h4>
+                <ul>
+                    <li><a href="../politicaprivacidad.html">Política de privacidad</a></li>
+                    <li><a href="../politicacookiesdatos.html">Política de Cookies y protección de datos</a></li>
                 </ul>
             </div>
+            
             <div class="footer-section">
-                <h4 class="footer-title">Legal</h4>
-                <ul class="footer-list">
-                    <li><a href="#" class="footer-link">Términos y condiciones</a></li>
-                    <li><a href="#" class="footer-link">Política de privacidad</a></li>
+                <h4>Contacto</h4>
+                <ul>
+                    <li><a href="mailto:fixitnow@gmail.com">fixitnow@gmail.com</a></li>
+                    <li><a href="tel:+34690096690">+34 690 096 690</a></li>
                 </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>¿Eres miembro?</h4>
+                <ul>
+                    <li><a href="../create_users/index.php">Únete a Nosotros</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section social-media">
+                <div class="social-icons">
+                    <a href="#"><img src="../media/twitter-icon.png" alt="Twitter"></a>
+                    <a href="#"><img src="../media/instagram-icon.png" alt="Instagram"></a>
+                    <a href="#"><img src="../media/facebook-icon.png" alt="Facebook"></a>
+                    <a href="#"><img src="../media/tiktok-icon.png" alt="TikTok"></a>
+                </div>
+            </div>
+            
+            <div class="footer-logo">
+                <img src="../media/logo.png" alt="FixItNow Logo">
             </div>
         </div>
     </footer>

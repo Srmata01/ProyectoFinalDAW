@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
     $telefono = $_POST['telefono'];
     $direccion = $_POST['direccion'];
-    $cif = $_POST['CIF'];
+    $dni = $_POST['DNI'];  // Cambiado de CIF a DNI
     $update_foto = false;
     $foto_perfil = null;
 
@@ -37,8 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 email = ?, 
                 telefono = ?, 
                 direccion = ?, 
-                CIF = ?";
-        $params = [$nombre, $apellido, $email, $telefono, $direccion, $cif];
+                DNI = ?";
+        $params = [$nombre, $apellido, $email, $telefono, $direccion, $dni];
 
         // Añadir la foto si se subió una nueva 
         if ($update_foto) {

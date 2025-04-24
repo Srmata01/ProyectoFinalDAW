@@ -586,3 +586,35 @@ input[type="file"]::-webkit-file-upload-button:hover {
     margin-bottom: 20px;
     text-align: center;
 }
+
+/* Estilos para el diseño de dos columnas en perfiles */
+.profile-columns-container {
+    display: flex;
+    gap: 30px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.profile-column {
+    flex: 1;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius-md);
+    padding: 20px;
+}
+
+.profile-column .document-title {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+/* Ajustes responsive para las columnas */
+@media (max-width: 768px) {
+    .profile-columns-container {
+        flex-direction: column;
+    }
+    
+    .profile-column {
+        width: 100%;
+    }
+}

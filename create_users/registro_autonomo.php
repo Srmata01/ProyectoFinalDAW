@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $error = "Este email ya está registrado";
             } else {
                 $stmt = $pdo->prepare("INSERT INTO usuarios 
-                      (nombre, apellido, email, contraseña, telefono, direccion, CIF, id_tipo_usuario, id_estado_usuario, foto_perfil) 
+                      (nombre, apellido, email, contraseña, telefono, direccion, DNI, id_tipo_usuario, id_estado_usuario, foto_perfil) 
                       VALUES (?, ?, ?, ?, ?, ?, ?, 3, 1, ?)");
                 $stmt->execute([
                     $nombre,

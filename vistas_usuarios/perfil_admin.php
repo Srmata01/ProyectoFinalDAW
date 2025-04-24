@@ -37,7 +37,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <title>Dashboard Administrador</title>
-    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="vistas.css">
 </head>
 <body>
     <header>
@@ -119,18 +119,39 @@ try {
     <footer>
         <div class="footer-container">
             <div class="footer-section">
-                <h4 class="footer-title">Contacto</h4>
-                <ul class="footer-list">
-                    <li><a href="#" class="footer-link">admin@empresa.com</a></li>
-                    <li><a href="#" class="footer-link">Tel: 123 456 789</a></li>
+                <h4>Información Personal</h4>
+                <ul>
+                    <li><a href="../politicaprivacidad.html">Política de privacidad</a></li>
+                    <li><a href="../politicacookiesdatos.html">Política de Cookies y protección de datos</a></li>
                 </ul>
             </div>
+            
             <div class="footer-section">
-                <h4 class="footer-title">Legal</h4>
-                <ul class="footer-list">
-                    <li><a href="#" class="footer-link">Términos y condiciones</a></li>
-                    <li><a href="#" class="footer-link">Política de privacidad</a></li>
+                <h4>Contacto</h4>
+                <ul>
+                    <li><a href="mailto:fixitnow@gmail.com">fixitnow@gmail.com</a></li>
+                    <li><a href="tel:+34690096690">+34 690 096 690</a></li>
                 </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>¿Eres miembro?</h4>
+                <ul>
+                    <li><a href="../create_users/index.php">Únete a Nosotros</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section social-media">
+                <div class="social-icons">
+                    <a href="#"><img src="../media/twitter-icon.png" alt="Twitter"></a>
+                    <a href="#"><img src="../media/instagram-icon.png" alt="Instagram"></a>
+                    <a href="#"><img src="../media/facebook-icon.png" alt="Facebook"></a>
+                    <a href="#"><img src="../media/tiktok-icon.png" alt="TikTok"></a>
+                </div>
+            </div>
+            
+            <div class="footer-logo">
+                <img src="../media/logo.png" alt="FixItNow Logo">
             </div>
         </div>
     </footer>
