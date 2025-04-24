@@ -129,7 +129,7 @@
         <div class="register-block">
             <p class="option-description">
                 ¿Ya tienes cuenta?
-                <a href="../login.php" class="register-link">Regístrate.</a>
+                <a href="../login.php" class="register-link">Inicia Sesión</a>
             </p>
         </div>
     </main>
@@ -153,7 +153,7 @@
             </div>
 
             <div class="footer-section">
-                <h4 class="footer-title">Eres miembro?</h4>
+                <h4 class="footer-title">¿Eres miembro?</h4>
                 <ul class="footer-list">
                     <li><a href="index.php" class="footer-link">Únete a Nosotros</a></li>
                 </ul>

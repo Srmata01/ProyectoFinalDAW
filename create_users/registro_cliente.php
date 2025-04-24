@@ -68,24 +68,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <img src="../media/logo.png" alt="Logo FixItNow" class="logo">
                 </a>
             </div>
-
-            <!-- Buscador centrado -->
-            <div class="search-container">
-                <div class="search-box">
-                    <input type="text" placeholder="Buscar proyectos, materiales..." class="search-input">
-                    <img src="../media/lupa.png" alt="" onclick="">
-                </div>
-            </div>
-
-            <!-- Perfil de usuario a la derecha -->
-            <div class="user-container">
-                <div class="profile-container">
-                    <button class="profile-btn">
-                        <div class="user-avatar">JT</div>
-                        <span class="user-name">Jordi Torrella</span>
-                    </button>
-                </div>
-            </div>
         </div>
     </header>
 
@@ -118,10 +100,52 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .content {
             position: relative;
             z-index: 1;
-            color: white;
+            color: orange;
             text-align: center;
             font-size: 2rem;
             padding: 20px;
+        }
+
+        .form-grid {
+            background-color: #8585855c;
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            color: white;
+            width: 80%;
+            margin: auto;
+            margin-top: -5px;
+        }
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .form-row label {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        input, textarea {
+            padding: 0.5rem;
+            border: none;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        .submit-btn {
+            background-color: #ff5e00;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .submit-btn:hover {
+            background-color: #e04e00;
         }
 
         
@@ -195,7 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
 
                 <div class="footer-section">
-                    <h4>Eres miembro?</h4>
+                    <h4>¿Eres miembro?</h4>
                     <ul>
                         <li><a href="../create_users/index.php">Únete a Nosotros</a></li>
                     </ul>
