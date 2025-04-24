@@ -73,35 +73,52 @@ try {
         <div class="document-container">
             <h1 class="document-title">Mi Perfil</h1>
             <div class="form-grid">
-                <div class="form-row">
-                    <label>
-                        <span>Nombre:</span>
-                        <input type="text" value="<?= htmlspecialchars($cliente['nombre'] ?? '') ?>" readonly>
-                    </label>
-                    <label>
-                        <span>Apellido:</span>
-                        <input type="text" value="<?= htmlspecialchars($cliente['apellido'] ?? '') ?>" readonly>
-                    </label>
-                    <label>
-                        <span>Email:</span>
-                        <input type="email" value="<?= htmlspecialchars($cliente['email'] ?? '') ?>" readonly>
-                    </label>
-                    <label>
-                        <span>Teléfono:</span>
-                        <input type="tel" value="<?= htmlspecialchars($cliente['telefono'] ?? '') ?>" readonly>
-                    </label>
-                    <label>
-                        <span>Dirección:</span>
-                        <input type="text" value="<?= htmlspecialchars($cliente['direccion'] ?? '') ?>" readonly>
-                    </label>
-                    <label>
-                        <span>Estado:</span>
-                        <input type="text" value="<?= htmlspecialchars($cliente['estado_usuario'] ?? '') ?>" readonly>
-                    </label>
+                <div class="profile-photo-container" style="text-align: center; margin-bottom: 20px;">
+                    <?php if (!empty($cliente['foto_perfil'])): ?>
+                        <img src="data:image/jpeg;base64,<?= base64_encode($cliente['foto_perfil']) ?>" 
+                             alt="Foto de perfil" 
+                             style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;">
+                    <?php else: ?>
+                        <div class="user-avatar" style="width: 150px; height: 150px; margin: 0 auto; font-size: 3em;">
+                            <?= strtoupper(substr($cliente['nombre'], 0, 1)) ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
-                <div class="form-actions">
-                    <a href="editar_perfil.php" class="submit-btn">Editar perfil</a>
-                </div>
+                <form action="actualizar_perfil_cliente.php" method="POST" enctype="multipart/form-data">
+                    <div class="form-row">
+                        <label>
+                            <span>Nombre:</span>
+                            <input type="text" value="<?= htmlspecialchars($cliente['nombre'] ?? '') ?>" readonly>
+                        </label>
+                        <label>
+                            <span>Apellido:</span>
+                            <input type="text" value="<?= htmlspecialchars($cliente['apellido'] ?? '') ?>" readonly>
+                        </label>
+                        <label>
+                            <span>Email:</span>
+                            <input type="email" value="<?= htmlspecialchars($cliente['email'] ?? '') ?>" readonly>
+                        </label>
+                        <label>
+                            <span>Teléfono:</span>
+                            <input type="tel" value="<?= htmlspecialchars($cliente['telefono'] ?? '') ?>" readonly>
+                        </label>
+                        <label>
+                            <span>Dirección:</span>
+                            <input type="text" value="<?= htmlspecialchars($cliente['direccion'] ?? '') ?>" readonly>
+                        </label>
+                        <label>
+                            <span>Estado:</span>
+                            <input type="text" value="<?= htmlspecialchars($cliente['estado_usuario'] ?? '') ?>" readonly>
+                        </label>
+                        <label>
+                            <span>Foto de perfil:</span>
+                            <input type="file" name="foto_perfil" accept="image/*">
+                        </label>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Guardar cambios</button>
+                    </div>
+                </form>
             </div>
         </div>
 

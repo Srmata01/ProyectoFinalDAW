@@ -89,7 +89,7 @@
     <header class="app-header">
         <div class="header-container">
             <div class="logo-container">
-                <a href="../main.html" class="logo-link">
+                <a href="../main.php" class="logo-link">
                     <img src="../media/logo.png" alt="Logo FixItNow" class="logo">
                 </a>
             </div>

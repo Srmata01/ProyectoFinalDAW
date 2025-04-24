@@ -133,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <header>
         <div class="header-container">
             <div class="logo-container">
-                <a href="../main.html">
+                <a href="../main.php">
                     <img src="../media/logo.png" alt="Logo FixItNow" class="logo">
                 </a>
             </div>

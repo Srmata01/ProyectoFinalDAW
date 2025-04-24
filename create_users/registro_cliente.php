@@ -9,6 +9,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $telefono = $_POST['telefono'] ?? '';
     $direccion = $_POST['direccion'] ?? '';
     $dni_nie = $_POST['dni_nie'] ?? '';
+    $foto_perfil = null;
+
+    // Procesamiento de la foto de perfil
+    if (isset($_FILES['foto_perfil']) && $_FILES['foto_perfil']['error'] === UPLOAD_ERR_OK) {
+        $foto_temp = $_FILES['foto_perfil']['tmp_name'];
+        $foto_tipo = $_FILES['foto_perfil']['type'];
+        
+        // Verificar que sea una imagen
+        if (strpos($foto_tipo, 'image/') === 0) {
+            $foto_perfil = file_get_contents($foto_temp);
+        }
+    }
 
     // Validación básica
     if (empty($nombre) || empty($apellido) || empty($email) || empty($password) || empty($dni_nie)) {
@@ -22,10 +34,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($stmt->rowCount() > 0) {
                 $error = "Este email ya está registrado";
             } else {
-                // Insertar nuevo cliente
+                // Insertar nuevo cliente con foto
                 $stmt = $pdo->prepare("INSERT INTO usuarios 
-                      (nombre, apellido, email, contraseña, telefono, direccion, CIF, id_tipo_usuario, id_estado_usuario) 
-                      VALUES (?, ?, ?, ?, ?, ?, ?, 2, 1)");
+                      (nombre, apellido, email, contraseña, telefono, direccion, CIF, id_tipo_usuario, id_estado_usuario, foto_perfil) 
+                      VALUES (?, ?, ?, ?, ?, ?, ?, 2, 1, ?)");
                 $stmt->execute([
                     $nombre,
                     $apellido,
@@ -33,7 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     password_hash($password, PASSWORD_DEFAULT),
                     $telefono,
                     $direccion,
-                    $dni_nie
+                    $dni_nie,
+                    $foto_perfil
                 ]);
 
                 header("Location: registro_exitoso.php?tipo=cliente");
@@ -64,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="header-container">
             <!-- Logo a la izquierda -->
             <div class="logo-container">
-                <a href="../main.html" class="logo-link">
+                <a href="../main.php" class="logo-link">
                     <img src="../media/logo.png" alt="Logo FixItNow" class="logo">
                 </a>
             </div>
@@ -160,7 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <h1>Registrate como cliente</h1>
             </div>
 
-            <form method="post" class="form-grid">
+            <form method="post" class="form-grid" enctype="multipart/form-data">
                 <?php if (isset($error)): ?>
                     <div class="error-message"><?= htmlspecialchars($error) ?></div>
                 <?php endif; ?>
@@ -190,6 +203,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="form-row">
                     <label>Dirección:
                         <textarea name="direccion" rows="1"></textarea>
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label>Foto de perfil:
+                        <input type="file" name="foto_perfil" accept="image/*">
                     </label>
                 </div>
                 <div class="form-actions">

@@ -9,6 +9,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $telefono = $_POST['telefono'] ?? '';
     $direccion = $_POST['direccion'] ?? '';
     $nif = $_POST['nif'] ?? '';
+    $foto_perfil = null;
+
+    // Procesamiento de la foto de perfil
+    if (isset($_FILES['foto_perfil']) && $_FILES['foto_perfil']['error'] === UPLOAD_ERR_OK) {
+        $foto_temp = $_FILES['foto_perfil']['tmp_name'];
+        $foto_tipo = $_FILES['foto_perfil']['type'];
+        
+        // Verificar que sea una imagen
+        if (strpos($foto_tipo, 'image/') === 0) {
+            $foto_perfil = file_get_contents($foto_temp);
+        }
+    }
 
     if (empty($nombre) || empty($apellido) || empty($email) || empty($password) || empty($nif)) {
         $error = "Todos los campos obligatorios deben ser completados";
@@ -21,8 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $error = "Este email ya está registrado";
             } else {
                 $stmt = $pdo->prepare("INSERT INTO usuarios 
-                      (nombre, apellido, email, contraseña, telefono, direccion, CIF, id_tipo_usuario, id_estado_usuario) 
-                      VALUES (?, ?, ?, ?, ?, ?, ?, 3, 1)");
+                      (nombre, apellido, email, contraseña, telefono, direccion, CIF, id_tipo_usuario, id_estado_usuario, foto_perfil) 
+                      VALUES (?, ?, ?, ?, ?, ?, ?, 3, 1, ?)");
                 $stmt->execute([
                     $nombre,
                     $apellido,
@@ -30,7 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     password_hash($password, PASSWORD_DEFAULT),
                     $telefono,
                     $direccion,
-                    $nif
+                    $nif,
+                    $foto_perfil
                 ]);
                 
                 header("Location: registro_exitoso.php?tipo=autonomo");
@@ -127,7 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <header>
         <div class="header-container">
             <div class="logo-container">
-                <a href="../main.html">
+                <a href="../main.php">
                     <img src="../media/logo.png" alt="Logo FixItNow" class="logo">
                 </a>
             </div>
@@ -140,7 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <h1>Registrate como Autónomo</h1>
         </div>
         
-        <form method="post" class="form-grid">
+        <form method="post" class="form-grid" enctype="multipart/form-data">
             <?php if (isset($error)): ?>
                 <div class="error-message"><?= htmlspecialchars($error) ?></div>
             <?php endif; ?>
@@ -170,6 +183,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="form-row">
                 <label>Dirección:
                     <textarea name="direccion" rows="1"></textarea>
+                </label>
+                <label>Foto de perfil:
+                    <input type="file" name="foto_perfil" accept="image/*">
                 </label>
             </div>
             <div class="form-actions">

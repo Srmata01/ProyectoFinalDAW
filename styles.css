@@ -520,3 +520,69 @@ textarea:focus {
 .form-actions button:hover {
     background-color: var(--color-primary-dark);
 }
+
+/* Profile photo styles */
+.profile-photo-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-photo-container img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--color-primary);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* File upload input styles */
+input[type="file"] {
+    padding: 8px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background-color: white;
+    width: 100%;
+    font-size: 14px;
+}
+
+input[type="file"]::-webkit-file-upload-button {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: var(--radius-sm);
+    margin-right: 10px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+input[type="file"]::-webkit-file-upload-button:hover {
+    background-color: var(--color-primary-dark);
+}
+
+/* Large profile avatar for profile pages */
+.large-avatar {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+    font-size: 3em;
+    background-color: var(--color-primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+/* Success and error messages */
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    border: 1px solid #c3e6cb;
+    border-radius: var(--radius-sm);
+    margin-bottom: 20px;
+    text-align: center;
+}

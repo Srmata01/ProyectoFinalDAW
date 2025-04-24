@@ -69,14 +69,28 @@ try {
         <div class="document-container">
             <h2 class="document-title">Mi Perfil</h2>
             <div class="form-grid">
-                <form action="actualizar_perfil_autonomo.php" method="POST">
+                <div class="profile-photo-container" style="text-align: center; margin-bottom: 20px;">
+                    <?php if (!empty($autonomo['foto_perfil'])): ?>
+                        <img src="data:image/jpeg;base64,<?= base64_encode($autonomo['foto_perfil']) ?>" 
+                             alt="Foto de perfil" 
+                             style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;">
+                    <?php else: ?>
+                        <div class="user-avatar" style="width: 150px; height: 150px; margin: 0 auto; font-size: 3em;">
+                            <?= strtoupper(substr($autonomo['nombre'], 0, 1)) ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <form action="actualizar_perfil_autonomo.php" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="id_usuario" value="<?= $_SESSION['usuario']['id'] ?>">
-                    <label>Nombre: <input type="text" name="nombre" value="<?= htmlspecialchars($_SESSION['usuario']['nombre']) ?>"></label>
-                    <label>Apellido: <input type="text" name="apellido" value="<?= htmlspecialchars($_SESSION['usuario']['apellido']) ?>"></label>
-                    <label>Email: <input type="email" name="email" value="<?= htmlspecialchars($_SESSION['usuario']['email']) ?>"></label>
-                    <label>Teléfono: <input type="tel" name="telefono" value="<?= htmlspecialchars($_SESSION['usuario']['telefono']) ?>"></label>
-                    <label>Dirección: <input type="text" name="direccion" value="<?= htmlspecialchars($_SESSION['usuario']['direccion']) ?>"></label>
-                    <label>CIF: <input type="text" name="CIF" value="<?= htmlspecialchars($autonomo['CIF'] ?? '') ?>"></label>
+                    <div class="form-row">
+                        <label>Nombre: <input type="text" name="nombre" value="<?= htmlspecialchars($_SESSION['usuario']['nombre']) ?>"></label>
+                        <label>Apellido: <input type="text" name="apellido" value="<?= htmlspecialchars($_SESSION['usuario']['apellido']) ?>"></label>
+                        <label>Email: <input type="email" name="email" value="<?= htmlspecialchars($_SESSION['usuario']['email']) ?>"></label>
+                        <label>Teléfono: <input type="tel" name="telefono" value="<?= htmlspecialchars($_SESSION['usuario']['telefono']) ?>"></label>
+                        <label>Dirección: <input type="text" name="direccion" value="<?= htmlspecialchars($_SESSION['usuario']['direccion']) ?>"></label>
+                        <label>CIF: <input type="text" name="CIF" value="<?= htmlspecialchars($autonomo['CIF'] ?? '') ?>"></label>
+                        <label>Foto de perfil: <input type="file" name="foto_perfil" accept="image/*"></label>
+                    </div>
                     <button type="submit" class="submit-btn">Guardar Cambios</button>
                 </form>
             </div>
