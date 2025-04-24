@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-04-2025 a las 09:38:51
+-- Tiempo de generación: 24-04-2025 a las 10:42:15
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -135,6 +135,7 @@ CREATE TABLE `usuarios` (
   `telefono` varchar(255) DEFAULT NULL,
   `direccion` text DEFAULT NULL,
   `DNI` varchar(9) NOT NULL,
+  `foto_perfil` longblob NOT NULL,
   `id_tipo_usuario` int(11) DEFAULT NULL,
   `id_estado_usuario` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -143,10 +144,10 @@ CREATE TABLE `usuarios` (
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id_usuario`, `nombre`, `apellido`, `email`, `contraseña`, `telefono`, `direccion`, `DNI`, `id_tipo_usuario`, `id_estado_usuario`) VALUES
-(9, 'Sergio', 'Mata', 's@gmail.com', '$2y$10$fzEToMcFuO6R1keuq.gapOzuzdmDmB8JiraiKNYTtEh3sXLQXQ91e', '123456789', 'Cava 4', '', 2, 1),
-(10, 'Lamine', 'Yamal', 'ly@gmail.com', '$2y$10$jIPCJ/MpeUJYADsPwdR18.rHHQowyqd8zIC1ye.1OfH3oqfdSmy/m', '62134567', 'Jaume 2', '', 3, 1),
-(11, 'Kylian', 'Mbappé', 'k@gmail.com', '$2y$10$EbosTMmMGgSFUYsLlKKqE.56Xvw6ITclc8cEQrqI2D25E6uGCbPFe', NULL, NULL, '', 1, 1);
+INSERT INTO `usuarios` (`id_usuario`, `nombre`, `apellido`, `email`, `contraseña`, `telefono`, `direccion`, `DNI`, `foto_perfil`, `id_tipo_usuario`, `id_estado_usuario`) VALUES
+(9, 'Sergio', 'Mata', 's@gmail.com', '$2y$10$fzEToMcFuO6R1keuq.gapOzuzdmDmB8JiraiKNYTtEh3sXLQXQ91e', '123456789', 'Cava 4', '', '', 2, 1),
+(10, 'Lamine', 'Yamal', 'ly@gmail.com', '$2y$10$jIPCJ/MpeUJYADsPwdR18.rHHQowyqd8zIC1ye.1OfH3oqfdSmy/m', '62134567', 'Jaume 2', '', '', 3, 1),
+(11, 'Kylian', 'Mbappé', 'k@gmail.com', '$2y$10$EbosTMmMGgSFUYsLlKKqE.56Xvw6ITclc8cEQrqI2D25E6uGCbPFe', NULL, NULL, '', '', 1, 1);
 
 -- --------------------------------------------------------
 
