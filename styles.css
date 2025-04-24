@@ -248,7 +248,6 @@ header {
     padding: 20px;
     text-align: center;
     border-radius: var(--radius-md);
-    width: 30%;
     margin: 40px auto;
 
 }
@@ -278,7 +277,7 @@ header {
 
 .titulocookies, .document-title {
     font-size: 26px;
-    color: var(--color-primary-dark);
+    color: #ff9b00; 
 }
 
 /* Footer */
@@ -361,7 +360,7 @@ a.option-link:hover {
 
 p.option-description{
     font-style: italic !important;
-    color: var(--color-text-light);
+    color:#5e5d5d;
     
 }
 
