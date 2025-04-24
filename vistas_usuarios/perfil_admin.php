@@ -1,9 +1,9 @@
 <?php
-require_once 'config/database.php';
+require_once '../config/database.php';
 session_start();
 
 if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['tipo'] != 1) {
-    header('Location: login.php');
+    header('Location: ../login.php');
     exit();
 }
 
@@ -37,21 +37,20 @@ try {
 <head>
     <meta charset="UTF-8">
     <title>Dashboard Administrador</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
     <header>
         <div class="header-container">
             <div class="logo-container">
-                <img src="media/logo.png" alt="Logo" class="logo">
+                <a href="../main.php">
+                    <img src="../media/logo.png" alt="Logo" class="logo">
+                </a>
             </div>
             <div class="user-container">
                 <div class="profile-container">
-                    <a href="admin_dashboard.php" class="profile-btn" style="text-decoration: none;">
-                        <div class="user-avatar"><?= strtoupper(substr($_SESSION['usuario']['nombre'], 0, 1)) ?></div>
-                        <span class="user-name"><?= htmlspecialchars($_SESSION['usuario']['nombre']) ?></span>
-                    </a>
-                    <a href="includes/logout.php" class="submit-btn" style="margin-left: 10px;">Cerrar sesión</a>
+                    <?php include '../includes/profile_header.php'; ?>
+                    <a href="../includes/logout.php" class="submit-btn" style="margin-left: 10px;">Cerrar sesión</a>
                 </div>
             </div>
         </div>

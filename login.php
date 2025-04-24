@@ -57,16 +57,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         // Redirección basada en tipo de usuario
                         switch ((int)$_SESSION['usuario']['tipo']) {
                             case 1:
-                                error_log("Redirigiendo a admin_dashboard.php");
-                                header("Location: admin_dashboard.php");
+                                error_log("Redirigiendo a vistas_usuarios/perfil_admin.php");
+                                header("Location: vistas_usuarios/perfil_admin.php");
                                 break;
                             case 2:
-                                error_log("Redirigiendo a perfil_cliente.php");
-                                header("Location: perfil_cliente.php");
+                                error_log("Redirigiendo a vistas_usuarios/perfil_cliente.php");
+                                header("Location: vistas_usuarios/perfil_cliente.php");
                                 break;
                             case 3:
-                                error_log("Redirigiendo a perfil_autonomo.php");
-                                header("Location: perfil_autonomo.php");
+                                error_log("Redirigiendo a vistas_usuarios/perfil_autonomo.php");
+                                header("Location: vistas_usuarios/perfil_autonomo.php");
                                 break;
                             default:
                                 error_log("Tipo de usuario desconocido, redirigiendo a index.php");
