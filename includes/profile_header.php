@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/../config/database.php';
+
 if (isset($_SESSION['usuario'])) {
     $in_profile_page = strpos($_SERVER['PHP_SELF'], 'perfil_') !== false;
     

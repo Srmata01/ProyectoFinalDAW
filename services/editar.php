@@ -1,28 +1,57 @@
 <?php
 require_once '../config/database.php';
+session_start();
 
-$id_servicio = $_GET['id'] ?? 0;
+if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['tipo'] != 3) {
+    header('Location: ../login.php');
+    exit();
+}
 
-// Obtener el servicio a editar
-$servicio = $pdo->query("SELECT * FROM servicios WHERE id_servicio = $id_servicio")->fetch();
+$id_autonomo = $_SESSION['usuario']['id'];
+$id_servicio = $_GET['id'] ?? null;
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $nombre = $_POST['nombre'];
-    $descripcion = $_POST['descripcion'];
-    $precio = $_POST['precio'];
-    $duracion = $_POST['duracion'];
-    $estado = $_POST['estado'];
-    
-    $pdo->query("UPDATE servicios SET 
-                nombre = '$nombre', 
-                descripcion = '$descripcion', 
-                precio = $precio, 
-                duracion = $duracion, 
-                estado = '$estado' 
-                WHERE id_servicio = $id_servicio");
-    
-    header('Location: index.php');
-    exit;
+if (!$id_servicio) {
+    header('Location: ../vistas_usuarios/perfil_autonomo.php');
+    exit();
+}
+
+try {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $stmt = $pdo->prepare("
+            UPDATE servicios 
+            SET nombre = ?, descripcion = ?, precio = ?, duracion = ?, estado = ?
+            WHERE id_servicio = ? AND id_autonomo = ?
+        ");
+        
+        $stmt->execute([
+            $_POST['nombre'],
+            $_POST['descripcion'],
+            $_POST['precio'],
+            $_POST['duracion'],
+            $_POST['estado'],
+            $id_servicio,
+            $id_autonomo
+        ]);
+        
+        header('Location: ../vistas_usuarios/perfil_autonomo.php');
+        exit();
+    }
+
+    // Obtener datos del servicio
+    $stmt = $pdo->prepare("
+        SELECT * FROM servicios 
+        WHERE id_servicio = ? AND id_autonomo = ?
+    ");
+    $stmt->execute([$id_servicio, $id_autonomo]);
+    $servicio = $stmt->fetch();
+
+    if (!$servicio) {
+        header('Location: ../vistas_usuarios/perfil_autonomo.php');
+        exit();
+    }
+
+} catch (PDOException $e) {
+    $error = "Error: " . $e->getMessage();
 }
 ?>
 
@@ -31,46 +60,118 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Editar Servicio</title>
+    <link rel="stylesheet" href="../vistas_usuarios/vistas.css">
 </head>
 <body>
-    <h1>Editar Servicio</h1>
-    
-    <form method="post">
-        <p>
-            <label>Nombre:<br>
-                <input type="text" name="nombre" value="<?= $servicio['nombre'] ?>" required>
-            </label>
-        </p>
-        
-        <p>
-            <label>Descripción:<br>
-                <textarea name="descripcion" required><?= $servicio['descripcion'] ?></textarea>
-            </label>
-        </p>
-        
-        <p>
-            <label>Precio (€):<br>
-                <input type="number" step="0.01" name="precio" value="<?= $servicio['precio'] ?>" required>
-            </label>
-        </p>
-        
-        <p>
-            <label>Duración (minutos):<br>
-                <input type="number" name="duracion" value="<?= $servicio['duracion'] ?>" required>
-            </label>
-        </p>
-        
-        <p>
-            <label>Estado:<br>
-                <select name="estado">
-                    <option value="activo" <?= $servicio['estado'] == 'activo' ? 'selected' : '' ?>>Activo</option>
-                    <option value="inactivo" <?= $servicio['estado'] == 'inactivo' ? 'selected' : '' ?>>Inactivo</option>
-                </select>
-            </label>
-        </p>
-        
-        <button type="submit">Guardar Cambios</button>
-        <a href="index.php">Cancelar</a>
-    </form>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../main.php">
+                    <img src="../media/logo.png" alt="Logo FixItNow" class="logo">
+                </a>
+            </div>
+            <div class="user-container">
+                <?php include '../includes/profile_header.php'; ?>
+            </div>
+        </div>
+    </header>
+
+    <div class="container1">
+        <div class="profile-columns-container">
+            <div class="profile-column">
+                <h2 class="document-title">Editar Servicio</h2>
+                
+                <?php if (isset($error)): ?>
+                    <div class="error-message"><?= htmlspecialchars($error) ?></div>
+                <?php endif; ?>
+
+                <form method="post" class="form-grid">
+                    <div class="form-row">
+                        <label>
+                            <span>Nombre del servicio:</span>
+                            <input type="text" name="nombre" required 
+                                   value="<?= htmlspecialchars($servicio['nombre']) ?>">
+                        </label>
+                    </div>
+                    
+                    <div class="form-row">
+                        <label>
+                            <span>Descripción:</span>
+                            <textarea name="descripcion" required rows="4"><?= htmlspecialchars($servicio['descripcion']) ?></textarea>
+                        </label>
+                    </div>
+                    
+                    <div class="form-row">
+                        <label>
+                            <span>Precio (€):</span>
+                            <input type="number" step="0.01" name="precio" required 
+                                   value="<?= htmlspecialchars($servicio['precio']) ?>">
+                        </label>
+                        
+                        <label>
+                            <span>Duración (minutos):</span>
+                            <input type="number" name="duracion" required 
+                                   value="<?= htmlspecialchars($servicio['duracion']) ?>">
+                        </label>
+                    </div>
+
+                    <div class="form-row">
+                        <label>
+                            <span>Estado:</span>
+                            <select name="estado" required>
+                                <option value="activo" <?= $servicio['estado'] === 'activo' ? 'selected' : '' ?>>Activo</option>
+                                <option value="inactivo" <?= $servicio['estado'] === 'inactivo' ? 'selected' : '' ?>>Inactivo</option>
+                            </select>
+                        </label>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Guardar Cambios</button>
+                        <a href="../vistas_usuarios/perfil_autonomo.php" class="submit-btn" style="background-color: #6c757d;">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h4>Información Personal</h4>
+                <ul>
+                    <li><a href="../politicaprivacidad.html">Política de privacidad</a></li>
+                    <li><a href="../politicacookiesdatos.html">Política de Cookies y protección de datos</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Contacto</h4>
+                <ul>
+                    <li><a href="mailto:fixitnow@gmail.com">fixitnow@gmail.com</a></li>
+                    <li><a href="tel:+34690096690">+34 690 096 690</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>¿Eres miembro?</h4>
+                <ul>
+                    <li><a href="../create_users/index.php">Únete a Nosotros</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section social-media">
+                <div class="social-icons">
+                    <a href="#"><img src="../media/twitter-icon.png" alt="Twitter"></a>
+                    <a href="#"><img src="../media/instagram-icon.png" alt="Instagram"></a>
+                    <a href="#"><img src="../media/facebook-icon.png" alt="Facebook"></a>
+                    <a href="#"><img src="../media/tiktok-icon.png" alt="TikTok"></a>
+                </div>
+            </div>
+            
+            <div class="footer-logo">
+                <img src="../media/logo.png" alt="FixItNow Logo">
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

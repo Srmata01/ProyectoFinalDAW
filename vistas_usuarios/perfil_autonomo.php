@@ -17,7 +17,7 @@ try {
     $autonomo = $stmt->fetch();
 
     // Servicios ofrecidos
-    $stmt = $pdo->prepare("SELECT * FROM servicios WHERE id_autonomo = ?");
+    $stmt = $pdo->prepare("SELECT * FROM servicios WHERE id_autonomo = ? ORDER BY nombre ASC");
     $stmt->execute([$id_autonomo]);
     $servicios = $stmt->fetchAll();
 
@@ -38,6 +38,16 @@ try {
 } catch (PDOException $e) {
     die("Error al obtener datos: " . $e->getMessage());
 }
+
+// Mensajes de estado
+if (isset($_SESSION['mensaje'])) {
+    $mensaje = $_SESSION['mensaje'];
+    unset($_SESSION['mensaje']);
+}
+if (isset($_SESSION['error'])) {
+    $error = $_SESSION['error'];
+    unset($_SESSION['error']);
+}
 ?>
 
 <!DOCTYPE html>
@@ -56,6 +66,14 @@ try {
                     <img src="../media/logo.png" alt="Logo FixItNow" class="logo">
                 </a>
             </div>
+
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" placeholder="Buscar proyectos, materiales..." class="search-input">
+                    <img src="../media/lupa.png" alt="Buscar" class="search-icon">
+                </div>
+            </div>
+
             <div class="user-container">
                 <div class="profile-container">
                     <?php include '../includes/profile_header.php'; ?>
@@ -66,6 +84,13 @@ try {
     </header>
 
     <div class="container1">
+        <?php if (isset($mensaje)): ?>
+            <div class="success-message"><?= htmlspecialchars($mensaje) ?></div>
+        <?php endif; ?>
+        <?php if (isset($error)): ?>
+            <div class="error-message"><?= htmlspecialchars($error) ?></div>
+        <?php endif; ?>
+
         <div class="profile-columns-container">
             <!-- Columna izquierda: Datos del autónomo -->
             <div class="profile-column">
@@ -100,7 +125,7 @@ try {
                 <!-- Servicios del autónomo -->
                 <h2 class="document-title" style="margin-top: 30px;">Mis Servicios</h2>
                 <div class="form-actions" style="margin-bottom: 20px;">
-                    <a href="nuevo_servicio.php" class="submit-btn">Añadir nuevo servicio</a>
+                    <a href="../services/crear.php" class="submit-btn">Añadir nuevo servicio</a>
                 </div>
                 <?php if ($servicios): ?>
                     <div class="form-grid">
@@ -117,15 +142,16 @@ try {
                             </thead>
                             <tbody>
                                 <?php foreach ($servicios as $servicio): ?>
-                                    <tr>
+                                    <tr id="servicio-<?= $servicio['id_servicio'] ?>">
                                         <td><?= htmlspecialchars($servicio['nombre']) ?></td>
                                         <td><?= htmlspecialchars($servicio['descripcion']) ?></td>
                                         <td><?= number_format($servicio['precio'], 2) ?></td>
                                         <td><?= $servicio['duracion'] ?></td>
                                         <td><?= ucfirst($servicio['estado']) ?></td>
                                         <td class="form-actions">
-                                            <a href="editar_servicio.php?id=<?= $servicio['id_servicio'] ?>" class="submit-btn">Editar</a>
-                                            <a href="eliminar_servicio.php?id=<?= $servicio['id_servicio'] ?>" onclick="return confirm('¿Eliminar este servicio?')" class="submit-btn" style="background-color: #dc3545;">Eliminar</a>
+                                            <a href="../services/editar.php?id=<?= $servicio['id_servicio'] ?>" class="submit-btn">Editar</a>
+                                            <button onclick="eliminarServicio(<?= $servicio['id_servicio'] ?>)" 
+                                                    class="submit-btn" style="background-color: #dc3545;">Eliminar</button>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -222,5 +248,30 @@ try {
             </div>
         </div>
     </footer>
+
+    <script>
+    function eliminarServicio(id) {
+        if (confirm('¿Estás seguro de que deseas eliminar este servicio?')) {
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '../services/eliminar_servicio.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            
+            xhr.onload = function() {
+                if (this.status === 200) {
+                    const fila = document.getElementById('servicio-' + id);
+                    if (fila) {
+                        fila.remove();
+                    }
+                    alert('Servicio eliminado correctamente');
+                } else {
+                    const mensaje = this.responseText || 'Error al eliminar el servicio';
+                    alert(mensaje);
+                }
+            };
+            
+            xhr.send('id=' + id);
+        }
+    }
+    </script>
 </body>
 </html>
