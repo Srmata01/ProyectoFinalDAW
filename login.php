@@ -199,7 +199,8 @@ error_log("Flujo inesperado - ¿Redirección falló?");
         <p class="option-description">
             <a href="" class="no-account-link">¿No tienes cuenta?</a>
             <a href="create_users/index.php" class="register-link">Regístrate!</a><br>
-            <a href="recuperar_password.php">¿Olvidaste tu contraseña?</a>
+            <br>
+            <a href="recuperar_password.php" class="register-link">¿Olvidaste tu contraseña?</a>
         </p>
     </div>
 </body>
