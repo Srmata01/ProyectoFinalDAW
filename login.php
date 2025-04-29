@@ -119,9 +119,59 @@ error_log("Flujo inesperado - ¿Redirección falló?");
         }
 
         .option-description {
-        margin-top: 20px;
-        text-align: center;
-    }
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .register-link {
+            color: orange;
+            text-decoration: underline;
+        }
+
+        .no-account-link {
+            color: black;
+            text-decoration: none;
+        }
+
+        .form-container {
+            background-color: #f0f0f0;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .form-title {
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .submit-btn {
+            background-color: orange;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .submit-btn:hover {
+            background-color:rgb(255, 188, 101);
+        }
+
     </style>
 </head>
 
@@ -147,7 +197,8 @@ error_log("Flujo inesperado - ¿Redirección falló?");
         </form>
 
         <p class="option-description">
-            <a href="create_users/index.php">¿No tienes cuenta? Regístrate!</a><br>
+            <a href="" class="no-account-link">¿No tienes cuenta?</a>
+            <a href="create_users/index.php" class="register-link">Regístrate!</a><br>
             <a href="recuperar_password.php">¿Olvidaste tu contraseña?</a>
         </p>
     </div>

@@ -83,17 +83,6 @@
         text-decoration: underline;
         margin-left: 8px;
     }
-
-    body {
-    background-color: #f5f5f5;
-    background-image: 
-        linear-gradient(135deg, rgba(0, 136, 255, 0.1) 25%, transparent 25%), 
-        linear-gradient(45deg, rgba(255, 102, 0, 0.1) 25%, transparent 25%);
-    background-size: 50px 50px;
-    background-repeat: repeat;
-
-    }
-
 </style>
 
 <body class="app-body">
