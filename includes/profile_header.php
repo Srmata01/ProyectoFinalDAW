@@ -6,7 +6,8 @@ if (isset($_SESSION['usuario'])) {
     
     if (!$in_profile_page) {
         // Determinar si estamos en un subdirectorio
-        $is_subdirectory = strpos($_SERVER['PHP_SELF'], '/services/') !== false;
+        $is_subdirectory = strpos($_SERVER['PHP_SELF'], '/services/') !== false || 
+        strpos($_SERVER['PHP_SELF'], '/vistas_usuarios/') !== false;
         $base_path = $is_subdirectory ? '../' : '';
         
         $perfil_url = '';

@@ -144,7 +144,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <img src="../media/logo.png" alt="Logo FixItNow" class="logo">
                 </a>
             </div>
-            
+            <div class="login-profile-box">
+                <?php include '../includes/profile_header.php'; ?>
+            </div>
         </div>
     </header>
 

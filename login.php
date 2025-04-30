@@ -85,108 +85,57 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión</title>
     <link rel="stylesheet" href="styles.css">
-
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .option-description {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .register-link {
-            color: orange;
-            text-decoration: underline;
-        }
-
-        .no-account-link {
-            color: black;
-            text-decoration: none;
-        }
-
-        .form-container {
-            background-color: #f0f0f0;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .form-title {
-            font-size: 24px;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        input[type="email"],
-        input[type="password"] {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-        }
-
-        .submit-btn {
-            background-color: orange;
-            color: white;
-            padding: 12px;
-            border: none;
-            border-radius: 5px;
-            width: 100%;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .submit-btn:hover {
-            background-color:rgb(255, 188, 101);
-        }
-
-    </style>
+    <link rel="stylesheet" href="main.css">
 </head>
-
 <body>
-    <div class="form-container">
-        <h2 class="form-title">Iniciar Sesión</h2>
-
-        <?php if (!empty($error)): ?>
-            <div class="error-message" style="color:red; margin-bottom:15px;">
-                <?= htmlspecialchars($error) ?>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="main.php">
+                    <img src="media/logo.png" alt="Logo FixItNow" class="logo">
+                </a>
             </div>
-        <?php endif; ?>
+            <div class="login-profile-box">
+                <?php include 'includes/profile_header.php'; ?>
+            </div>
+        </div>
+    </header>
 
-        <form method="POST" action="">
-            <label for="email">Correo electrónico:</label>
-            <input type="email" name="email" id="email" required
-                value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
+    <div class="container1">
+        <div class="form-container">
+            <h2 class="form-title">Iniciar Sesión</h2>
 
-            <label for="password">Contraseña:</label>
-            <input type="password" name="password" id="password" required minlength="8">
+            <?php if (!empty($error)): ?>
+                <div class="error-message" style="color:red; margin-bottom:15px;">
+                    <?= htmlspecialchars($error) ?>
+                </div>
+            <?php endif; ?>
 
-            <button type="submit" class="submit-btn">Entrar</button>
-        </form>
+            <form method="POST" action="">
+                <label for="email">Correo electrónico:</label>
+                <input type="email" name="email" id="email" required
+                    value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
 
-        <p class="option-description">
-            <a href="" class="no-account-link">¿No tienes cuenta?</a>
-            <a href="create_users/index.php" class="register-link">Regístrate!</a><br>
-            <br>
-            <a href="recuperar_password.php" class="register-link">¿Olvidaste tu contraseña?</a>
-        </p>
+                <label for="password">Contraseña:</label>
+                <input type="password" name="password" id="password" required minlength="8">
+
+                <button type="submit" class="submit-btn">Entrar</button>
+            </form>
+
+            <p class="option-description">
+                <a href="" class="no-account-link">¿No tienes cuenta?</a>
+                <a href="create_users/index.php" class="register-link">Regístrate!</a><br>
+                <br>
+                <a href="recuperar_password.php" class="register-link">¿Olvidaste tu contraseña?</a>
+            </p>
+        </div>
     </div>
-</body>
 
+    <?php include 'includes/footer.php'; ?>
+</body>
 </html>

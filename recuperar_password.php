@@ -1,141 +1,85 @@
-<?php require_once './config/database.php'; ?>
-<!DOCTYPE html>
-<html class="app">
+<?php
+session_start();
+require_once './config/database.php';
 
+$mensaje = '';
+$error = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+    
+    if (!empty($email)) {
+        try {
+            $stmt = $pdo->prepare("SELECT id_usuario FROM usuarios WHERE email = ?");
+            $stmt->execute([$email]);
+            
+            if ($stmt->rowCount() > 0) {
+                // Aquí iría la lógica para enviar el email de recuperación
+                $mensaje = "Si el correo existe en nuestra base de datos, recibirás un email con las instrucciones para recuperar tu contraseña.";
+            } else {
+                $mensaje = "Si el correo existe en nuestra base de datos, recibirás un email con las instrucciones para recuperar tu contraseña.";
+            }
+        } catch (PDOException $e) {
+            $error = "Ha ocurrido un error. Por favor, inténtalo más tarde.";
+        }
+    } else {
+        $error = "Por favor, introduce un email válido.";
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="es">
 <head>
-    <title>Únete a nosotros</title>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Contraseña - FixItNow</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="main.css">
     <link rel="icon" type="image/png" href="media/logo.png">
 </head>
-
-<style>
-    .grid-layout {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 30px;
-        padding: 20px;
-    }
-
-    .option-card {
-        background-color: rgba(200, 200, 200, 0.4);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        /* border-radius eliminado */
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        padding: 20px;
-        border-radius: 4px;
-        transition: transform 0.2s ease;
-    }
-
-    .option-card:hover {
-        transform: translateY(-5px);
-    }
-
-    .option-image {
-        width: 100%;
-        height: auto;
-        /* se puede mantener redondeo de imagen si lo deseas */
-        border-radius: 10px;
-        margin-bottom: 10px;
-    }
-
-    .option-title a {
-        color: rgb(78, 78, 78);
-        text-decoration: none;
-    }
-
-    .document-container3 {
-        background-color: transparent !important;
-        box-shadow: none;
-        margin-top: -50px;
-    }
-
-    .document-title {
-        font-size: 2rem;
-        margin-top: -30px;
-        margin-bottom: 15px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .option-description {
-        font-size: 1.3rem;
-        color: white;
-        margin: 0;
-    }
-
-    .register-block {
-        text-align: center;
-        margin-top: 25px;
-    }
-
-    .register-block .option-description {
-        font-size: 1.3rem;
-        color: #2c2c2c; /* Gris antracita */
-        margin: 0;
-    }
-
-    .register-link {
-        color: orange;
-        text-decoration: underline;
-        margin-left: 8px;
-    }
-</style>
-
-<body class="app-body">
-    <header class="app-header">
+<body>
+    <header>
         <div class="header-container">
             <div class="logo-container">
-                <a href="/main.php" class="logo-link">
+                <a href="main.php">
                     <img src="media/logo.png" alt="Logo FixItNow" class="logo">
                 </a>
+            </div>
+            <div class="login-profile-box">
+                <?php include 'includes/profile_header.php'; ?>
             </div>
         </div>
     </header>
 
-    
-    <footer class="app-footer">
-        <div class="footer-container">
-            <div class="footer-section">
-                <h4 class="footer-title">Información Personal</h4>
-                <ul class="footer-list">
-                    <li><a href="../politicaprivacidad.html" class="footer-link">Política de privacidad</a></li>
-                    <li><a href="../politicacookiesdatos.html" class="footer-link">Política de Cookies y protección de datos</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section">
-                <h4 class="footer-title">Contacto</h4>
-                <ul class="footer-list">
-                    <li><a href="mailto:fixitnow@gmail.com" class="footer-link">fixitnow@gmail.com</a></li>
-                    <li><a href="tel:+34690096690" class="footer-link">+34 690 096 690</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section">
-                <h4 class="footer-title">¿Eres miembro?</h4>
-                <ul class="footer-list">
-                    <li><a href="index.php" class="footer-link">Únete a Nosotros</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section social-media">
-                <div class="social-icons">
-                    <a href="#" class="social-link"><img src="media/twitter-icon.png" alt="Twitter" class="social-icon"></a>
-                    <a href="#" class="social-link"><img src="media/instagram-icon.png" alt="Instagram" class="social-icon"></a>
-                    <a href="#" class="social-link"><img src="media/facebook-icon.png" alt="Facebook" class="social-icon"></a>
-                    <a href="#" class="social-link"><img src="media/tiktok-icon.png" alt="TikTok" class="social-icon"></a>
+    <div class="container1">
+        <div class="form-container">
+            <h2 class="form-title">Recuperar Contraseña</h2>
+            
+            <?php if (!empty($mensaje)): ?>
+                <div class="success-message">
+                    <?= htmlspecialchars($mensaje) ?>
                 </div>
-            </div>
+            <?php endif; ?>
 
-            <div class="footer-logo">
-                <img src="media/logo.png" alt="FixItNow Logo" class="footer-logo-img">
-            </div>
+            <?php if (!empty($error)): ?>
+                <div class="error-message">
+                    <?= htmlspecialchars($error) ?>
+                </div>
+            <?php endif; ?>
+
+            <form method="POST" action="">
+                <label for="email">Correo electrónico:</label>
+                <input type="email" name="email" id="email" required>
+                
+                <button type="submit" class="submit-btn">Enviar instrucciones</button>
+            </form>
+
+            <p class="option-description" style="margin-top: 20px; text-align: center;">
+                <a href="login.php" class="register-link">Volver al inicio de sesión</a>
+            </p>
         </div>
-    </footer>
-</body>
+    </div>
 
+    <?php include 'includes/footer.php'; ?>
+</body>
 </html>

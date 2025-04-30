@@ -337,7 +337,8 @@ footer {
     cursor: pointer;
     transition: background-color 0.2s ease;
     border-radius: 10px;
-    opacity: 0.8; /* Efecto de opacidad sutil */
+    opacity: 0.8;
+    gap: 10px;
 }
 
 .login-profile-box a:hover {
