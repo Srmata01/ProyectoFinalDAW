@@ -9,12 +9,13 @@ try {
               ORDER BY RAND() LIMIT 4";
     $stmt = $pdo->query($query);
     $servicios = $stmt->fetchAll();
-} catch(PDOException $e) {
+} catch (PDOException $e) {
     die("Error al obtener los servicios: " . $e->getMessage());
 }
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,6 +23,7 @@ try {
     <link rel="stylesheet" href="main.css">
     <link rel="icon" type="image/png" href="media/logo.png">
 </head>
+
 <body>
     <header>
         <div class="header-container">
@@ -30,9 +32,10 @@ try {
                     <img src="media/logo.png" alt="Logo FixItNow" class="logo">
                 </a>
             </div>
-            <div class="user-container">
+            <div class="login-profile-box">
                 <?php include 'includes/profile_header.php'; ?>
             </div>
+
         </div>
     </header>
 
@@ -60,17 +63,11 @@ try {
             <h2>Servicios Destacados</h2>
             <div class="servicios-grid">
                 <?php foreach($servicios as $servicio): ?>
-                    <a href="services/ver_servicio.php?id=<?= $servicio['id_servicio'] ?>" style="text-decoration: none; color: inherit;">
-                        <div class="servicio-card">
-                            <?php if (!empty($servicio['imagen_autonomo'])): ?>
-                                <img src="data:image/jpeg;base64,<?php echo base64_encode($servicio['imagen_autonomo']); ?>" alt="Foto del profesional" class="autonomo-imagen">
-                            <?php endif; ?>
-                            <h3 class="servicio-titulo"><?php echo htmlspecialchars($servicio['nombre']); ?></h3>
-                            <p class="servicio-descripcion"><?php echo htmlspecialchars($servicio['descripcion']); ?></p>
-                            <p class="servicio-precio"><?php echo number_format($servicio['precio'], 2); ?>€</p>
-                            <p class="autonomo-nombre">Ofrecido por: <?php echo htmlspecialchars($servicio['nombre_autonomo']); ?></p>
-                        </div>
-                    </a>
+                    <div class="servicio-card">
+                        <h3 class="servicio-titulo"><?php echo htmlspecialchars($servicio['nombre']); ?></h3>
+                        <p class="servicio-descripcion"><?php echo htmlspecialchars($servicio['descripcion']); ?></p>
+                        <p class="servicio-precio"><?php echo number_format($servicio['precio'], 2); ?>€</p>
+                    </div>
                 <?php endforeach; ?>
             </div>
         </div>
@@ -85,7 +82,7 @@ try {
                     <li><a href="politicacookiesdatos.html">Política de Cookies y protección de datos</a></li>
                 </ul>
             </div>
-            
+
             <div class="footer-section">
                 <h4>Contacto</h4>
                 <ul>
@@ -93,14 +90,14 @@ try {
                     <li><a href="tel:+34690096690">+34 690 096 690</a></li>
                 </ul>
             </div>
-            
+
             <div class="footer-section">
                 <h4>Eres miembro?</h4>
                 <ul>
                     <li><a href="create_users/index.php">Únete a Nosotros</a></li>
                 </ul>
             </div>
-            
+
             <div class="footer-section social-media">
                 <div class="social-icons">
                     <a href="#"><img src="media/twitter-icon.png" alt="Twitter"></a>
@@ -109,11 +106,12 @@ try {
                     <a href="#"><img src="media/tiktok-icon.png" alt="TikTok"></a>
                 </div>
             </div>
-            
+
             <div class="footer-logo">
                 <img src="media/logo.png" alt="FixItNow Logo">
             </div>
         </div>
     </footer>
 </body>
+
 </html>
