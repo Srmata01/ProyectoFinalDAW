@@ -12,13 +12,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = filter_var(trim($_POST["email"] ?? ''), FILTER_SANITIZE_EMAIL);
     $password = $_POST["password"] ?? '';
 
-    error_log("Intento de login - Email: " . $email);
-
     if (empty($email) || empty($password)) {
         $error = "Por favor, rellena todos los campos.";
     } else {
         try {
-            // Consulta mejorada con más campos necesarios
             $stmt = $pdo->prepare("
                 SELECT id_usuario, nombre, apellido, email, contraseña, 
                        id_estado_usuario, id_tipo_usuario, telefono, direccion 
@@ -28,16 +25,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt->execute([$email]);
             $usuario = $stmt->fetch();
 
-            error_log("Resultado de búsqueda de usuario: " . ($usuario ? "Usuario encontrado" : "Usuario no encontrado"));
-
             if ($usuario) {
-                error_log("Tipo de usuario: " . $usuario['id_tipo_usuario']);
-                error_log("Estado de usuario: " . $usuario['id_estado_usuario']);
-
                 if (password_verify($password, $usuario['contraseña'])) {
                     if ($usuario['id_estado_usuario'] == 1) { // 1 = Activo
                         // Limpiamos cualquier sesión anterior
-                        session_unset();
                         session_regenerate_id(true);
 
                         // Configuración de la sesión
@@ -52,51 +43,44 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             'direccion' => $usuario['direccion']
                         ];
 
-                        error_log("Sesión creada exitosamente: " . print_r($_SESSION['usuario'], true));
-
-                        // Redirección basada en tipo de usuario
-                        switch ((int)$_SESSION['usuario']['tipo']) {
-                            case 1:
-                                error_log("Redirigiendo a vistas_usuarios/perfil_admin.php");
-                                header("Location: vistas_usuarios/perfil_admin.php");
-                                break;
-                            case 2:
-                                error_log("Redirigiendo a vistas_usuarios/perfil_cliente.php");
-                                header("Location: vistas_usuarios/perfil_cliente.php");
-                                break;
-                            case 3:
-                                error_log("Redirigiendo a vistas_usuarios/perfil_autonomo.php");
-                                header("Location: vistas_usuarios/perfil_autonomo.php");
-                                break;
-                            default:
-                                error_log("Tipo de usuario desconocido, redirigiendo a index.php");
-                                header("Location: index.php");
-                                break;
+                        // Redirección basada en redirección guardada o tipo de usuario
+                        if (isset($_SESSION['redirect_after_login'])) {
+                            $redirect = $_SESSION['redirect_after_login'];
+                            unset($_SESSION['redirect_after_login']);
+                            header("Location: " . $redirect);
+                        } else {
+                            switch ((int)$_SESSION['usuario']['tipo']) {
+                                case 1:
+                                    header("Location: vistas_usuarios/perfil_admin.php");
+                                    break;
+                                case 2:
+                                    header("Location: vistas_usuarios/perfil_cliente.php");
+                                    break;
+                                case 3:
+                                    header("Location: vistas_usuarios/perfil_autonomo.php");
+                                    break;
+                                default:
+                                    header("Location: main.php");
+                                    break;
+                            }
                         }
                         exit();
                     } else {
                         $error = "Tu cuenta no está activa.";
-                        error_log("Intento de login con cuenta inactiva");
                     }
                 } else {
                     $error = "Credenciales incorrectas.";
-                    error_log("Contraseña incorrecta para el usuario: " . $email);
                     usleep(rand(500000, 1000000));
                 }
             } else {
                 $error = "Credenciales incorrectas.";
-                error_log("Usuario no encontrado: " . $email);
                 usleep(rand(500000, 1000000));
             }
         } catch (PDOException $e) {
-            error_log("Error de base de datos: " . $e->getMessage());
             $error = "Error del sistema. Por favor, inténtalo más tarde.";
         }
     }
 }
-
-// Depuración: Verifica si llegamos aquí cuando no deberíamos
-error_log("Flujo inesperado - ¿Redirección falló?");
 ?>
 
 <!DOCTYPE html>

@@ -64,7 +64,7 @@ try {
             <div class="search-container">
                 <div class="search-box">
                     <input type="text" placeholder="Buscar proyectos, materiales..." class="search-input">
-                    <img src="media/lupa.png" alt="Buscar" class="search-icon">
+                    <img src="../media/lupa.png" alt="Buscar" class="search-icon">
                 </div>
             </div>
 

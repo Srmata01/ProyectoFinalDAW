@@ -3,7 +3,10 @@ session_start();
 require_once 'config/database.php';
 
 try {
-    $query = "SELECT * FROM servicios ORDER BY RAND() LIMIT 4";
+    $query = "SELECT s.*, u.nombre as nombre_autonomo, u.foto_perfil as imagen_autonomo 
+              FROM servicios s 
+              INNER JOIN usuarios u ON s.id_autonomo = u.id_usuario 
+              ORDER BY RAND() LIMIT 4";
     $stmt = $pdo->query($query);
     $servicios = $stmt->fetchAll();
 } catch(PDOException $e) {
@@ -57,11 +60,17 @@ try {
             <h2>Servicios Destacados</h2>
             <div class="servicios-grid">
                 <?php foreach($servicios as $servicio): ?>
-                    <div class="servicio-card">
-                        <h3 class="servicio-titulo"><?php echo htmlspecialchars($servicio['nombre']); ?></h3>
-                        <p class="servicio-descripcion"><?php echo htmlspecialchars($servicio['descripcion']); ?></p>
-                        <p class="servicio-precio"><?php echo number_format($servicio['precio'], 2); ?>€</p>
-                    </div>
+                    <a href="services/ver_servicio.php?id=<?= $servicio['id_servicio'] ?>" style="text-decoration: none; color: inherit;">
+                        <div class="servicio-card">
+                            <?php if (!empty($servicio['imagen_autonomo'])): ?>
+                                <img src="data:image/jpeg;base64,<?php echo base64_encode($servicio['imagen_autonomo']); ?>" alt="Foto del profesional" class="autonomo-imagen">
+                            <?php endif; ?>
+                            <h3 class="servicio-titulo"><?php echo htmlspecialchars($servicio['nombre']); ?></h3>
+                            <p class="servicio-descripcion"><?php echo htmlspecialchars($servicio['descripcion']); ?></p>
+                            <p class="servicio-precio"><?php echo number_format($servicio['precio'], 2); ?>€</p>
+                            <p class="autonomo-nombre">Ofrecido por: <?php echo htmlspecialchars($servicio['nombre_autonomo']); ?></p>
+                        </div>
+                    </a>
                 <?php endforeach; ?>
             </div>
         </div>

@@ -5,16 +5,20 @@ if (isset($_SESSION['usuario'])) {
     $in_profile_page = strpos($_SERVER['PHP_SELF'], 'perfil_') !== false;
     
     if (!$in_profile_page) {
+        // Determinar si estamos en un subdirectorio
+        $is_subdirectory = strpos($_SERVER['PHP_SELF'], '/services/') !== false;
+        $base_path = $is_subdirectory ? '../' : '';
+        
         $perfil_url = '';
         switch ($_SESSION['usuario']['tipo']) {
             case 1:
-                $perfil_url = 'vistas_usuarios/perfil_admin.php';
+                $perfil_url = $base_path . 'vistas_usuarios/perfil_admin.php';
                 break;
             case 2:
-                $perfil_url = 'vistas_usuarios/perfil_cliente.php';
+                $perfil_url = $base_path . 'vistas_usuarios/perfil_cliente.php';
                 break;
             case 3:
-                $perfil_url = 'vistas_usuarios/perfil_autonomo.php';
+                $perfil_url = $base_path . 'vistas_usuarios/perfil_autonomo.php';
                 break;
         }
         
@@ -28,7 +32,7 @@ if (isset($_SESSION['usuario'])) {
             <a href="<?= $perfil_url ?>" class="profile-btn" style="text-decoration: none;">
                 <?php if ($foto_perfil): ?>
                     <div class="user-avatar">
-                        <img src="data:image/jpeg;base64,<?= base64_encode($foto_perfil) ?>" alt="Foto de perfil" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                        <img src="data:image/jpeg;base64,<?= base64_encode($foto_perfil) ?>" alt="Foto de perfil">
                     </div>
                 <?php else: ?>
                     <div class="user-avatar"><?= strtoupper(substr($_SESSION['usuario']['nombre'], 0, 1)) ?></div>
@@ -38,8 +42,12 @@ if (isset($_SESSION['usuario'])) {
         </div>
     <?php
     }
-} else { ?>
-    <a href="login.php" class="profile-btn">
+} else { 
+    // También ajustar la ruta del login
+    $is_subdirectory = strpos($_SERVER['PHP_SELF'], '/services/') !== false;
+    $login_url = ($is_subdirectory ? '../' : '') . 'login.php';
+    ?>
+    <a href="<?= $login_url ?>" class="profile-btn">
         <span class="user-name">Iniciar Sesión</span>
     </a>
 <?php } ?>

@@ -12,7 +12,7 @@ $id_autonomo = $_SESSION['usuario']['id'];
 
 try {
     // Obtener info del autónomo
-    $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE id_usuario = ?");
+    $stmt = $pdo->prepare("SELECT * FROM usuarios u WHERE u.id_usuario = ? AND u.id_tipo_usuario = 3");
     $stmt->execute([$id_autonomo]);
     $autonomo = $stmt->fetch();
 
@@ -119,6 +119,7 @@ if (isset($_SESSION['error'])) {
                     </div>
                     <div class="form-actions">
                         <button type="submit" class="submit-btn">Guardar Cambios</button>
+                        <a href="../portfolio/index.php" class="submit-btn">Gestionar Galería de Trabajos</a>
                     </div>
                 </form>
                 
