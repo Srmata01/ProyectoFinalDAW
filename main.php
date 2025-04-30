@@ -3,12 +3,26 @@ session_start();
 require_once 'config/database.php';
 
 try {
-    $query = "SELECT s.*, u.nombre as nombre_autonomo, u.foto_perfil as imagen_autonomo 
+    $query = "SELECT s.id_servicio, s.nombre, s.descripcion, s.precio, 
+              u.nombre as nombre_autonomo, u.foto_perfil as imagen_autonomo 
               FROM servicios s 
               INNER JOIN usuarios u ON s.id_autonomo = u.id_usuario 
               ORDER BY RAND() LIMIT 4";
     $stmt = $pdo->query($query);
-    $servicios = $stmt->fetchAll();
+    $servicios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Verificar que cada servicio tiene todos los campos necesarios
+    foreach ($servicios as &$servicio) {
+        if (!isset($servicio['id_servicio'])) {
+            $servicio['id_servicio'] = '';
+        }
+        if (!isset($servicio['imagen_autonomo'])) {
+            $servicio['imagen_autonomo'] = 'media/autonomo.jpg'; // imagen por defecto
+        }
+        if (!isset($servicio['nombre_autonomo'])) {
+            $servicio['nombre_autonomo'] = 'Autónomo';
+        }
+    }
 } catch (PDOException $e) {
     die("Error al obtener los servicios: " . $e->getMessage());
 }
@@ -63,11 +77,21 @@ try {
             <h2>Servicios Destacados</h2>
             <div class="servicios-grid">
                 <?php foreach($servicios as $servicio): ?>
-                    <div class="servicio-card">
-                        <h3 class="servicio-titulo"><?php echo htmlspecialchars($servicio['nombre']); ?></h3>
-                        <p class="servicio-descripcion"><?php echo htmlspecialchars($servicio['descripcion']); ?></p>
-                        <p class="servicio-precio"><?php echo number_format($servicio['precio'], 2); ?>€</p>
-                    </div>
+                    <a href="services/ver_servicio.php?id=<?php echo htmlspecialchars($servicio['id_servicio']); ?>" class="servicio-link">
+                        <div class="servicio-card">
+                            <div class="autonomo-info">
+                                <?php if (!empty($servicio['imagen_autonomo'])): ?>
+                                    <img src="data:image/jpeg;base64,<?php echo base64_encode($servicio['imagen_autonomo']); ?>" alt="Foto de perfil" class="autonomo-imagen">
+                                <?php else: ?>
+                                    <img src="media/autonomo.jpg" alt="Foto de perfil por defecto" class="autonomo-imagen">
+                                <?php endif; ?>
+                                <span class="autonomo-nombre"><?php echo htmlspecialchars($servicio['nombre_autonomo']); ?></span>
+                            </div>
+                            <h3 class="servicio-titulo"><?php echo htmlspecialchars($servicio['nombre']); ?></h3>
+                            <p class="servicio-descripcion"><?php echo htmlspecialchars($servicio['descripcion']); ?></p>
+                            <p class="servicio-precio"><?php echo number_format($servicio['precio'], 2); ?>€</p>
+                        </div>
+                    </a>
                 <?php endforeach; ?>
             </div>
         </div>
