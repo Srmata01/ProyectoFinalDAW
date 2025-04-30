@@ -321,7 +321,6 @@ footer {
 /* Estilo del enlace (botón) */
 .login-profile-box a {
     display: inline-block;
-    background-color: #ffffff; /* Fondo blanco */
     color: #2d2d2d; /* Texto oscuro */
     border: 1px solid #d2d2d2; /* Borde gris claro */
     padding: 0.75rem 2rem;
@@ -330,6 +329,14 @@ footer {
     text-decoration: none;
     transition: background-color 0.3s ease, color 0.3s ease;
   }
+
+  .login-profile-box img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-left: 10px;
+}
   
   /* Hover sobre el enlace (botón) */
   .login-profile-box a:hover {
