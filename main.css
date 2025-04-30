@@ -318,30 +318,35 @@ footer {
     }
 }
 
-/* Estilo del enlace (botón) */
-.login-profile-box a {
-    display: inline-block;
-    color: #2d2d2d; /* Texto oscuro */
-    border: 1px solid #d2d2d2; /* Borde gris claro */
-    padding: 0.75rem 2rem;
-    font-size: 0.8rem;
-    border-radius: 20px;
-    text-decoration: none;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
+.login-profile-box {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
 
-  .login-profile-box img {
-    width: 40px;
-    height: 40px;
+.login-profile-box a {
+    display: flex;
+    color:#232323;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    background: transparent;
+    border: none;
+    padding: 4px;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border-radius: 10px;
+    opacity: 0.8; /* Efecto de opacidad sutil */
+}
+
+.login-profile-box a:hover {
+    background-color: rgb(252, 183, 55); /* Efecto hover sutil como Google */
+}
+
+.login-profile-box img {
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     object-fit: cover;
-    margin-left: 10px;
 }
-  
-  /* Hover sobre el enlace (botón) */
-  .login-profile-box a:hover {
-    background-color: #ff9b00; /* Fondo naranja */
-    color: white; /* Texto blanco */
-    border: 1px solid #ff9b00; /* Borde naranja */
-  }
-
