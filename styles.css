@@ -197,6 +197,7 @@ header {
     width: 100%;
     height: calc(100vh - 100px - 60px);
     padding-bottom: 20px;
+    margin-top: 150px; 
 }
 
 .container1 .search-container {
@@ -616,6 +617,28 @@ input[type="file"]::-webkit-file-upload-button:hover {
     
     .profile-column {
         width: 100%;
+    }
+}
+
+.app-main {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    background: linear-gradient(-45deg, #ffd5ab, #fbe6c0, #fcc288, #ffffff);
+    background-size: 400% 400%;
+    animation: moveBackground 20s ease infinite;
+}
+
+/* Animación del fondo */
+@keyframes moveBackground {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
     }
 }
 

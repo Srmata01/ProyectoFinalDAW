@@ -131,10 +131,37 @@ th, td {
     cursor: pointer;
     text-decoration: none;
     display: inline-block;
+    font-size: 14px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s ease;
 }
 
 .submit-btn:hover {
     background-color: var(--color-primary-dark);
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
 /* Foto de perfil */
