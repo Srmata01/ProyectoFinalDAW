@@ -1,5 +1,5 @@
 <?php
-require_once 'config/database.php';
+require_once __DIR__ . '/../config/database.php';
 
 $busqueda = $_GET['q'] ?? '';
 $localidad = $_GET['localidad'] ?? '';
@@ -38,11 +38,11 @@ $servicios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 foreach ($servicios as $servicio) {
     echo "<div class='servicio-card'>";
-    echo "<h3>" . htmlspecialchars($servicio['nombre']) . "</h3>";
+    echo htmlspecialchars($servicio['nombre'] ?? '');
     echo "<p>" . htmlspecialchars($servicio['descripcion']) . "</p>";
     echo "<p>Precio: " . htmlspecialchars($servicio['precio']) . "€</p>";
-    echo "<p>Duración: " . htmlspecialchars($servicio['duracion']) . " min</p>";
-    echo "<p>Localidad: " . htmlspecialchars($servicio['localidad']) . "</p>";
+    echo htmlspecialchars($servicio['duracion'] ?? '');
+    echo htmlspecialchars($servicio['localidad'] ?? '');
     echo "<p>Autónomo: " . htmlspecialchars($servicio['nombre_autonomo']) . "</p>";
     echo "</div>";
 }

@@ -169,7 +169,7 @@ try {
                     <p class="document-text">No tienes reservas actualmente.</p>
                 <?php endif; ?>
                 <div class="form-actions">
-                    <a href="buscar_servicios.php" class="submit-btn">Buscar nuevos servicios</a>
+                    <a href="../services/buscarservicio.php" class="submit-btn">Buscar nuevos servicios</a>
                 </div>
             </div>
         </div>

@@ -351,3 +351,18 @@ footer {
     border-radius: 50%;
     object-fit: cover;
 }
+
+.orden-container button {
+    background-color: #f57900;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin: 5px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.orden-container button:hover {
+    background-color: #d96c00;
+}

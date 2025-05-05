@@ -129,7 +129,7 @@ foreach ($servicios as &$servicio) {
             <h2>Servicios Destacados</h2>
             <div class="servicios-grid" id="resultados">
                 <?php foreach ($servicios as $servicio): ?>
-                    <a href="services/ver_servicio.php?id=<?php echo htmlspecialchars($servicio['id_servicio']); ?>" class="servicio-link">
+                    <a href="services/ver_servicio.php?id=<?php echo htmlspecialchars($servicio['id_servicio'] ?? ''); ?>" class="servicio-link">
                         <div class="servicio-card">
                             <div class="autonomo-info">
                                 <?php if (!empty($servicio['imagen_autonomo'])): ?>
@@ -137,13 +137,13 @@ foreach ($servicios as &$servicio) {
                                 <?php else: ?>
                                     <img src="media/autonomo.jpg" alt="Foto de perfil por defecto" class="autonomo-imagen">
                                 <?php endif; ?>
-                                <span class="autonomo-nombre"><?php echo htmlspecialchars($servicio['nombre_autonomo']); ?></span>
+                                <span class="autonomo-nombre"><?php echo htmlspecialchars($servicio['nombre_autonomo'] ?? 'Autónomo'); ?></span>
                             </div>
-                            <h3 class="servicio-titulo"><?php echo htmlspecialchars($servicio['nombre']); ?></h3>
-                            <p class="servicio-descripcion"><?php echo htmlspecialchars($servicio['descripcion']); ?></p>
+                            <h3 class="servicio-titulo"><?php echo htmlspecialchars($servicio['nombre'] ?? ''); ?></h3>
+                            <p class="servicio-descripcion"><?php echo htmlspecialchars($servicio['descripcion'] ?? ''); ?></p>
                             <p class="servicio-precio"><?php echo number_format($servicio['precio'], 2); ?>€</p>
-                            <p class="servicio-duracion"><?php echo htmlspecialchars($servicio['duracion']); ?> min</p>
-                            <p class="servicio-localidad"><?php echo htmlspecialchars($servicio['localidad']); ?></p>
+                            <p class="servicio-duracion"><?php echo htmlspecialchars($servicio['duracion'] ?? ''); ?> min</p>
+                            <p class="servicio-localidad"><?php echo htmlspecialchars($servicio['localidad'] ?? ''); ?></p>
                         </div>
                     </a>
                 <?php endforeach; ?>
