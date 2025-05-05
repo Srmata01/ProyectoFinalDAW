@@ -19,7 +19,7 @@ try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare("
             UPDATE servicios 
-            SET nombre = ?, descripcion = ?, precio = ?, duracion = ?, estado = ?
+            SET nombre = ?, descripcion = ?, precio = ?, duracion = ?, estado = ?, localidad = ?
             WHERE id_servicio = ? AND id_autonomo = ?
         ");
         
@@ -29,6 +29,7 @@ try {
             $_POST['precio'],
             $_POST['duracion'],
             $_POST['estado'],
+            $_POST['localidad'],
             $id_servicio,
             $id_autonomo
         ]);
@@ -122,6 +123,14 @@ try {
                                 <option value="activo" <?= $servicio['estado'] === 'activo' ? 'selected' : '' ?>>Activo</option>
                                 <option value="inactivo" <?= $servicio['estado'] === 'inactivo' ? 'selected' : '' ?>>Inactivo</option>
                             </select>
+                        </label>
+                    </div>
+
+                    <div class="form-row">
+                        <label>
+                            <span>Localidad:</span>
+                            <input type="text" name="localidad" required 
+                                   value="<?= htmlspecialchars($servicio['localidad']) ?>">
                         </label>
                     </div>
                     

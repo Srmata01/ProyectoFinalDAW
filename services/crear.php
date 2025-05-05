@@ -13,8 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $stmt = $pdo->prepare("
             INSERT INTO servicios 
-            (id_autonomo, nombre, descripcion, precio, duracion, estado) 
-            VALUES (?, ?, ?, ?, ?, 'activo')
+            (id_autonomo, nombre, descripcion, precio, duracion, estado, localidad) 
+            VALUES (?, ?, ?, ?, ?, 'activo', ?)
         ");
         
         $stmt->execute([
@@ -22,7 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_POST['nombre'],
             $_POST['descripcion'],
             $_POST['precio'],
-            $_POST['duracion']
+            $_POST['duracion'],
+            $_POST['localidad']
         ]);
         
         header('Location: ../vistas_usuarios/perfil_autonomo.php');
@@ -98,6 +99,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label>
                             <span>Duración (minutos):</span>
                             <input type="number" name="duracion" required>
+                        </label>
+                    </div>
+
+                    <div class="form-row">
+                        <label>
+                            <span>Localidad:</span>
+                            <input type="text" name="localidad" required>
                         </label>
                     </div>
                     
