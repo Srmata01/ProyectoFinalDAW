@@ -2,29 +2,52 @@
 session_start();
 require_once 'config/database.php';
 
-try {
-    $query = "SELECT s.id_servicio, s.nombre, s.descripcion, s.precio, 
-              u.nombre as nombre_autonomo, u.foto_perfil as imagen_autonomo 
-              FROM servicios s 
-              INNER JOIN usuarios u ON s.id_autonomo = u.id_usuario 
-              ORDER BY RAND() LIMIT 4";
-    $stmt = $pdo->query($query);
-    $servicios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$busqueda = $_GET['q'] ?? '';
+$localidad = $_GET['localidad'] ?? '';
+$precio = $_GET['precio'] ?? '';
+$duracion = $_GET['duracion'] ?? '';
+$orden = $_GET['orden'] ?? '';
 
-    // Verificar que cada servicio tiene todos los campos necesarios
-    foreach ($servicios as &$servicio) {
-        if (!isset($servicio['id_servicio'])) {
-            $servicio['id_servicio'] = '';
-        }
-        if (!isset($servicio['imagen_autonomo'])) {
-            $servicio['imagen_autonomo'] = 'media/autonomo.jpg'; // imagen por defecto
-        }
-        if (!isset($servicio['nombre_autonomo'])) {
-            $servicio['nombre_autonomo'] = 'Autónomo';
-        }
+$sql = "SELECT s.id_servicio, s.nombre, s.descripcion, s.precio, s.duracion, s.localidad, u.nombre AS nombre_autonomo, u.foto_perfil AS imagen_autonomo
+        FROM servicios s
+        JOIN usuarios u ON s.id_autonomo = u.id_usuario
+        WHERE s.nombre LIKE :busqueda";
+
+$params = [':busqueda' => "%$busqueda%"];
+
+if ($localidad) {
+    $sql .= " AND s.localidad LIKE :localidad";
+    $params[':localidad'] = "%$localidad%";
+}
+if ($precio) {
+    $sql .= " AND s.precio <= :precio";
+    $params[':precio'] = $precio;
+}
+if ($duracion) {
+    $sql .= " AND s.duracion <= :duracion";
+    $params[':duracion'] = $duracion;
+}
+if ($orden == 'asc') {
+    $sql .= " ORDER BY s.precio ASC";
+} elseif ($orden == 'desc') {
+    $sql .= " ORDER BY s.precio DESC";
+}
+
+$stmt = $pdo->prepare($sql);
+$stmt->execute($params);
+$servicios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Verificar que cada servicio tiene todos los campos necesarios
+foreach ($servicios as &$servicio) {
+    if (!isset($servicio['id_servicio'])) {
+        $servicio['id_servicio'] = '';
     }
-} catch (PDOException $e) {
-    die("Error al obtener los servicios: " . $e->getMessage());
+    if (!isset($servicio['imagen_autonomo'])) {
+        $servicio['imagen_autonomo'] = 'media/autonomo.jpg'; // imagen por defecto
+    }
+    if (!isset($servicio['nombre_autonomo'])) {
+        $servicio['nombre_autonomo'] = 'Autónomo';
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -49,7 +72,6 @@ try {
             <div class="login-profile-box">
                 <?php include 'includes/profile_header.php'; ?>
             </div>
-
         </div>
     </header>
 
@@ -64,10 +86,40 @@ try {
             <p class="subtitulo1">Soluciona tus obras de la forma más rápida</p>
             <div class="search-container">
                 <div class="search-box">
-                    <input type="text" placeholder="Buscar lampistas, fontaneros, paletas..." class="search-input">
+                    <input type="text" id="busqueda" placeholder="Buscar lampistas, fontaneros, paletas..." class="search-input">
                     <img src="media/lupa.png" alt="Buscar">
+                    <div id="resultados" class="autocomplete-results"></div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Filtros de búsqueda -->
+    <div class="filtros-container">
+        <select id="filtro_localidad">
+            <option value="">Selecciona localidad</option>
+            <option value="Madrid">Madrid</option>
+            <option value="Barcelona">Barcelona</option>
+            <option value="Valencia">Valencia</option>
+        </select>
+
+        <select id="filtro_precio">
+            <option value="">Selecciona precio</option>
+            <option value="50">Hasta 50€</option>
+            <option value="100">Hasta 100€</option>
+            <option value="200">Hasta 200€</option>
+        </select>
+
+        <select id="filtro_duracion">
+            <option value="">Selecciona duración</option>
+            <option value="30">Hasta 30 min</option>
+            <option value="60">Hasta 60 min</option>
+            <option value="120">Hasta 120 min</option>
+        </select>
+
+        <div class="orden-container">
+            <button id="orden_asc">Ordenar por precio ascendente</button>
+            <button id="orden_desc">Ordenar por precio descendente</button>
         </div>
     </div>
 
@@ -75,8 +127,8 @@ try {
     <div class="servicios-section">
         <div class="servicios-destacados">
             <h2>Servicios Destacados</h2>
-            <div class="servicios-grid">
-                <?php foreach($servicios as $servicio): ?>
+            <div class="servicios-grid" id="resultados">
+                <?php foreach ($servicios as $servicio): ?>
                     <a href="services/ver_servicio.php?id=<?php echo htmlspecialchars($servicio['id_servicio']); ?>" class="servicio-link">
                         <div class="servicio-card">
                             <div class="autonomo-info">
@@ -90,6 +142,8 @@ try {
                             <h3 class="servicio-titulo"><?php echo htmlspecialchars($servicio['nombre']); ?></h3>
                             <p class="servicio-descripcion"><?php echo htmlspecialchars($servicio['descripcion']); ?></p>
                             <p class="servicio-precio"><?php echo number_format($servicio['precio'], 2); ?>€</p>
+                            <p class="servicio-duracion"><?php echo htmlspecialchars($servicio['duracion']); ?> min</p>
+                            <p class="servicio-localidad"><?php echo htmlspecialchars($servicio['localidad']); ?></p>
                         </div>
                     </a>
                 <?php endforeach; ?>
@@ -136,6 +190,8 @@ try {
             </div>
         </div>
     </footer>
+
+    <script src="buscador.js"></script>
 </body>
 
 </html>

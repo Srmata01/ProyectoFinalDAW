@@ -129,3 +129,247 @@
     </body>
 
 </html>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilos generales */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Esto asegura que el contenido ocupe al menos toda la altura de la pantalla */
+    overflow: hidden; /* Elimina el scroll */
+}
+
+/* Header */
+header {
+    background-color: rgba(210, 210, 210, 0.5);
+    padding: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Logo */
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: 200px;
+    margin-right: 16px;
+}
+
+/* Buscador */
+.search-container {
+    flex: 1;
+    max-width: 600px;
+    margin: 0 24px;
+}
+
+.search-box {
+    position: relative;
+    display: flex; /* Asegura que el campo de búsqueda y la lupa estén en la misma línea */
+    width: 100%;
+}
+
+/* Estilos para el input de búsqueda */
+.search-input {
+    width: 100%;
+    padding: 10px 16px 10px 40px; /* Ajustamos el padding para dejar espacio para la lupa */
+    border-radius: 20px;
+    border: 1px solid #D2D2D2;
+    font-size: 14px;
+    color: #000000;
+    outline: none;
+    transition: all 0.3s;
+}
+
+/* Alineación y tamaño de la lupa */
+.search-box img {
+    position: absolute;
+    top: 50%;
+    right: 10px; /* Ubicamos la lupa dentro del input a la derecha */
+    transform: translateY(-50%);
+    cursor: pointer; /* Cambia el cursor para indicar que es clickeable */
+    width: 20px; /* Ajustamos el tamaño de la lupa */
+    height: 20px; /* Ajustamos el tamaño de la lupa */
+}
+
+.search-input:focus {
+    border-color: transparent;
+    box-shadow: 0 0 0 2px #FFC72C;
+}
+
+/* Área de usuario */
+.user-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.notification-btn {
+    padding: 8px;
+    border-radius: 50%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.notification-btn:hover {
+    background-color: #F5F5F5;
+}
+
+.notification-btn svg {
+    width: 24px;
+    height: 24px;
+    color: #000000;
+}
+
+.profile-container {
+    position: relative;
+}
+
+.profile-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 20px;
+    transition: background-color 0.3s;
+}
+
+.profile-btn:hover {
+    background-color: #F5F5F5;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #FFC72C;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+}
+
+.user-name {
+    color: #000000;
+    font-weight: 500;
+    display: none;
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+    .user-name {
+        display: inline-block;
+    }
+    
+    .logo {
+        height: 80px;
+    }
+}
+
+.container1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Asegura que el contenido no se quede al centro, sino en la parte superior */
+    align-items: center;
+    width: 100%;
+    height: calc(100vh - 100px - 60px); /* Ajusta el contenedor al espacio disponible entre el header y el footer */
+    padding-top: 40px; /* Subir más la barra de búsqueda */
+    padding-bottom: 20px; /* Añadir algo de espacio en la parte inferior para que no se "pegue" al footer */
+}
+
+.container1 .search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1000px; /* Limita el ancho del buscador */
+    margin-top: 20px; /* Más cerca del título */
+}
+
+.subtitulo1 {
+    margin-top: 10px; /* Ajusta el espacio superior del subtítulo para que esté aún más cerca del título */
+}
+
+footer {
+    background-color: rgba(210, 210, 210, 0.5);
+    padding: 20px 0;
+    width: 100%;
+    margin-top: 0; /* Eliminamos cualquier margen extra entre el contenido y el footer */
+    position: absolute; /* Esto asegura que el footer siempre esté al final de la página */
+    bottom: 0; /* Lo pegamos al final */
+}
+
+.footer-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 150px;
+    margin: 10px;
+}
+
+.footer-section h4 {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li a {
+    text-decoration: none;
+    color: #555;
+    font-size: 12px;
+}
+
+.social-icons img {
+    width: 30px;
+    margin: 0 5px;
+}
+
+.footer-logo {
+    text-align: center;
+}
+
+.footer-logo img {
+    width: 100px;
+}
+
+.footer-logo p {
+    color: #FF9B00;
+    font-weight: bold;
+    font-size: 18px;
+}
