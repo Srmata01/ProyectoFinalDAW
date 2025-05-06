@@ -24,10 +24,14 @@ try {
         throw new Exception("No se pudo cargar tu perfil de cliente");
     }
 
+    // Consulta corregida para usar fecha_hora en vez de fecha, hora_inicio y hora_fin
     $stmt = $pdo->prepare("
         SELECT r.*, s.nombre as servicio, s.precio, s.duracion,
                CONCAT(a.nombre, ' ', a.apellido) as autonomo,
-               a.telefono as telefono_autonomo
+               a.telefono as telefono_autonomo,
+               DATE_FORMAT(r.fecha_hora, '%d/%m/%Y') as fecha_formateada,
+               TIME_FORMAT(r.fecha_hora, '%H:%i') as hora_inicio_formateada,
+               ADDTIME(TIME_FORMAT(r.fecha_hora, '%H:%i'), SEC_TO_TIME(s.duracion * 60)) as hora_fin_formateada
         FROM reservas r
         JOIN servicios s ON r.id_servicio = s.id_servicio
         JOIN usuarios a ON s.id_autonomo = a.id_usuario
@@ -140,7 +144,9 @@ try {
                                 <tr>
                                     <th>Servicio</th>
                                     <th>Autónomo</th>
-                                    <th>Fecha y Hora</th>
+                                    <th>Fecha</th>
+                                    <th>Hora Inicio</th>
+                                    <th>Hora Fin</th>
                                     <th>Precio</th>
                                     <th>Estado</th>
                                     <th>Acciones</th>
@@ -151,12 +157,14 @@ try {
                                     <tr>
                                         <td><?= htmlspecialchars($reserva['servicio'] ?? '') ?></td>
                                         <td><?= htmlspecialchars($reserva['autonomo'] ?? '') ?></td>
-                                        <td><?= isset($reserva['fecha_hora']) ? date('d/m/Y H:i', strtotime($reserva['fecha_hora'])) : '' ?></td>
+                                        <td><?= htmlspecialchars($reserva['fecha_formateada'] ?? '') ?></td>
+                                        <td><?= htmlspecialchars($reserva['hora_inicio_formateada'] ?? '') ?></td>
+                                        <td><?= htmlspecialchars($reserva['hora_fin_formateada'] ?? '') ?></td>
                                         <td><?= isset($reserva['precio']) ? number_format($reserva['precio'], 2) . ' €' : '' ?></td>
                                         <td><?= isset($reserva['estado']) ? ucfirst(htmlspecialchars($reserva['estado'])) : '' ?></td>
                                         <td class="form-actions">
                                             <?php if (($reserva['estado'] ?? '') == 'pendiente'): ?>
-                                                <a href="cancelar_reserva.php?id=<?= $reserva['id_reserva'] ?? '' ?>" class="submit-btn" style="padding: 8px 12px; font-size: 14px;">Cancelar</a>
+                                                <a href="../reservas/cancelar.php?id=<?= $reserva['id_reserva'] ?? '' ?>" class="submit-btn" style="padding: 8px 12px; font-size: 14px;">Cancelar</a>
                                             <?php endif; ?>
                                             <a href="contactar.php?id=<?= $reserva['id_servicio'] ?? '' ?>" class="submit-btn" style="padding: 8px 12px; font-size: 14px; background-color: var(--color-text-light);">Contactar</a>
                                         </td>

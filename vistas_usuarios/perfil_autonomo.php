@@ -21,11 +21,14 @@ try {
     $stmt->execute([$id_autonomo]);
     $servicios = $stmt->fetchAll();
 
-    // Reservas
+    // Reservas adaptadas a la nueva estructura
     $stmt = $pdo->prepare("
         SELECT r.*, s.nombre as servicio, 
                CONCAT(c.nombre, ' ', c.apellido) as cliente,
-               c.telefono as telefono_cliente
+               c.telefono as telefono_cliente,
+               DATE_FORMAT(r.fecha_hora, '%d/%m/%Y') as fecha_formateada,
+               TIME_FORMAT(r.fecha_hora, '%H:%i') as hora_inicio_formateada,
+               ADDTIME(TIME_FORMAT(r.fecha_hora, '%H:%i'), SEC_TO_TIME(s.duracion * 60)) as hora_fin_formateada
         FROM reservas r
         JOIN servicios s ON r.id_servicio = s.id_servicio
         JOIN usuarios c ON r.id_cliente = c.id_usuario
@@ -120,6 +123,7 @@ if (isset($_SESSION['error'])) {
                     <div class="form-actions">
                         <button type="submit" class="submit-btn">Guardar Cambios</button>
                         <a href="../portfolio/index.php" class="submit-btn">Gestionar Galería de Trabajos</a>
+                        <a href="../reservas/horarios_autonomo.php" class="submit-btn">Gestionar Horarios</a>
                     </div>
                 </form>
                 
@@ -175,7 +179,9 @@ if (isset($_SESSION['error'])) {
                                     <th>Servicio</th>
                                     <th>Cliente</th>
                                     <th>Teléfono</th>
-                                    <th>Fecha y Hora</th>
+                                    <th>Fecha</th>
+                                    <th>Hora Inicio</th>
+                                    <th>Hora Fin</th>
                                     <th>Estado</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -186,7 +192,9 @@ if (isset($_SESSION['error'])) {
                                         <td><?= htmlspecialchars($reserva['servicio']) ?></td>
                                         <td><?= htmlspecialchars($reserva['cliente']) ?></td>
                                         <td><?= htmlspecialchars($reserva['telefono_cliente']) ?></td>
-                                        <td><?= date('d/m/Y H:i', strtotime($reserva['fecha_hora'])) ?></td>
+                                        <td><?= htmlspecialchars($reserva['fecha_formateada']) ?></td>
+                                        <td><?= htmlspecialchars($reserva['hora_inicio_formateada']) ?></td>
+                                        <td><?= htmlspecialchars($reserva['hora_fin_formateada']) ?></td>
                                         <td><?= ucfirst($reserva['estado']) ?></td>
                                         <td class="form-actions">
                                             <?php if ($reserva['estado'] == 'pendiente'): ?>
