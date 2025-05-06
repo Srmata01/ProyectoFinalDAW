@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-05-2025 a las 12:04:35
+-- Tiempo de generación: 06-05-2025 a las 12:40:48
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -40,6 +40,21 @@ INSERT INTO `estados_usuarios` (`id_estado_usuario`, `estado`) VALUES
 (1, 'Activo'),
 (2, 'Inactivo'),
 (3, 'Pendiente');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `horarios_autonomo`
+--
+
+CREATE TABLE `horarios_autonomo` (
+  `id_horario` int(11) NOT NULL,
+  `id_autonomo` int(11) NOT NULL,
+  `dia_semana` int(1) NOT NULL COMMENT '1=Lunes, 2=Martes, ... 7=Domingo',
+  `hora_inicio` time NOT NULL,
+  `hora_fin` time NOT NULL,
+  `activo` tinyint(1) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -93,11 +108,11 @@ INSERT INTO `portfolios` (`id_imagen`, `id_usuario`, `imagen`, `descripcion`) VA
 
 CREATE TABLE `reservas` (
   `id_reserva` int(11) NOT NULL,
-  `id_cliente` int(11) DEFAULT NULL,
-  `id_autonomo` int(11) DEFAULT NULL,
-  `id_servicio` int(11) DEFAULT NULL,
+  `id_cliente` int(11) NOT NULL,
+  `id_servicio` int(11) NOT NULL,
   `fecha_hora` datetime NOT NULL,
-  `estado` enum('pendiente','aceptada','rechazada','cancelada','completada') NOT NULL
+  `estado` enum('pendiente','aceptada','completada','cancelada') NOT NULL DEFAULT 'pendiente',
+  `fecha_creacion` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -123,7 +138,7 @@ CREATE TABLE `servicios` (
 
 INSERT INTO `servicios` (`id_servicio`, `id_autonomo`, `nombre`, `descripcion`, `precio`, `duracion`, `estado`, `localidad`) VALUES
 (5, 14, 'Pintar Casa', 'Pintamos tu casa al completo', 60.00, 120, 'activo', NULL),
-(6, 14, 'Montar Armarios', 'Montamos los armarios que usted nos pida', 40.00, 60, 'activo', NULL);
+(6, 14, 'Montar Armarios', 'Montamos los armarios que usted nos pida', 40.00, 60, 'activo', 'Terrassa');
 
 -- --------------------------------------------------------
 
@@ -203,6 +218,13 @@ ALTER TABLE `estados_usuarios`
   ADD PRIMARY KEY (`id_estado_usuario`);
 
 --
+-- Indices de la tabla `horarios_autonomo`
+--
+ALTER TABLE `horarios_autonomo`
+  ADD PRIMARY KEY (`id_horario`),
+  ADD KEY `fk_horario_autonomo` (`id_autonomo`);
+
+--
 -- Indices de la tabla `incidencias`
 --
 ALTER TABLE `incidencias`
@@ -220,9 +242,8 @@ ALTER TABLE `portfolios`
 --
 ALTER TABLE `reservas`
   ADD PRIMARY KEY (`id_reserva`),
-  ADD KEY `id_usuario` (`id_cliente`),
-  ADD KEY `id_servicio` (`id_servicio`),
-  ADD KEY `reservas_ibfk_3` (`id_autonomo`);
+  ADD KEY `fk_reserva_cliente` (`id_cliente`),
+  ADD KEY `fk_reserva_servicio` (`id_servicio`);
 
 --
 -- Indices de la tabla `servicios`
@@ -263,6 +284,12 @@ ALTER TABLE `valoraciones`
 --
 ALTER TABLE `estados_usuarios`
   MODIFY `id_estado_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `horarios_autonomo`
+--
+ALTER TABLE `horarios_autonomo`
+  MODIFY `id_horario` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `incidencias`
@@ -311,6 +338,12 @@ ALTER TABLE `valoraciones`
 --
 
 --
+-- Filtros para la tabla `horarios_autonomo`
+--
+ALTER TABLE `horarios_autonomo`
+  ADD CONSTRAINT `fk_horario_autonomo` FOREIGN KEY (`id_autonomo`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE;
+
+--
 -- Filtros para la tabla `portfolios`
 --
 ALTER TABLE `portfolios`
@@ -320,9 +353,8 @@ ALTER TABLE `portfolios`
 -- Filtros para la tabla `reservas`
 --
 ALTER TABLE `reservas`
-  ADD CONSTRAINT `reservas_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `usuarios` (`id_usuario`),
-  ADD CONSTRAINT `reservas_ibfk_2` FOREIGN KEY (`id_servicio`) REFERENCES `servicios` (`id_servicio`),
-  ADD CONSTRAINT `reservas_ibfk_3` FOREIGN KEY (`id_autonomo`) REFERENCES `usuarios` (`id_usuario`);
+  ADD CONSTRAINT `fk_reserva_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_reserva_servicio` FOREIGN KEY (`id_servicio`) REFERENCES `servicios` (`id_servicio`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `servicios`
