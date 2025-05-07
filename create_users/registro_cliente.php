@@ -24,6 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (empty($nombre) || empty($apellido) || empty($email) || empty($password) || empty($nif)) {
         $error = "Todos los campos obligatorios deben ser completados";
+    } elseif (strlen($password) < 8) {
+        $error = "La contraseña debe tener al menos 8 caracteres";
     } else {
         try {
             // Verificar si el email ya está registrado

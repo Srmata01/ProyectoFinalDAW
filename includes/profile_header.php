@@ -7,7 +7,9 @@ if (isset($_SESSION['usuario'])) {
     if (!$in_profile_page) {
         // Determinar si estamos en un subdirectorio
         $is_subdirectory = strpos($_SERVER['PHP_SELF'], '/services/') !== false || 
-        strpos($_SERVER['PHP_SELF'], '/vistas_usuarios/') !== false;
+        strpos($_SERVER['PHP_SELF'], '/vistas_usuarios/') !== false ||
+        strpos($_SERVER['PHP_SELF'], '/reservas/') !== false ||
+        strpos($_SERVER['PHP_SELF'], '/portfolio/') !== false;
         $base_path = $is_subdirectory ? '../' : '';
         
         $perfil_url = '';
@@ -45,7 +47,10 @@ if (isset($_SESSION['usuario'])) {
     }
 } else { 
     // También ajustar la ruta del login
-    $is_subdirectory = strpos($_SERVER['PHP_SELF'], '/services/') !== false;
+    $is_subdirectory = strpos($_SERVER['PHP_SELF'], '/services/') !== false ||
+                      strpos($_SERVER['PHP_SELF'], '/vistas_usuarios/') !== false ||
+                      strpos($_SERVER['PHP_SELF'], '/reservas/') !== false ||
+                      strpos($_SERVER['PHP_SELF'], '/portfolio/') !== false;
     $login_url = ($is_subdirectory ? '../' : '') . 'login.php';
     ?>
     <a href="<?= $login_url ?>" class="profile-btn">

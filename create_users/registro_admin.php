@@ -10,6 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (empty($nombre) || empty($apellido) || empty($email) || empty($password) || empty($codigo_admin)) {
         $error = "Todos los campos obligatorios deben ser completados";
+    } elseif (strlen($password) < 8) {
+        $error = "La contraseña debe tener al menos 8 caracteres";
     } elseif ($codigo_admin !== ADMIN_CODE) {
         $error = "Código de administrador incorrecto";
     } else {

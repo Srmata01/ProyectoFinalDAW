@@ -157,6 +157,40 @@ header {
     padding: 20px;
 }
 
+/* Estilos específicos para la sección de servicios recientes */
+.servicios-recientes-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    padding: 20px;
+}
+
+/* Tarjeta vacía para mantener el diseño con 4 columnas */
+.servicio-vacio {
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px dashed #ddd;
+    min-height: 300px;
+}
+
+/* Responsive para servicios recientes */
+@media (max-width: 1200px) {
+    .servicios-recientes-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .servicios-recientes-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .servicios-recientes-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 .servicios-grid a {
     text-decoration: none;
     color: inherit;

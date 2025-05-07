@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Añadir un nuevo horario
             if ($_POST['accion'] === 'agregar') {
                 $stmt = $pdo->prepare("
-                    INSERT INTO horarios_autonomo (id_autonomo, dia_semana, hora_inicio, hora_fin, disponible) 
+                    INSERT INTO horarios_autonomo (id_autonomo, dia_semana, hora_inicio, hora_fin, activo) 
                     VALUES (?, ?, ?, ?, 1)
                 ");
                 $stmt->execute([
@@ -39,13 +39,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             // Actualizar disponibilidad de un horario
             elseif ($_POST['accion'] === 'actualizar' && isset($_POST['id_horario'])) {
-                $disponible = isset($_POST['disponible']) ? 1 : 0;
+                $activo = isset($_POST['activo']) ? 1 : 0;
                 $stmt = $pdo->prepare("
                     UPDATE horarios_autonomo 
-                    SET disponible = ? 
+                    SET activo = ? 
                     WHERE id_horario = ? AND id_autonomo = ?
                 ");
-                $stmt->execute([$disponible, $_POST['id_horario'], $id_autonomo]);
+                $stmt->execute([$activo, $_POST['id_horario'], $id_autonomo]);
                 $mensaje = "Disponibilidad actualizada correctamente.";
             }
         }
@@ -59,8 +59,7 @@ try {
     $stmt = $pdo->prepare("
         SELECT * FROM horarios_autonomo 
         WHERE id_autonomo = ? 
-        ORDER BY FIELD(dia_semana, 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'), 
-                 hora_inicio ASC
+        ORDER BY dia_semana, hora_inicio ASC
     ");
     $stmt->execute([$id_autonomo]);
     $horarios = $stmt->fetchAll();
@@ -70,13 +69,13 @@ try {
 
 // Array para mostrar los días en español
 $dias_semana = [
-    'lunes' => 'Lunes',
-    'martes' => 'Martes',
-    'miercoles' => 'Miércoles',
-    'jueves' => 'Jueves',
-    'viernes' => 'Viernes',
-    'sabado' => 'Sábado',
-    'domingo' => 'Domingo'
+    1 => 'Lunes',
+    2 => 'Martes',
+    3 => 'Miércoles',
+    4 => 'Jueves',
+    5 => 'Viernes',
+    6 => 'Sábado',
+    7 => 'Domingo'
 ];
 ?>
 
@@ -228,7 +227,7 @@ $dias_semana = [
                             <?php foreach ($horarios as $horario): ?>
                                 <div class="horario-card">
                                     <div class="horario-info">
-                                        <strong><?= $dias_semana[$horario['dia_semana']] ?>:</strong>
+                                        <strong><?= $dias_semana[$horario['dia_semana']] ?? 'Día '.$horario['dia_semana'] ?>:</strong>
                                         <?= substr($horario['hora_inicio'], 0, 5) ?> - <?= substr($horario['hora_fin'], 0, 5) ?>
                                     </div>
                                     <div class="horario-acciones">
@@ -237,7 +236,7 @@ $dias_semana = [
                                             <input type="hidden" name="id_horario" value="<?= $horario['id_horario'] ?>">
                                             
                                             <label class="switch">
-                                                <input type="checkbox" name="disponible" <?= $horario['disponible'] ? 'checked' : '' ?> onchange="this.form.submit()">
+                                                <input type="checkbox" name="activo" <?= $horario['activo'] ? 'checked' : '' ?> onchange="this.form.submit()">
                                                 <span class="slider"></span>
                                             </label>
                                         </form>

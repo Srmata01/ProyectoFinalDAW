@@ -37,6 +37,7 @@ try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['fecha'], $_POST['id_horario'])) {
         $fecha = $_POST['fecha'];
         $id_horario = (int)$_POST['id_horario'];
+        $hora_inicio = isset($_POST['hora_inicio']) ? $_POST['hora_inicio'] : null;
         
         // Comprobar que el id_horario corresponde a un horario válido del autónomo
         $stmt = $pdo->prepare("SELECT * FROM horarios_autonomo WHERE id_horario = ? AND id_autonomo = ? AND activo = 1");
@@ -44,15 +45,13 @@ try {
         $horario = $stmt->fetch();
         
         if ($horario) {
-            // Comprobar que no hay conflictos de horarios para ese día
-            $fecha_reserva = $fecha;
-            $hora_inicio = $horario['hora_inicio'];
-            $hora_fin = $horario['hora_fin'];
+            // La fecha y hora de inicio de la reserva
+            $fecha_hora_inicio = $fecha . ' ' . $hora_inicio;
             
-            // Crear fechas completas para la comparación
-            $fecha_hora_inicio = $fecha_reserva . ' ' . $hora_inicio;
-            $fecha_hora_fin = $fecha_reserva . ' ' . $hora_fin;
+            // Obtener la duración del servicio para calcular la hora de fin
+            $duracion_servicio = $servicio['duracion'];
             
+            // Verificar que no hay conflictos con otras reservas
             $stmt = $pdo->prepare("
                 SELECT COUNT(*) as conflictos
                 FROM reservas r
@@ -62,17 +61,23 @@ try {
                 AND r.estado IN ('pendiente', 'aceptada')
                 AND (
                     (r.fecha_hora <= ? AND ADDTIME(r.fecha_hora, SEC_TO_TIME(s.duracion * 60)) > ?)
-                    OR (r.fecha_hora < ? AND ADDTIME(r.fecha_hora, SEC_TO_TIME(s.duracion * 60)) >= ?)
-                    OR (r.fecha_hora >= ? AND r.fecha_hora < ?)
+                    OR (? <= r.fecha_hora AND ? >= ADDTIME(r.fecha_hora, SEC_TO_TIME(s.duracion * 60)))
+                    OR (r.fecha_hora <= ? AND ADDTIME(r.fecha_hora, SEC_TO_TIME(s.duracion * 60)) >= ADDTIME(?, SEC_TO_TIME(?*60)))
                 )
             ");
+            
+            // Calcular la hora de fin de la nueva reserva
+            $hora_fin_timestamp = strtotime($fecha_hora_inicio) + ($duracion_servicio * 60);
+            $hora_fin = date('H:i:s', $hora_fin_timestamp);
+            
             $stmt->execute([
-                $id_autonomo, 
-                $fecha_reserva, 
-                $fecha_hora_inicio, $fecha_hora_inicio, 
-                $fecha_hora_fin, $fecha_hora_fin, 
-                $fecha_hora_inicio, $fecha_hora_fin
+                $id_autonomo,
+                $fecha,
+                $fecha_hora_inicio, $fecha_hora_inicio,
+                $fecha_hora_inicio, $hora_fin,
+                $fecha_hora_inicio, $fecha_hora_inicio, $duracion_servicio
             ]);
+            
             $resultado = $stmt->fetch();
             
             if ($resultado['conflictos'] == 0) {
@@ -92,7 +97,7 @@ try {
                 header('Location: ../vistas_usuarios/perfil_cliente.php');
                 exit();
             } else {
-                $error = "El horario seleccionado no está disponible para esta fecha. Por favor elige otro horario.";
+                $error = "El horario seleccionado ya no está disponible. Por favor elige otro horario.";
             }
         } else {
             $error = "El horario seleccionado no es válido o no está disponible.";
@@ -104,13 +109,13 @@ try {
 
 // Array para traducir días de la semana
 $dias_semana = [
-    'lunes' => 'Lunes',
-    'martes' => 'Martes',
-    'miercoles' => 'Miércoles',
-    'jueves' => 'Jueves',
-    'viernes' => 'Viernes',
-    'sabado' => 'Sábado',
-    'domingo' => 'Domingo'
+    1 => 'Lunes',
+    2 => 'Martes',
+    3 => 'Miércoles',
+    4 => 'Jueves',
+    5 => 'Viernes',
+    6 => 'Sábado',
+    7 => 'Domingo'
 ];
 
 // Obtener los días de la semana en que el autónomo trabaja
@@ -130,14 +135,16 @@ try {
 // Convertir días disponibles a números para JavaScript (domingo = 0, lunes = 1, etc.)
 $dias_js = [];
 foreach ($dias_disponibles as $dia) {
+    // La tabla horarios_autonomo usa: 1=Lunes, 2=Martes, ... 7=Domingo
+    // JavaScript usa: 0=Domingo, 1=Lunes, ... 6=Sábado
     switch ($dia) {
-        case 'lunes': $dias_js[] = 1; break;
-        case 'martes': $dias_js[] = 2; break;
-        case 'miercoles': $dias_js[] = 3; break;
-        case 'jueves': $dias_js[] = 4; break;
-        case 'viernes': $dias_js[] = 5; break;
-        case 'sabado': $dias_js[] = 6; break;
-        case 'domingo': $dias_js[] = 0; break;
+        case 1: $dias_js[] = 1; break; // Lunes
+        case 2: $dias_js[] = 2; break; // Martes
+        case 3: $dias_js[] = 3; break; // Miércoles
+        case 4: $dias_js[] = 4; break; // Jueves
+        case 5: $dias_js[] = 5; break; // Viernes
+        case 6: $dias_js[] = 6; break; // Sábado
+        case 7: $dias_js[] = 0; break; // Domingo
     }
 }
 $dias_js_json = json_encode($dias_js);
@@ -271,6 +278,7 @@ $dias_js_json = json_encode($dias_js);
                             <form method="post" id="reserva-form">
                                 <input type="hidden" name="fecha" id="fecha-input">
                                 <input type="hidden" name="id_horario" id="horario-input">
+                                <input type="hidden" name="hora_inicio" id="hora-inicio">
                                 <div class="form-actions">
                                     <button type="submit" class="submit-btn" id="btn-reservar" style="display: none;">Reservar</button>
                                     <a href="../services/ver_servicio.php?id=<?= $id_servicio ?>" class="submit-btn" style="background-color: #6c757d;">Cancelar</a>
@@ -407,8 +415,9 @@ $dias_js_json = json_encode($dias_js);
                                 const diaSemana = new Date(fecha).getDay();
                                 const diasTraduccion = ['domingo', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
                                 const nombreDia = diasTraduccion[diaSemana];
+                                const idServicio = <?= $id_servicio ?>;
                                 
-                                fetch(`obtener_horarios.php?autonomo=${idAutonomo}&dia=${nombreDia}&fecha=${fecha}`)
+                                fetch(`obtener_horarios.php?autonomo=${idAutonomo}&dia=${nombreDia}&fecha=${fecha}&servicio=${idServicio}`)
                                     .then(response => response.json())
                                     .then(data => {
                                         const horariosContainer = document.querySelector('.horarios-container');
@@ -417,7 +426,7 @@ $dias_js_json = json_encode($dias_js);
                                         if (data.length > 0) {
                                             let html = '';
                                             data.forEach(horario => {
-                                                html += `<div class="horario-option" data-id="${horario.id_horario}">${horario.hora_inicio.substring(0, 5)} - ${horario.hora_fin.substring(0, 5)}</div>`;
+                                                html += `<div class="horario-option" data-id="${horario.id_horario}" data-hora="${horario.hora_inicio}">${horario.hora_inicio.substring(0, 5)} - ${horario.hora_fin.substring(0, 5)}</div>`;
                                             });
                                             horariosList.innerHTML = html;
                                             
@@ -435,9 +444,11 @@ $dias_js_json = json_encode($dias_js);
                                                     // Añadir selección actual
                                                     this.classList.add('selected');
                                                     
-                                                    // Guardar id del horario
+                                                    // Guardar id del horario y hora de inicio
                                                     const idHorario = this.getAttribute('data-id');
+                                                    const horaInicio = this.getAttribute('data-hora');
                                                     document.getElementById('horario-input').value = idHorario;
+                                                    document.getElementById('hora-inicio').value = horaInicio;
                                                     
                                                     // Mostrar botón de reserva
                                                     document.getElementById('btn-reservar').style.display = 'inline-block';

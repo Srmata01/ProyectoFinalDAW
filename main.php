@@ -2,6 +2,33 @@
 session_start();
 require_once 'config/database.php';
 
+// Consulta para obtener los 4 servicios más recientes
+$stmt_recientes = $pdo->prepare("
+    SELECT s.id_servicio, s.nombre, s.descripcion, s.precio, s.duracion, s.localidad, 
+           u.nombre AS nombre_autonomo, u.foto_perfil AS imagen_autonomo
+    FROM servicios s
+    JOIN usuarios u ON s.id_autonomo = u.id_usuario
+    WHERE s.estado = 'activo'
+    ORDER BY s.id_servicio DESC
+    LIMIT 4
+");
+$stmt_recientes->execute();
+$servicios_recientes = $stmt_recientes->fetchAll(PDO::FETCH_ASSOC);
+
+// Asegurarse de que siempre hay 4 slots para mantener el tamaño consistente
+while (count($servicios_recientes) < 4) {
+    $servicios_recientes[] = [
+        'id_servicio' => '',
+        'nombre' => '',
+        'descripcion' => '',
+        'precio' => 0,
+        'duracion' => 0,
+        'localidad' => '',
+        'nombre_autonomo' => '',
+        'imagen_autonomo' => null
+    ];
+}
+
 $busqueda = $_GET['q'] ?? '';
 $localidad = $_GET['localidad'] ?? '';
 $precio = $_GET['precio'] ?? '';
@@ -123,33 +150,40 @@ foreach ($servicios as &$servicio) {
         </div>
     </div>
 
-    <!-- Sección de servicios destacados -->
+    <!-- Sección de servicios recientes -->
     <div class="servicios-section">
         <div class="servicios-destacados">
-            <h2>Servicios Destacados</h2>
-            <div class="servicios-grid" id="resultados">
-                <?php foreach ($servicios as $servicio): ?>
-                    <a href="services/ver_servicio.php?id=<?php echo htmlspecialchars($servicio['id_servicio'] ?? ''); ?>" class="servicio-link">
-                        <div class="servicio-card">
-                            <div class="autonomo-info">
-                                <?php if (!empty($servicio['imagen_autonomo'])): ?>
-                                    <img src="data:image/jpeg;base64,<?php echo base64_encode($servicio['imagen_autonomo']); ?>" alt="Foto de perfil" class="autonomo-imagen">
-                                <?php else: ?>
-                                    <img src="media/autonomo.jpg" alt="Foto de perfil por defecto" class="autonomo-imagen">
-                                <?php endif; ?>
-                                <span class="autonomo-nombre"><?php echo htmlspecialchars($servicio['nombre_autonomo'] ?? 'Autónomo'); ?></span>
+            <h2>Servicios Recientes</h2>
+            <div class="servicios-grid servicios-recientes-grid">
+                <?php foreach ($servicios_recientes as $servicio): ?>
+                    <?php if (!empty($servicio['id_servicio'])): ?>
+                        <a href="services/ver_servicio.php?id=<?php echo htmlspecialchars($servicio['id_servicio']); ?>" class="servicio-link">
+                            <div class="servicio-card">
+                                <div class="autonomo-info">
+                                    <?php if (!empty($servicio['imagen_autonomo'])): ?>
+                                        <img src="data:image/jpeg;base64,<?php echo base64_encode($servicio['imagen_autonomo']); ?>" alt="Foto de perfil" class="autonomo-imagen">
+                                    <?php else: ?>
+                                        <img src="media/autonomo.jpg" alt="Foto de perfil por defecto" class="autonomo-imagen">
+                                    <?php endif; ?>
+                                    <span class="autonomo-nombre"><?php echo htmlspecialchars($servicio['nombre_autonomo'] ?? 'Autónomo'); ?></span>
+                                </div>
+                                <h3 class="servicio-titulo"><?php echo htmlspecialchars($servicio['nombre']); ?></h3>
+                                <p class="servicio-descripcion"><?php echo htmlspecialchars($servicio['descripcion']); ?></p>
+                                <p class="servicio-precio"><?php echo number_format($servicio['precio'], 2); ?>€</p>
+                                <p class="servicio-duracion"><?php echo htmlspecialchars($servicio['duracion']); ?> min</p>
+                                <p class="servicio-localidad"><?php echo htmlspecialchars($servicio['localidad']); ?></p>
                             </div>
-                            <h3 class="servicio-titulo"><?php echo htmlspecialchars($servicio['nombre'] ?? ''); ?></h3>
-                            <p class="servicio-descripcion"><?php echo htmlspecialchars($servicio['descripcion'] ?? ''); ?></p>
-                            <p class="servicio-precio"><?php echo number_format($servicio['precio'], 2); ?>€</p>
-                            <p class="servicio-duracion"><?php echo htmlspecialchars($servicio['duracion'] ?? ''); ?> min</p>
-                            <p class="servicio-localidad"><?php echo htmlspecialchars($servicio['localidad'] ?? ''); ?></p>
+                        </a>
+                    <?php else: ?>
+                        <div class="servicio-card servicio-vacio">
+                            <!-- Tarjeta vacía para mantener el diseño -->
                         </div>
-                    </a>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             </div>
         </div>
     </div>
+
 
     <footer>
         <div class="footer-container">
