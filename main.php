@@ -2,7 +2,7 @@
 session_start();
 require_once 'config/database.php';
 
-// Consulta para obtener los 4 servicios más recientes
+// Consulta para obtener los servicios más recientes (máximo 4)
 $stmt_recientes = $pdo->prepare("
     SELECT s.id_servicio, s.nombre, s.descripcion, s.precio, s.duracion, s.localidad, 
            u.nombre AS nombre_autonomo, u.foto_perfil AS imagen_autonomo
@@ -14,20 +14,6 @@ $stmt_recientes = $pdo->prepare("
 ");
 $stmt_recientes->execute();
 $servicios_recientes = $stmt_recientes->fetchAll(PDO::FETCH_ASSOC);
-
-// Asegurarse de que siempre hay 4 slots para mantener el tamaño consistente
-while (count($servicios_recientes) < 4) {
-    $servicios_recientes[] = [
-        'id_servicio' => '',
-        'nombre' => '',
-        'descripcion' => '',
-        'precio' => 0,
-        'duracion' => 0,
-        'localidad' => '',
-        'nombre_autonomo' => '',
-        'imagen_autonomo' => null
-    ];
-}
 
 $busqueda = $_GET['q'] ?? '';
 $localidad = $_GET['localidad'] ?? '';
@@ -86,6 +72,74 @@ foreach ($servicios as &$servicio) {
     <title>FixItNow</title>
     <link rel="stylesheet" href="main.css">
     <link rel="icon" type="image/png" href="media/logo.png">
+    <style>
+        /* Grid de servicios - 4 en línea con centrado */
+        .servicios-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: nowrap;
+            gap: 20px;
+            margin: 30px auto;
+            max-width: 1200px;
+        }
+        
+        .servicio-link {
+            flex: 0 0 calc(25% - 15px); /* Cada tarjeta ocupa 1/4 del espacio menos el gap */
+            max-width: 280px;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .servicio-card {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            padding: 15px;
+            background-color: #fff;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .servicio-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+        
+        .servicios-destacados {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .no-servicios {
+            text-align: center;
+            padding: 30px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            margin: 20px auto;
+            max-width: 600px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        /* Estilos responsive */
+        @media (max-width: 992px) {
+            .servicios-grid {
+                flex-wrap: wrap;
+            }
+            .servicio-link {
+                flex: 0 0 calc(50% - 10px);
+                max-width: none;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .servicio-link {
+                flex: 0 0 100%;
+                max-width: 350px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -154,9 +208,9 @@ foreach ($servicios as &$servicio) {
     <div class="servicios-section">
         <div class="servicios-destacados">
             <h2>Servicios Recientes</h2>
-            <div class="servicios-grid servicios-recientes-grid">
-                <?php foreach ($servicios_recientes as $servicio): ?>
-                    <?php if (!empty($servicio['id_servicio'])): ?>
+            <?php if (!empty($servicios_recientes)): ?>
+                <div class="servicios-grid servicios-recientes-grid">
+                    <?php foreach ($servicios_recientes as $servicio): ?>
                         <a href="services/ver_servicio.php?id=<?php echo htmlspecialchars($servicio['id_servicio']); ?>" class="servicio-link">
                             <div class="servicio-card">
                                 <div class="autonomo-info">
@@ -174,16 +228,44 @@ foreach ($servicios as &$servicio) {
                                 <p class="servicio-localidad"><?php echo htmlspecialchars($servicio['localidad']); ?></p>
                             </div>
                         </a>
-                    <?php else: ?>
-                        <div class="servicio-card servicio-vacio">
-                            <!-- Tarjeta vacía para mantener el diseño -->
-                        </div>
-                    <?php endif; ?>
-                <?php endforeach; ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php else: ?>
+                <p class="no-servicios">No hay servicios disponibles en este momento.</p>
+            <?php endif; ?>
+            
+            <!-- Botón para ver todos los servicios -->
+            <div class="ver-todos-container">
+                <a href="services/index.php" class="ver-todos-btn">Ver Todos los Servicios</a>
             </div>
         </div>
     </div>
 
+    <style>
+        .ver-todos-container {
+            text-align: center;
+            margin: 30px auto;
+        }
+        
+        .ver-todos-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .ver-todos-btn:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+    </style>
 
     <footer>
         <div class="footer-container">
