@@ -139,8 +139,8 @@
             <div class="footer-section">
                 <h4 class="footer-title">Información Personal</h4>
                 <ul class="footer-list">
-                    <li><a href="../politicaprivacidad.html" class="footer-link">Política de privacidad</a></li>
-                    <li><a href="../politicacookiesdatos.html" class="footer-link">Política de Cookies y protección de datos</a></li>
+                    <li><a href="../politicaprivacidad.php" class="footer-link">Política de privacidad</a></li>
+                    <li><a href="../politicacookiesdatos.php" class="footer-link">Política de Cookies y protección de datos</a></li>
                 </ul>
             </div>
 

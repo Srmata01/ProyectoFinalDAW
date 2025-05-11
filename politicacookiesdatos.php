@@ -1,3 +1,7 @@
+<?php
+session_start();
+require_once 'config/database.php';
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -27,12 +31,45 @@
             </div>
 
             <div class="user-container">
-                <div class="profile-container">
-                    <button class="profile-btn">
-                        <div class="user-avatar">JT</div>
-                        <span class="user-name">Jordi Torrella</span>
-                    </button>
-                </div>
+                <?php 
+                if (isset($_SESSION['usuario'])) {
+                    // Determinar perfil URL
+                    $perfil_url = '';
+                    switch ($_SESSION['usuario']['tipo']) {
+                        case 1:
+                            $perfil_url = 'vistas_usuarios/perfil_admin.php';
+                            break;
+                        case 2:
+                            $perfil_url = 'vistas_usuarios/perfil_cliente.php';
+                            break;
+                        case 3:
+                            $perfil_url = 'vistas_usuarios/perfil_autonomo.php';
+                            break;
+                    }
+                    
+                    // Obtener la foto de perfil del usuario
+                    $stmt = $pdo->prepare("SELECT foto_perfil FROM usuarios WHERE id_usuario = ?");
+                    $stmt->execute([$_SESSION['usuario']['id']]);
+                    $usuario = $stmt->fetch();
+                    $foto_perfil = $usuario['foto_perfil'];
+                    ?>
+                    <div class="profile-container">
+                        <a href="<?= $perfil_url ?>" class="profile-btn" style="text-decoration: none;">
+                            <?php if ($foto_perfil): ?>
+                                <div class="user-avatar">
+                                    <img src="data:image/jpeg;base64,<?= base64_encode($foto_perfil) ?>" alt="Foto de perfil">
+                                </div>
+                            <?php else: ?>
+                                <div class="user-avatar"><?= strtoupper(substr($_SESSION['usuario']['nombre'], 0, 1)) ?></div>
+                            <?php endif; ?>
+                            <span class="user-name"><?= htmlspecialchars($_SESSION['usuario']['nombre'] . ' ' . $_SESSION['usuario']['apellido']) ?></span>
+                        </a>
+                    </div>
+                <?php } else { ?>
+                    <a href="login.php" class="profile-btn">
+                        <span class="user-name">Iniciar Sesión</span>
+                    </a>
+                <?php } ?>
             </div>
         </div>
     </header>
@@ -68,8 +105,8 @@
             <div class="footer-section">
                 <h4 class="footer-title">Información Personal</h4>
                 <ul class="footer-list">
-                    <li><a href="politicaprivacidad.html" class="footer-link">Política de privacidad</a></li>
-                    <li><a href="politicacookiesdatos.html" class="footer-link">Política de Cookies y protección de
+                    <li><a href="politicaprivacidad.php" class="footer-link">Política de privacidad</a></li>
+                    <li><a href="politicacookiesdatos.php" class="footer-link">Política de Cookies y protección de
                             datos</a></li>
                 </ul>
             </div>

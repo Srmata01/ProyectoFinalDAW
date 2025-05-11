@@ -487,8 +487,8 @@ $dias_js_json = json_encode($dias_js);
             <div class="footer-section">
                 <h4>Información Personal</h4>
                 <ul>
-                    <li><a href="../politicaprivacidad.html">Política de privacidad</a></li>
-                    <li><a href="../politicacookiesdatos.html">Política de Cookies y protección de datos</a></li>
+                    <li><a href="../politicaprivacidad.php">Política de privacidad</a></li>
+                    <li><a href="../politicacookiesdatos.php">Política de Cookies y protección de datos</a></li>
                 </ul>
             </div>
             
