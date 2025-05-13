@@ -51,8 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div class="search-container">
-                <div class="search-box">
-                    <input type="text" placeholder="Buscar proyectos, materiales..." class="search-input">
+                <div class="search-box">                    <input type="text" placeholder="Buscar por servicio o localidad..." class="search-input">
                     <img src="../media/lupa.png" alt="Buscar" class="search-icon">
                 </div>
             </div>

@@ -2,190 +2,155 @@
 // Incluimos la configuración de la base de datos
 require_once '../../config/database.php';
 
-// Obtenemos los parámetros de la solicitud
-$busqueda = $_POST['q'] ?? '';
-$tipo = $_POST['tipo'] ?? 'general';
+// Obtener parámetros de búsqueda
+$busqueda = isset($_GET['q']) ? $_GET['q'] : '';
+$tipo = isset($_GET['tipo']) ? $_GET['tipo'] : 'general';
 
-// Si la búsqueda está vacía, mostrar mensaje
+// Si no hay término de búsqueda, no mostramos resultados
 if (empty($busqueda)) {
     echo '<div class="mensaje-busqueda">Introduce términos de búsqueda para encontrar resultados.</div>';
     exit;
 }
 
-// Función para generar el HTML de los resultados según el tipo
-function generarHTML($resultados, $tipo) {
-    $html = '';
-    
-    if (empty($resultados)) {
-        return '<div class="mensaje-busqueda">No se encontraron resultados para tu búsqueda.</div>';
-    }
-    
-    switch ($tipo) {
-        case 'servicios':
-            $html .= '<div class="resultados-grid">';
-            foreach ($resultados as $servicio) {
-                $html .= '<div class="servicio-card">';
-                if (!empty($servicio['imagen'])) {
-                    $html .= '<div class="servicio-img"><img src="data:image/jpeg;base64,'.base64_encode($servicio['imagen']).'" alt="'.$servicio['nombre'].'"></div>';
-                }
-                $html .= '<div class="servicio-info">';
-                $html .= '<h3><a href="/services/ver_servicio.php?id='.$servicio['id_servicio'].'">'.$servicio['nombre'].'</a></h3>';
-                $html .= '<p class="precio">€'.$servicio['precio'].'</p>';
-                $html .= '<p class="localidad">'.$servicio['localidad'].'</p>';
-                $html .= '<p class="descripcion">'.substr($servicio['descripcion'], 0, 100).'...</p>';
-                $html .= '</div>';
-                $html .= '</div>';
-            }
-            $html .= '</div>';
-            break;
-            
-        case 'usuarios':
-        case 'autonomos':
-            $html .= '<div class="usuarios-grid">';
-            foreach ($resultados as $usuario) {
-                $html .= '<div class="usuario-card">';
-                if (!empty($usuario['foto_perfil'])) {
-                    $html .= '<div class="usuario-img"><img src="data:image/jpeg;base64,'.base64_encode($usuario['foto_perfil']).'" alt="'.$usuario['nombre'].'"></div>';
-                } else {
-                    $html .= '<div class="usuario-img usuario-placeholder">'.strtoupper(substr($usuario['nombre'], 0, 1)).'</div>';
-                }
-                $html .= '<div class="usuario-info">';
-                $html .= '<h3><a href="/vistas_usuarios/ver_autonomo.php?id='.$usuario['id_usuario'].'">'.$usuario['nombre'].' '.$usuario['apellido'].'</a></h3>';
-                if (isset($usuario['profesion'])) {
-                    $html .= '<p class="profesion">'.$usuario['profesion'].'</p>';
-                }
-                $html .= '</div>';
-                $html .= '</div>';
-            }
-            $html .= '</div>';
-            break;
-            
-        case 'general':
-        default:
-            // Para búsqueda general, mostramos secciones separadas
-            if (isset($resultados['servicios']) && !empty($resultados['servicios'])) {
-                $html .= '<h2 class="seccion-titulo">Servicios</h2>';
-                $html .= generarHTML($resultados['servicios'], 'servicios');
-            }
-            
-            if (isset($resultados['usuarios']) && !empty($resultados['usuarios'])) {
-                $html .= '<h2 class="seccion-titulo">Profesionales</h2>';
-                $html .= generarHTML($resultados['usuarios'], 'usuarios');
-            }
-            
-            if (empty($html)) {
-                $html = '<div class="mensaje-busqueda">No se encontraron resultados para tu búsqueda.</div>';
-            }
-            break;
-    }
-    
-    return $html;
-}
+// Variable para almacenar los resultados
+$resultados = array();
 
-// Realizar la búsqueda según el tipo
+// Realizar búsqueda según el tipo
 try {
     switch ($tipo) {
         case 'servicios':
-            // Definimos parámetros adicionales de filtrado
-            $localidad = $_POST['localidad'] ?? '';
-            $precio = $_POST['precio'] ?? '';
-            $duracion = $_POST['duracion'] ?? '';
-            $orden = $_POST['orden'] ?? '';
-            
-            // Construimos la consulta SQL
-            $sql = "SELECT * FROM servicios WHERE nombre LIKE :busqueda";
-            $params = [':busqueda' => "%$busqueda%"];
-            
-            // Añadimos filtros adicionales si están presentes
-            if (!empty($localidad)) {
-                $sql .= " AND localidad LIKE :localidad";
-                $params[':localidad'] = "%$localidad%";
-            }
-            
-            if (!empty($precio)) {
-                if ($precio === 'bajo') {
-                    $sql .= " AND precio < 50";
-                } elseif ($precio === 'medio') {
-                    $sql .= " AND precio >= 50 AND precio < 100";
-                } elseif ($precio === 'alto') {
-                    $sql .= " AND precio >= 100";
-                }
-            }
-            
-            if (!empty($duracion)) {
-                if ($duracion === 'corta') {
-                    $sql .= " AND duracion < 2";
-                } elseif ($duracion === 'media') {
-                    $sql .= " AND duracion >= 2 AND duracion < 5";
-                } elseif ($duracion === 'larga') {
-                    $sql .= " AND duracion >= 5";
-                }
-            }
-            
-            // Ordenación
-            if (!empty($orden)) {
-                if ($orden === 'asc') {
-                    $sql .= " ORDER BY precio ASC";
-                } elseif ($orden === 'desc') {
-                    $sql .= " ORDER BY precio DESC";
-                } elseif ($orden === 'reciente') {
-                    $sql .= " ORDER BY fecha_creacion DESC";
-                }
-            } else {
-                $sql .= " ORDER BY nombre ASC";
-            }
-            
+            // Búsqueda de servicios
+            $sql = "SELECT id_servicio, nombre, precio, localidad, descripcion FROM servicios 
+                   WHERE nombre LIKE :busqueda OR descripcion LIKE :busqueda 
+                   ORDER BY nombre
+                   LIMIT 10";
             $stmt = $pdo->prepare($sql);
-            $stmt->execute($params);
+            $stmt->execute([':busqueda' => "%$busqueda%"]);
             $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            echo generarHTML($resultados, $tipo);
             break;
             
         case 'usuarios':
-            $sql = "SELECT * FROM usuarios WHERE (nombre LIKE :busqueda OR apellido LIKE :busqueda) ORDER BY nombre ASC";
+            // Búsqueda de usuarios
+            $sql = "SELECT id_usuario, nombre, apellido, tipo FROM usuarios 
+                   WHERE nombre LIKE :busqueda OR apellido LIKE :busqueda 
+                   ORDER BY nombre
+                   LIMIT 10";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([':busqueda' => "%$busqueda%"]);
             $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            echo generarHTML($resultados, $tipo);
             break;
             
         case 'autonomos':
-            $sql = "SELECT u.*, p.profesion FROM usuarios u
-                    LEFT JOIN perfil_autonomo p ON u.id_usuario = p.id_usuario
-                    WHERE (u.nombre LIKE :busqueda OR u.apellido LIKE :busqueda) AND u.tipo = 3
-                    ORDER BY u.nombre ASC";
+            // Búsqueda específica de autónomos
+            $sql = "SELECT u.id_usuario, u.nombre, u.apellido 
+                   FROM usuarios u
+                   WHERE (u.nombre LIKE :busqueda OR u.apellido LIKE :busqueda) AND u.tipo = 3
+                   ORDER BY u.nombre
+                   LIMIT 10";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([':busqueda' => "%$busqueda%"]);
             $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            echo generarHTML($resultados, $tipo);
             break;
             
         case 'general':
         default:
-            // Para búsqueda general, hacemos varias consultas
-            $resultadosCombinados = [];
-            
-            // Buscamos servicios
-            $sql = "SELECT * FROM servicios WHERE nombre LIKE :busqueda ORDER BY nombre ASC LIMIT 5";
+            // Búsqueda general combinada
+            // Primero servicios
+            $sql = "SELECT id_servicio, nombre, 'servicio' as tipo FROM servicios 
+                   WHERE nombre LIKE :busqueda
+                   ORDER BY nombre
+                   LIMIT 5";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([':busqueda' => "%$busqueda%"]);
-            $resultadosCombinados['servicios'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $servicios = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
-            // Buscamos profesionales (autónomos)
-            $sql = "SELECT u.*, p.profesion FROM usuarios u
-                    LEFT JOIN perfil_autonomo p ON u.id_usuario = p.id_usuario
-                    WHERE (u.nombre LIKE :busqueda OR u.apellido LIKE :busqueda) AND u.tipo = 3
-                    ORDER BY u.nombre ASC LIMIT 5";
+            // Luego usuarios (autónomos)
+            $sql = "SELECT id_usuario, CONCAT(nombre, ' ', apellido) as nombre, 'autonomo' as tipo 
+                   FROM usuarios 
+                   WHERE (nombre LIKE :busqueda OR apellido LIKE :busqueda) AND tipo = 3
+                   ORDER BY nombre
+                   LIMIT 5";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([':busqueda' => "%$busqueda%"]);
-            $resultadosCombinados['usuarios'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
-            echo generarHTML($resultadosCombinados, $tipo);
+            // Combinar resultados
+            $resultados = array_merge($servicios, $usuarios);
             break;
     }
+    
+    // Si no hay resultados, mostrar mensaje
+    if (empty($resultados)) {
+        echo '<div class="mensaje-busqueda">No se encontraron resultados para "<strong>' . htmlspecialchars($busqueda) . '</strong>".</div>';
+        exit;
+    }
+    
+    // Generar HTML para los resultados según el tipo
+    echo '<div class="resultados-lista">';
+    
+    if ($tipo === 'general') {
+        // Para búsquedas generales, agrupamos por tipo
+        $porTipo = [];
+        foreach ($resultados as $item) {
+            $porTipo[$item['tipo']][] = $item;
+        }
+        
+        // Mostrar servicios primero si existen
+        if (isset($porTipo['servicio'])) {
+            echo '<div class="seccion-resultados">';
+            echo '<h3 class="titulo-seccion">Servicios</h3>';
+            foreach ($porTipo['servicio'] as $servicio) {
+                echo '<div class="item-resultado">';
+                echo '<a href="/services/ver_servicio.php?id=' . $servicio['id_servicio'] . '">';
+                echo htmlspecialchars($servicio['nombre']);
+                echo '</a>';
+                echo '</div>';
+            }
+            echo '</div>';
+        }
+        
+        // Luego mostrar autónomos si existen
+        if (isset($porTipo['autonomo'])) {
+            echo '<div class="seccion-resultados">';
+            echo '<h3 class="titulo-seccion">Profesionales</h3>';
+            foreach ($porTipo['autonomo'] as $autonomo) {
+                echo '<div class="item-resultado">';
+                echo '<a href="/vistas_usuarios/ver_autonomo.php?id=' . $autonomo['id_usuario'] . '">';
+                echo htmlspecialchars($autonomo['nombre']);
+                echo '</a>';
+                echo '</div>';
+            }
+            echo '</div>';
+        }
+    } else if ($tipo === 'servicios') {
+        // Mostrar resultados de servicios
+        foreach ($resultados as $servicio) {
+            echo '<div class="item-resultado">';
+            echo '<a href="/services/ver_servicio.php?id=' . $servicio['id_servicio'] . '">';
+            echo '<div class="resultado-nombre">' . htmlspecialchars($servicio['nombre']) . '</div>';
+            echo '<div class="resultado-info">';
+            echo '<span class="precio">€' . htmlspecialchars($servicio['precio']) . '</span>';
+            echo '<span class="localidad">' . htmlspecialchars($servicio['localidad']) . '</span>';
+            echo '</div>';
+            echo '</a>';
+            echo '</div>';
+        }
+    } else {
+        // Mostrar resultados de usuarios/autónomos
+        foreach ($resultados as $usuario) {
+            echo '<div class="item-resultado">';
+            echo '<a href="/vistas_usuarios/ver_autonomo.php?id=' . $usuario['id_usuario'] . '">';
+            echo htmlspecialchars($usuario['nombre'] . ' ' . $usuario['apellido']);
+            echo '</a>';
+            echo '</div>';
+        }
+    }
+    
+    echo '</div>';
+    
 } catch (PDOException $e) {
-    // En caso de error, mostramos un mensaje
+    // En caso de error, mostrar mensaje
     error_log("Error en la búsqueda: " . $e->getMessage());
-    echo '<div class="error-message">Ha ocurrido un error al procesar tu búsqueda. Inténtalo de nuevo más tarde.</div>';
+    echo '<div class="error-message">Ha ocurrido un error al procesar tu búsqueda.</div>';
 }
 ?>

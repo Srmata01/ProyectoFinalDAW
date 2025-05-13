@@ -22,57 +22,14 @@ require_once 'config/database.php';
                 <a href="main.php" class="logo-link">
                     <img src="media/logo.png" alt="Logo FixItNow" class="logo">
                 </a>
-            </div>
-
-            <div class="search-container">
+            </div>            <div class="search-container">
                 <div class="search-box">
-                    <input type="text" placeholder="Buscar proyectos, servicios..." id="buscador-principal" class="search-input">
+                    <input type="text" placeholder="Buscar por servicio o ciudad..." 
+                           id="buscador-principal" 
+                           class="search-input">
                     <img src="media/lupa.png" alt="Buscar" class="search-icon" id="btn-buscar">
-                </div>
-                <!-- Contenedor de resultados para el buscador -->
-                <div id="resultados-busqueda" class="resultados-busqueda-container"></div>
-            </div>
-
-            <div class="user-container">
-                <?php 
-                if (isset($_SESSION['usuario'])) {
-                    // Determinar perfil URL
-                    $perfil_url = '';
-                    switch ($_SESSION['usuario']['tipo']) {
-                        case 1:
-                            $perfil_url = 'vistas_usuarios/perfil_admin.php';
-                            break;
-                        case 2:
-                            $perfil_url = 'vistas_usuarios/perfil_cliente.php';
-                            break;
-                        case 3:
-                            $perfil_url = 'vistas_usuarios/perfil_autonomo.php';
-                            break;
-                    }
-                    
-                    // Obtener la foto de perfil del usuario
-                    $stmt = $pdo->prepare("SELECT foto_perfil FROM usuarios WHERE id_usuario = ?");
-                    $stmt->execute([$_SESSION['usuario']['id']]);
-                    $usuario = $stmt->fetch();
-                    $foto_perfil = $usuario['foto_perfil'];
-                    ?>
-                    <div class="profile-container">
-                        <a href="<?= $perfil_url ?>" class="profile-btn" style="text-decoration: none;">
-                            <?php if ($foto_perfil): ?>
-                                <div class="user-avatar">
-                                    <img src="data:image/jpeg;base64,<?= base64_encode($foto_perfil) ?>" alt="Foto de perfil">
-                                </div>
-                            <?php else: ?>
-                                <div class="user-avatar"><?= strtoupper(substr($_SESSION['usuario']['nombre'], 0, 1)) ?></div>
-                            <?php endif; ?>
-                            <span class="user-name"><?= htmlspecialchars($_SESSION['usuario']['nombre'] . ' ' . $_SESSION['usuario']['apellido']) ?></span>
-                        </a>
-                    </div>
-                <?php } else { ?>
-                    <a href="login.php" class="profile-btn">
-                        <span class="user-name">Iniciar Sesión</span>
-                    </a>
-                <?php } ?>
+                </div></div><div class="login-profile-box">
+                <?php include 'includes/profile_header.php'; ?>
             </div>
         </div>
     </header>
@@ -147,27 +104,6 @@ require_once 'config/database.php';
             </div>
         </div>
     </footer>
-
-    <!-- Inicializar el buscador -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Inicializar el buscador con las opciones adecuadas
-            const buscador = new Buscador({
-                inputSelector: '#buscador-principal',
-                resultsSelector: '#resultados-busqueda',
-                searchUrl: 'services/php/buscar.php',
-                autocompleteUrl: 'services/php/autocompletar.php',
-                tipo: 'general',
-                minChars: 2,
-                submitButton: '#btn-buscar',
-                onResultsLoaded: function(html) {
-                    // Mostrar el contenedor de resultados cuando hay resultados
-                    const resultadosContainer = document.getElementById('resultados-busqueda');
-                    resultadosContainer.style.display = html.trim() ? 'block' : 'none';
-                }
-            });
-        });
-    </script>
 </body>
 
 </html>

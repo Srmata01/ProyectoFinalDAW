@@ -36,7 +36,7 @@ body {
     overflow-x: hidden;
 }
 
-a{
+a {
     color: grey;
     text-decoration: none;
 }
@@ -73,41 +73,114 @@ header {
 
 /* Buscador */
 .search-container {
-    flex: 1;
-    max-width: 600px;
-    margin: 0 24px;
+    position: relative;
+    width: 100%;
+    max-width: 500px;
 }
 
 .search-box {
-    position: relative;
     display: flex;
-    width: 100%;
+    align-items: center;
+    border-radius: var(--radius-sm);
+    background-color: var(--color-white);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--color-border);
 }
 
 .search-input {
-    width: 100%;
-    padding: 10px 16px 10px 40px;
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--color-border);
-    font-size: 14px;
+    flex: 1;
+    padding: 10px;
+    border: none;
+    font-size: 16px;
     color: var(--color-text);
     outline: none;
+}
+
+.search-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    cursor: pointer;
     transition: var(--transition);
 }
 
-.search-box img {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    cursor: pointer;
-    width: 20px;
-    height: 20px;
+.search-icon:hover {
+    opacity: 0.8;
 }
 
-.search-input:focus {
-    border-color: transparent;
-    box-shadow: 0 0 0 2px var(--color-primary-light);
+/* Contenedor de resultados de búsqueda */
+.resultados-busqueda-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: var(--color-white);
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    max-height: 400px;
+    overflow-y: auto;
+    display: none;
+    border: 1px solid var(--color-border);
+    border-top: none;
+}
+
+/* Estilos para los resultados */
+.resultados-lista {
+    padding: 10px 0;
+}
+
+.seccion-resultados {
+    margin-bottom: 15px;
+}
+
+.titulo-seccion {
+    padding: 5px 15px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-light);
+    background-color: #f9f9f9;
+    margin: 0;
+}
+
+.item-resultado {
+    padding: 8px 15px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: var(--transition);
+}
+
+.item-resultado:last-child {
+    border-bottom: none;
+}
+
+.item-resultado:hover {
+    background-color: var(--color-hover);
+}
+
+.item-resultado a {
+    display: block;
+    text-decoration: none;
+    color: var(--color-text);
+}
+
+.resultado-nombre {
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+
+.resultado-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--color-text-lighter);
+}
+
+.mensaje-busqueda {
+    padding: 15px;
+    text-align: center;
+    color: var(--color-text-light);
+    font-style: italic;
 }
 
 /* Área de usuario */
@@ -183,7 +256,7 @@ header {
     width: 100%;
     height: calc(100vh - 100px - 60px);
     padding-bottom: 20px;
-    margin-top: 150px; 
+    margin-top: 150px;
 }
 
 .container1 .search-container {
@@ -258,7 +331,7 @@ header {
 
 .titulocookies, .document-title {
     font-size: 26px;
-    color: #ff9b00; 
+    color: #ff9b00;
 }
 
 /* Footer */
@@ -324,7 +397,7 @@ footer {
     .user-name {
         display: inline-block;
     }
-    
+
     .logo {
         height: 80px;
     }
@@ -339,9 +412,9 @@ a.option-link:hover {
     color: var(--color-primary);
 }
 
-p.option-description{
+p.option-description {
     font-style: italic !important;
-    color:#5e5d5d;
+    color: #5e5d5d;
 }
 
 .option-card .option-image {
@@ -586,16 +659,17 @@ input[type="file"]::-webkit-file-upload-button:hover {
     .profile-columns-container {
         flex-direction: column;
     }
-    
+
     .profile-column {
         width: 100%;
     }
 }
+
 /* (255, 213, 171, 0.9), rgba(251, 230, 192, 0.9) */
 .app-main {
     position: relative;
     flex: 1;
-    background: linear-gradient(-45deg, 
+    background: linear-gradient(-45deg,
         rgba(255, 180, 110, 0.7),  /* Naranja con 70% opacidad */
         rgba(255, 220, 150, 0.7),  /* Amarillo con 70% opacidad */
         rgba(255, 148, 91, 0.7),   /* Naranja oscuro con 70% opacidad */

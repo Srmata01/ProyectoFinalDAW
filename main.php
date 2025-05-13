@@ -166,11 +166,7 @@ foreach ($servicios as &$servicio) {
             <h1>Encuentra a tu profesional cerca de ti</h1>
             <p class="subtitulo1">Soluciona tus obras de la forma más rápida</p>
             <div class="search-container">
-                <div class="search-box">
-                    <input type="text" id="busqueda" placeholder="Buscar lampistas, fontaneros, paletas..." class="search-input">
-                    <img src="media/lupa.png" alt="Buscar">
-                    <div id="resultados" class="autocomplete-results"></div>
-                </div>
+                <?php include 'includes/search_form.php'; ?>
             </div>
         </div>
     </div>
@@ -305,9 +301,45 @@ foreach ($servicios as &$servicio) {
                 <img src="media/logo.png" alt="FixItNow Logo">
             </div>
         </div>
-    </footer>
+    </footer>    <!-- Agregar referencia al script del buscador reutilizable -->
+    <script src="services/js/buscador.js" defer></script>
 
-    <script src="buscador.js"></script>
+    <script>
+        // Inicializar los eventos para los filtros
+        document.addEventListener('DOMContentLoaded', function() {
+            const filtroLocalidad = document.getElementById('filtro_localidad');
+            const filtroPrecio = document.getElementById('filtro_precio');
+            const filtroDuracion = document.getElementById('filtro_duracion');
+            const ordenAsc = document.getElementById('orden_asc');
+            const ordenDesc = document.getElementById('orden_desc');
+            
+            // Función para aplicar filtros
+            function aplicarFiltros() {
+                const localidad = filtroLocalidad.value;
+                const precio = filtroPrecio.value;
+                const duracion = filtroDuracion.value;
+                const orden = window.ordenActual || '';
+                
+                window.location.href = `services/buscarservicio.php?localidad=${encodeURIComponent(localidad)}&precio=${encodeURIComponent(precio)}&duracion=${encodeURIComponent(duracion)}&orden=${orden}`;
+            }
+            
+            // Asignar eventos a los filtros
+            filtroLocalidad.addEventListener('change', aplicarFiltros);
+            filtroPrecio.addEventListener('change', aplicarFiltros);
+            filtroDuracion.addEventListener('change', aplicarFiltros);
+            
+            // Eventos para los botones de orden
+            ordenAsc.addEventListener('click', function() {
+                window.ordenActual = 'asc';
+                aplicarFiltros();
+            });
+            
+            ordenDesc.addEventListener('click', function() {
+                window.ordenActual = 'desc';
+                aplicarFiltros();
+            });
+        });
+    </script>
 </body>
 
 </html>
