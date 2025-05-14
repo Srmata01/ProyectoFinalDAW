@@ -83,7 +83,7 @@ $servicios = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
         .filtros-container select,
-        .filtros-container a,
+        .filtro
         .filtros-container button {
             padding: 10px 15px;
             border: 1px solid var(--color-border);

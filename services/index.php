@@ -40,7 +40,7 @@ $servicios = $stmt->fetchAll();
     <div class="container1">
         <div class="profile-columns-container">
             <div class="profile-column">
-                <h2 class="document-title">Servicios Disponibles</h2>
+            <h2 class="document-title" style="text-align: center; width: 100%; margin: 20px 0;">Servicios Disponibles</h2>
                 
                 <?php if (!empty($servicios)): ?>
                     <div class="form-grid">
