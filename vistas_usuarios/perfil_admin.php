@@ -83,10 +83,12 @@ try {
                     </tbody>
                 </table>
             </div>
-        </div>
-
-        <div class="document-container">
+        </div>        <div class="document-container">
             <h2 class="document-title">Incidencias Reportadas</h2>
+            <div class="form-actions" style="margin-bottom: 15px;">
+                <a href="../incidencias/admin.php" class="submit-btn">Gestionar Incidencias</a>
+            </div>
+            
             <?php if (count($incidencias) > 0): ?>
                 <div class="form-grid">
                     <table>
@@ -104,7 +106,7 @@ try {
                                     <td><?= htmlspecialchars($incidencia['persona_incidencia']) ?></td>
                                     <td><?= htmlspecialchars($incidencia['mail_contacto']) ?></td>
                                     <td><?= htmlspecialchars($incidencia['titulo_incidencia']) ?></td>
-                                    <td><?= htmlspecialchars($incidencia['cuerpo_incidencia']) ?></td>
+                                    <td><?= htmlspecialchars(substr($incidencia['cuerpo_incidencia'], 0, 100)) . (strlen($incidencia['cuerpo_incidencia']) > 100 ? '...' : '') ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>

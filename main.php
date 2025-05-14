@@ -154,8 +154,13 @@ foreach ($servicios as &$servicio) {
                 <?php include 'includes/profile_header.php'; ?>
             </div>
         </div>
-    </header>
-
+    </header>    <!-- Mensajes de alerta para el usuario -->
+    <?php if(isset($_GET['mensaje']) && $_GET['mensaje'] == 'incidencia_registrada'): ?>
+        <div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 15px; margin: 15px; border-radius: 5px; text-align: center;">
+            Su incidencia ha sido registrada correctamente. Nos pondremos en contacto con usted lo antes posible.
+        </div>
+    <?php endif; ?>
+    
     <!-- Sección de video y búsqueda -->
     <div class="video-background">
         <video autoplay muted loop>
@@ -168,35 +173,6 @@ foreach ($servicios as &$servicio) {
             <div class="search-container">
                 <?php include 'includes/search_form.php'; ?>
             </div>
-        </div>
-    </div>
-
-    <!-- Filtros de búsqueda -->
-    <div class="filtros-container">
-        <select id="filtro_localidad">
-            <option value="">Selecciona localidad</option>
-            <option value="Madrid">Madrid</option>
-            <option value="Barcelona">Barcelona</option>
-            <option value="Valencia">Valencia</option>
-        </select>
-
-        <select id="filtro_precio">
-            <option value="">Selecciona precio</option>
-            <option value="50">Hasta 50€</option>
-            <option value="100">Hasta 100€</option>
-            <option value="200">Hasta 200€</option>
-        </select>
-
-        <select id="filtro_duracion">
-            <option value="">Selecciona duración</option>
-            <option value="30">Hasta 30 min</option>
-            <option value="60">Hasta 60 min</option>
-            <option value="120">Hasta 120 min</option>
-        </select>
-
-        <div class="orden-container">
-            <button id="orden_asc">Ordenar por precio ascendente</button>
-            <button id="orden_desc">Ordenar por precio descendente</button>
         </div>
     </div>
 
@@ -232,7 +208,7 @@ foreach ($servicios as &$servicio) {
             
             <!-- Botón para ver todos los servicios -->
             <div class="ver-todos-container">
-                <a href="services/index.php" class="ver-todos-btn">Ver Todos los Servicios</a>
+                <a href="services/buscarservicio.php" class="ver-todos-btn">Ver Todos los Servicios</a>
             </div>
         </div>
     </div>

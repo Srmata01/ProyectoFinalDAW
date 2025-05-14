@@ -4,12 +4,12 @@ require_once __DIR__ . '/../config/database.php';
 if (isset($_SESSION['usuario'])) {
     $in_profile_page = strpos($_SERVER['PHP_SELF'], 'perfil_') !== false;
     
-    if (!$in_profile_page) {
-        // Determinar si estamos en un subdirectorio
+    if (!$in_profile_page) {        // Determinar si estamos en un subdirectorio
         $is_subdirectory = strpos($_SERVER['PHP_SELF'], '/services/') !== false || 
         strpos($_SERVER['PHP_SELF'], '/vistas_usuarios/') !== false ||
         strpos($_SERVER['PHP_SELF'], '/reservas/') !== false ||
-        strpos($_SERVER['PHP_SELF'], '/portfolio/') !== false;
+        strpos($_SERVER['PHP_SELF'], '/portfolio/') !== false ||
+        strpos($_SERVER['PHP_SELF'], '/incidencias/') !== false;
         $base_path = $is_subdirectory ? '../' : '';
         
         $perfil_url = '';
@@ -50,10 +50,11 @@ if (isset($_SESSION['usuario'])) {
     $is_subdirectory = strpos($_SERVER['PHP_SELF'], '/services/') !== false ||
                       strpos($_SERVER['PHP_SELF'], '/vistas_usuarios/') !== false ||
                       strpos($_SERVER['PHP_SELF'], '/reservas/') !== false ||
-                      strpos($_SERVER['PHP_SELF'], '/portfolio/') !== false;
+                      strpos($_SERVER['PHP_SELF'], '/portfolio/') !== false ||
+                      strpos($_SERVER['PHP_SELF'], '/incidencias/') !== false;
     $login_url = ($is_subdirectory ? '../' : '') . 'login.php';
     ?>
     <a href="<?= $login_url ?>" class="profile-btn">
         <span class="user-name">Iniciar Sesión</span>
     </a>
-<?php } ?>
+<?php }?>
