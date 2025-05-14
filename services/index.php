@@ -109,11 +109,17 @@ $servicios = $stmt->fetchAll();
                     <li><a href="tel:+34690096690">+34 690 096 690</a></li>
                 </ul>
             </div>
-            
-            <div class="footer-section">
+              <div class="footer-section">
                 <h4>¿Eres miembro?</h4>
                 <ul>
                     <li><a href="../create_users/index.php">Únete a Nosotros</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>¿Tienes algún problema?</h4>
+                <ul>
+                    <li><a href="../incidencias/crear.php">Reportar incidencia</a></li>
                 </ul>
             </div>
             
