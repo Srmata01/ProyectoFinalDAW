@@ -17,12 +17,11 @@ if (!$id_reserva) {
     exit();
 }
 
-try {
-    // Verificar que la reserva pertenece al cliente y está en estado pendiente
+try {    // Verificar que la reserva pertenece al cliente, está en estado pendiente y no ha sido rechazada
     $stmt = $pdo->prepare("
         SELECT r.* 
         FROM reservas r
-        WHERE r.id_reserva = ? AND r.id_cliente = ? AND r.estado = 'pendiente'
+        WHERE r.id_reserva = ? AND r.id_cliente = ? AND r.estado = 'pendiente' AND r.estado_confirmacion != 'rechazada'
     ");
     $stmt->execute([$id_reserva, $id_cliente]);
     $reserva = $stmt->fetch();

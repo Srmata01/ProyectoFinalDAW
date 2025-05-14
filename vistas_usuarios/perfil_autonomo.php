@@ -19,21 +19,20 @@ try {
     // Servicios ofrecidos
     $stmt = $pdo->prepare("SELECT * FROM servicios WHERE id_autonomo = ? ORDER BY nombre ASC");
     $stmt->execute([$id_autonomo]);
-    $servicios = $stmt->fetchAll();
-
-    // Reservas adaptadas a la nueva estructura
+    $servicios = $stmt->fetchAll();    // Reservas adaptadas a la nueva estructura con estado_confirmacion
     $stmt = $pdo->prepare("
         SELECT r.*, s.nombre as servicio, 
                CONCAT(c.nombre, ' ', c.apellido) as cliente,
                c.telefono as telefono_cliente,
                DATE_FORMAT(r.fecha_hora, '%d/%m/%Y') as fecha_formateada,
                TIME_FORMAT(r.fecha_hora, '%H:%i') as hora_inicio_formateada,
-               ADDTIME(TIME_FORMAT(r.fecha_hora, '%H:%i'), SEC_TO_TIME(s.duracion * 60)) as hora_fin_formateada
+               ADDTIME(TIME_FORMAT(r.fecha_hora, '%H:%i'), SEC_TO_TIME(s.duracion * 60)) as hora_fin_formateada,
+               r.estado_confirmacion
         FROM reservas r
         JOIN servicios s ON r.id_servicio = s.id_servicio
         JOIN usuarios c ON r.id_cliente = c.id_usuario
         WHERE s.id_autonomo = ?
-        ORDER BY r.fecha_hora DESC
+        ORDER BY r.estado_confirmacion = 'pendiente' DESC, r.fecha_hora ASC
     ");
     $stmt->execute([$id_autonomo]);
     $reservas = $stmt->fetchAll();
@@ -81,14 +80,16 @@ if (isset($_SESSION['error'])) {
                 </div>
             </div>
         </div>
-    </header>
-
-    <div class="container1">
+    </header>    <div class="container1">
         <?php if (isset($mensaje)): ?>
-            <div class="success-message"><?= htmlspecialchars($mensaje) ?></div>
+            <div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 15px; margin: 15px; border-radius: 5px; text-align: center;">
+                <?= htmlspecialchars($mensaje) ?>
+            </div>
         <?php endif; ?>
         <?php if (isset($error)): ?>
-            <div class="error-message"><?= htmlspecialchars($error) ?></div>
+            <div class="alert alert-danger" style="background-color: #f8d7da; color: #721c24; padding: 15px; margin: 15px; border-radius: 5px; text-align: center;">
+                <?= htmlspecialchars($error) ?>
+            </div>
         <?php endif; ?>
 
         <div class="profile-columns-container">
@@ -170,8 +171,7 @@ if (isset($_SESSION['error'])) {
                 <h2 class="document-title">Reservas de Clientes</h2>
                 <?php if ($reservas): ?>
                     <div class="form-grid">
-                        <table>
-                            <thead>
+                        <table>                            <thead>
                                 <tr>
                                     <th>Servicio</th>
                                     <th>Cliente</th>
@@ -180,12 +180,22 @@ if (isset($_SESSION['error'])) {
                                     <th>Hora Inicio</th>
                                     <th>Hora Fin</th>
                                     <th>Estado</th>
+                                    <th>Confirmación</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($reservas as $reserva): ?>
-                                    <tr>
+                                    <?php 
+                                    // Estilo para la fila según el estado de confirmación
+                                    $estilo_fila = '';
+                                    if ($reserva['estado_confirmacion'] == 'pendiente') {
+                                        $estilo_fila = 'background-color: #fff3cd;'; // Amarillo claro para pendientes
+                                    } elseif ($reserva['estado_confirmacion'] == 'rechazada') {
+                                        $estilo_fila = 'background-color: #f8d7da;'; // Rojo claro para rechazadas
+                                    }
+                                    ?>
+                                    <tr style="<?= $estilo_fila ?>">
                                         <td><?= htmlspecialchars($reserva['servicio']) ?></td>
                                         <td><?= htmlspecialchars($reserva['cliente']) ?></td>
                                         <td><?= htmlspecialchars($reserva['telefono_cliente']) ?></td>
@@ -193,12 +203,13 @@ if (isset($_SESSION['error'])) {
                                         <td><?= htmlspecialchars($reserva['hora_inicio_formateada']) ?></td>
                                         <td><?= htmlspecialchars($reserva['hora_fin_formateada']) ?></td>
                                         <td><?= ucfirst($reserva['estado']) ?></td>
+                                        <td><strong><?= ucfirst($reserva['estado_confirmacion']) ?></strong></td>
                                         <td class="form-actions">
-                                            <?php if ($reserva['estado'] == 'pendiente'): ?>
-                                                <a href="aceptar_reserva.php?id=<?= $reserva['id_reserva'] ?>" class="submit-btn">Aceptar</a>
-                                                <a href="rechazar_reserva.php?id=<?= $reserva['id_reserva'] ?>" class="submit-btn" style="background-color: #dc3545;">Rechazar</a>
-                                            <?php elseif ($reserva['estado'] == 'aceptada'): ?>
-                                                <a href="completar_reserva.php?id=<?= $reserva['id_reserva'] ?>" class="submit-btn">Completar</a>
+                                            <?php if ($reserva['estado'] == 'pendiente' && $reserva['estado_confirmacion'] == 'pendiente'): ?>
+                                                <a href="../reservas/aceptar_reserva.php?id=<?= $reserva['id_reserva'] ?>" class="submit-btn" style="background-color: #28a745;">Aceptar</a>
+                                                <a href="../reservas/rechazar_reserva.php?id=<?= $reserva['id_reserva'] ?>" class="submit-btn" style="background-color: #dc3545;">Rechazar</a>
+                                            <?php elseif ($reserva['estado'] == 'pendiente' && $reserva['estado_confirmacion'] == 'aceptada'): ?>
+                                                <a href="../reservas/completar_reserva.php?id=<?= $reserva['id_reserva'] ?>" class="submit-btn">Completar</a>
                                             <?php else: ?>
                                                 -
                                             <?php endif; ?>
@@ -232,17 +243,11 @@ if (isset($_SESSION['error'])) {
                     <li><a href="tel:+34690096690">+34 690 096 690</a></li>
                 </ul>
             </div>
-              <div class="footer-section">
+            
+            <div class="footer-section">
                 <h4>¿Eres miembro?</h4>
                 <ul>
                     <li><a href="../create_users/index.php">Únete a Nosotros</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-section">
-                <h4>¿Tienes algún problema?</h4>
-                <ul>
-                    <li><a href="../incidencias/crear.php">Reportar incidencia</a></li>
                 </ul>
             </div>
             

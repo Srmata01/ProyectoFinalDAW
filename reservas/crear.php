@@ -80,11 +80,10 @@ try {
             
             $resultado = $stmt->fetch();
             
-            if ($resultado['conflictos'] == 0) {
-                // Crear la reserva
+            if ($resultado['conflictos'] == 0) {                // Crear la reserva con estado de confirmación pendiente
                 $stmt = $pdo->prepare("
-                    INSERT INTO reservas (id_cliente, id_servicio, fecha_hora, estado)
-                    VALUES (?, ?, ?, 'pendiente')
+                    INSERT INTO reservas (id_cliente, id_servicio, fecha_hora, estado, estado_confirmacion)
+                    VALUES (?, ?, ?, 'pendiente', 'pendiente')
                 ");
                 $stmt->execute([
                     $id_cliente, 
@@ -93,7 +92,7 @@ try {
                 ]);
                 
                 // Redirigir al perfil del cliente
-                $_SESSION['mensaje'] = "Reserva creada correctamente. El profesional se pondrá en contacto contigo pronto.";
+                $_SESSION['mensaje'] = "Tu reserva ha sido registrada. El profesional debe confirmarla antes de que sea definitiva.";
                 header('Location: ../vistas_usuarios/perfil_cliente.php');
                 exit();
             } else {

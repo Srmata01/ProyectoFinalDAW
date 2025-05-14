@@ -153,12 +153,25 @@ foreach ($servicios as &$servicio) {
             <div class="login-profile-box">
                 <?php include 'includes/profile_header.php'; ?>
             </div>
-        </div>
-    </header>    <!-- Mensajes de alerta para el usuario -->
-    <?php if(isset($_GET['mensaje']) && $_GET['mensaje'] == 'incidencia_registrada'): ?>
-        <div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 15px; margin: 15px; border-radius: 5px; text-align: center;">
-            Su incidencia ha sido registrada correctamente. Nos pondremos en contacto con usted lo antes posible.
-        </div>
+        </div>    </header>    <!-- Mensajes de alerta para el usuario -->
+    <?php if(isset($_GET['mensaje'])): ?>
+        <?php if($_GET['mensaje'] == 'incidencia_registrada'): ?>
+            <div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 15px; margin: 15px; border-radius: 5px; text-align: center;">
+                Su incidencia ha sido registrada correctamente. Nos pondremos en contacto con usted lo antes posible.
+            </div>
+        <?php elseif($_GET['mensaje'] == 'reserva_creada'): ?>
+            <div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 15px; margin: 15px; border-radius: 5px; text-align: center;">
+                Tu reserva ha sido registrada. El profesional debe confirmarla antes de que sea definitiva.
+            </div>
+        <?php elseif($_GET['mensaje'] == 'reserva_aceptada'): ?>
+            <div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 15px; margin: 15px; border-radius: 5px; text-align: center;">
+                ¡Buenas noticias! El profesional ha aceptado tu reserva.
+            </div>
+        <?php elseif($_GET['mensaje'] == 'reserva_rechazada'): ?>
+            <div class="alert alert-danger" style="background-color: #f8d7da; color: #721c24; padding: 15px; margin: 15px; border-radius: 5px; text-align: center;">
+                Lo sentimos, el profesional ha rechazado tu reserva. Puedes buscar otro servicio similar.
+            </div>
+        <?php endif; ?>
     <?php endif; ?>
     
     <!-- Sección de video y búsqueda -->
