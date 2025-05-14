@@ -171,6 +171,34 @@ foreach ($servicios as &$servicio) {
         </div>
     </div>
 
+    <!-- Filtros de búsqueda -->
+    <div class="filtros-container">
+        <select id="filtro_localidad">
+            <option value="">Selecciona localidad</option>
+            <option value="Madrid">Madrid</option>
+            <option value="Barcelona">Barcelona</option>
+            <option value="Valencia">Valencia</option>
+        </select>
+
+        <select id="filtro_precio">
+            <option value="">Selecciona precio</option>
+            <option value="50">Hasta 50€</option>
+            <option value="100">Hasta 100€</option>
+            <option value="200">Hasta 200€</option>
+        </select>
+
+        <select id="filtro_duracion">
+            <option value="">Selecciona duración</option>
+            <option value="30">Hasta 30 min</option>
+            <option value="60">Hasta 60 min</option>
+            <option value="120">Hasta 120 min</option>
+        </select>
+
+        <div class="orden-container">
+            <button id="orden_asc">Ordenar por precio ascendente</button>
+            <button id="orden_desc">Ordenar por precio descendente</button>
+        </div>
+    </div>
 
     <!-- Sección de servicios recientes -->
     <div class="servicios-section">
@@ -218,7 +246,7 @@ foreach ($servicios as &$servicio) {
         .ver-todos-btn {
             display: inline-block;
             padding: 12px 30px;
-            background-color: #FF9B00;
+            background-color: #4CAF50;
             color: white;
             text-decoration: none;
             border-radius: 5px;
@@ -229,7 +257,7 @@ foreach ($servicios as &$servicio) {
         }
         
         .ver-todos-btn:hover {
-            background-color:rgb(180, 108, 0);
+            background-color: #45a049;
             transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
@@ -251,12 +279,17 @@ foreach ($servicios as &$servicio) {
                     <li><a href="mailto:fixitnow@gmail.com">fixitnow@gmail.com</a></li>
                     <li><a href="tel:+34690096690">+34 690 096 690</a></li>
                 </ul>
-            </div>
-
-            <div class="footer-section">
+            </div>            <div class="footer-section">
                 <h4>Eres miembro?</h4>
                 <ul>
                     <li><a href="create_users/index.php">Únete a Nosotros</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>¿Tienes algún problema?</h4>
+                <ul>
+                    <li><a href="incidencias/crear.php">Reportar incidencia</a></li>
                 </ul>
             </div>
 
