@@ -8,11 +8,21 @@ require_once 'config/database.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FixItNow</title>    <link rel="stylesheet" href="styles.css">
+    <title>FixItNow</title>    
+    <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/png" href="media/logo.png">
     <!-- Agregar referencia al script del buscador -->
     <script src="services/js/buscador.js" defer></script>
-    </head>
+    <style>
+        /* Estilo para limitar tamaño de la imagen de perfil en el header */
+        .user-avatar img {
+            max-width: 40px;
+            max-height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    </style>
+</head>
 
 <body class="app">
     <header class="app-header">
@@ -24,7 +34,8 @@ require_once 'config/database.php';
             </div>
 
             <div class="search-container">
-                <div class="search-box">                    <input type="text" placeholder="Buscar por servicio o localidad..." class="search-input">
+                <div class="search-box">                    
+                    <input type="text" placeholder="Buscar por servicio o localidad..." class="search-input">
                     <img src="media/lupa.png" alt="Buscar" class="search-icon">
                 </div>
             </div>
