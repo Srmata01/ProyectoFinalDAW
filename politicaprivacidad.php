@@ -13,6 +13,15 @@ require_once 'config/database.php';
     <link rel="icon" type="image/png" href="media/logo.png">
     <!-- Agregar referencia al script del buscador -->
     <script src="services/js/buscador.js" defer></script>
+    <style>
+        /* Estilo para limitar el tamaño de la imagen de perfil */
+        .login-profile-box img {
+        max-height: 40px;
+        max-width: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        }
+    </style>
 </head>
 
 <body class="app">
@@ -22,13 +31,16 @@ require_once 'config/database.php';
                 <a href="main.php" class="logo-link">
                     <img src="media/logo.png" alt="Logo FixItNow" class="logo">
                 </a>
-            </div>            <div class="search-container">
+            </div>            
+            <div class="search-container">
                 <div class="search-box">
                     <input type="text" placeholder="Buscar por servicio o ciudad..." 
                            id="buscador-principal" 
                            class="search-input">
                     <img src="media/lupa.png" alt="Buscar" class="search-icon" id="btn-buscar">
-                </div></div><div class="login-profile-box">
+                </div>
+            </div>
+            <div class="login-profile-box">
                 <?php include 'includes/profile_header.php'; ?>
             </div>
         </div>
@@ -107,3 +119,4 @@ require_once 'config/database.php';
 </body>
 
 </html>
+        
