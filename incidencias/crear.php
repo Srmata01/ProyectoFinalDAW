@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail_contacto = $_SESSION['usuario']['email'] ?? '';
             $titulo_incidencia = $_POST['titulo_incidencia'];
             $cuerpo_incidencia = $_POST['cuerpo_incidencia'];
-            
+
             // Construir detalles adicionales
             $detalles = '';
             if (!empty($_POST['tipo_incidencia'])) {
@@ -81,24 +81,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 }
             }
-            
+
             // Añadir los detalles al cuerpo de la incidencia
             if (!empty($detalles)) {
                 $cuerpo_incidencia = $detalles . "\n\n" . $cuerpo_incidencia;
             }
-            
+
             // Procesar imagen si se ha subido
             $imagen_incidencia = null;
             if (isset($_FILES['imagen_incidencia']) && $_FILES['imagen_incidencia']['error'] === UPLOAD_ERR_OK) {
                 $imagen_incidencia = file_get_contents($_FILES['imagen_incidencia']['tmp_name']);
             }
-            
+
             // Insertar la incidencia en la base de datos
             $stmt = $pdo->prepare("
                 INSERT INTO incidencias (persona_incidencia, mail_contacto, titulo_incidencia, cuerpo_incidencia, imagen_incidencia)
                 VALUES (?, ?, ?, ?, ?)
-            ");            $stmt->execute([$persona_incidencia, $mail_contacto, $titulo_incidencia, $cuerpo_incidencia, $imagen_incidencia]);
-            
+            ");
+            $stmt->execute([$persona_incidencia, $mail_contacto, $titulo_incidencia, $cuerpo_incidencia, $imagen_incidencia]);
+
             // Redirigir al main.php después de registrar la incidencia
             header('Location: ../main.php?mensaje=incidencia_registrada');
             exit();
@@ -112,109 +113,160 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reportar Incidencia - FixItNow</title>
     <link rel="stylesheet" href="../main.css">
     <style>
-        .incidencias-container {
-            max-width: 800px;
-            margin: 30px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-        }
-        
-        .incidencias-title {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333;
-        }
-        
-        .incidencias-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-        
-        .form-group label {
-            font-weight: bold;
-            color: #444;
-        }
-        
-        .form-radio-group {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 10px;
-        }
-        
-        .form-radio-label {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            cursor: pointer;
-        }
-        
-        .select-container {
-            margin-top: 10px;
-            display: none;
-        }
-        
-        .mensaje-box {
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            text-align: center;
-        }
-        
-        .mensaje-error {
-            background-color: #ffdddd;
-            color: #ff0000;
-        }
-        
-        .mensaje-success {
-            background-color: #ddffdd;
-            color: #009900;
-        }
-        
-        .form-submit {
-            width: 100%;
-            padding: 12px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .form-submit:hover {
-            background-color: #45a049;
-        }
-        
-        select, input[type="text"], textarea {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-            width: 100%;
-        }
-        
-        textarea {
-            min-height: 150px;
-            resize: vertical;
-        }
-    </style>
+    body {
+        background: linear-gradient(-45deg, rgba(255, 180, 110, 0.7), rgba(255, 220, 150, 0.7), rgba(255, 148, 91, 0.7), rgba(255, 255, 255, 0.7));
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .incidencias-container {
+        max-width: 800px;
+        margin: 150px auto 30px;
+        padding: 30px;
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+
+    .incidencias-title {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+        font-size: 28px;
+        position: relative;
+        padding-bottom: 15px;
+    }
+
+    .incidencias-title:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: linear-gradient(to right, #FF8C42, #FFB347);
+    }
+
+    .incidencias-form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        text-align: left;
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        font-weight: 600;
+        color: #555;
+    }
+
+    .form-radio-group {
+        display: flex;
+        gap: 25px;
+        margin: 20px 0;
+        justify-content: center;
+    }
+
+    .form-radio-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+    input[type="radio"] {
+        accent-color: #FF8C42;
+    }
+
+    .select-container {
+        margin-top: 15px;
+        display: none;
+        animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .mensaje-box {
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .mensaje-error {
+        background-color: #ffdddd;
+        color: #ff0000;
+    }
+
+    .mensaje-success {
+        background-color: #ddffdd;
+        color: #009900;
+    }
+
+    .form-submit {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(to right, #FF8C42, #FFB347);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 15px;
+    }
+
+    .form-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 140, 66, 0.4);
+    }
+
+    select,
+    input[type="text"],
+    textarea {
+        padding: 12px;
+        border: 2px solid #eee;
+        border-radius: 8px;
+        font-size: 15px;
+        width: 100%;
+        transition: border 0.3s;
+    }
+
+    select:focus,
+    input[type="text"]:focus,
+    textarea:focus {
+        border-color: #FF8C42;
+        outline: none;
+    }
+
+    textarea {
+        min-height: 150px;
+        resize: vertical;
+    }
+</style>
 </head>
+
 <body>
     <header>
         <div class="header-container">
@@ -231,13 +283,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="incidencias-container">
         <h1 class="incidencias-title">Reportar Incidencia</h1>
-        
+
         <?php if (!empty($mensaje)): ?>
             <div class="mensaje-box mensaje-<?php echo $tipo_mensaje; ?>">
                 <?php echo htmlspecialchars($mensaje); ?>
             </div>
         <?php endif; ?>
-        
+
         <form class="incidencias-form" action="" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label>¿Sobre qué quieres reportar la incidencia?</label>
@@ -252,7 +304,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <input type="radio" name="tipo_incidencia" value="otro" checked> Otro
                     </label>
                 </div>
-                
+
                 <div id="autonomo-select" class="select-container">
                     <label for="id_autonomo">Seleccione un autónomo:</label>
                     <select id="id_autonomo" name="id_autonomo">
@@ -264,36 +316,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php endforeach; ?>
                     </select>
                 </div>
-                
+
                 <div id="servicio-select" class="select-container">
                     <label for="id_servicio">Seleccione un servicio:</label>
                     <select id="id_servicio" name="id_servicio">
                         <option value="">Seleccione un servicio</option>
                         <?php foreach ($servicios as $servicio): ?>
                             <option value="<?php echo htmlspecialchars($servicio['id_servicio']); ?>">
-                                <?php echo htmlspecialchars($servicio['nombre']); ?> en <?php echo htmlspecialchars($servicio['localidad']); ?> 
+                                <?php echo htmlspecialchars($servicio['nombre']); ?> en <?php echo htmlspecialchars($servicio['localidad']); ?>
                                 (<?php echo htmlspecialchars($servicio['nombre_autonomo'] . ' ' . $servicio['apellido_autonomo']); ?>)
                             </option>
                         <?php endforeach; ?>
                     </select>
                 </div>
             </div>
-            
+
             <div class="form-group">
                 <label for="titulo_incidencia">Título de la incidencia: *</label>
                 <input type="text" id="titulo_incidencia" name="titulo_incidencia" required>
             </div>
-            
+
             <div class="form-group">
                 <label for="cuerpo_incidencia">Descripción de la incidencia: *</label>
                 <textarea id="cuerpo_incidencia" name="cuerpo_incidencia" required></textarea>
             </div>
-            
+
             <div class="form-group">
                 <label for="imagen_incidencia">Adjuntar imagen (opcional):</label>
                 <input type="file" id="imagen_incidencia" name="imagen_incidencia" accept="image/*">
             </div>
-            
+
             <button type="submit" class="form-submit">Enviar Incidencia</button>
         </form>
     </div>
@@ -307,7 +359,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <li><a href="../politicacookiesdatos.php">Política de Cookies y protección de datos</a></li>
                 </ul>
             </div>
-            
+
             <div class="footer-section">
                 <h4>Contacto</h4>
                 <ul>
@@ -315,21 +367,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <li><a href="tel:+34690096690">+34 690 096 690</a></li>
                 </ul>
             </div>
-            
+
             <div class="footer-section">
                 <h4>¿Eres miembro?</h4>
                 <ul>
                     <li><a href="../create_users/index.php">Únete a Nosotros</a></li>
                 </ul>
             </div>
-            
+
             <div class="footer-section">
                 <h4>¿Tienes algún problema?</h4>
                 <ul>
                     <li><a href="../incidencias/crear.php">Reportar incidencia</a></li>
                 </ul>
             </div>
-            
+
             <div class="footer-section social-media">
                 <div class="social-icons">
                     <a href="#"><img src="../media/twitter-icon.png" alt="Twitter"></a>
@@ -338,7 +390,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <a href="#"><img src="../media/tiktok-icon.png" alt="TikTok"></a>
                 </div>
             </div>
-            
+
             <div class="footer-logo">
                 <img src="../media/logo.png" alt="FixItNow Logo">
             </div>
@@ -351,13 +403,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             const tipoRadios = document.querySelectorAll('input[name="tipo_incidencia"]');
             const autonomoSelect = document.getElementById('autonomo-select');
             const servicioSelect = document.getElementById('servicio-select');
-            
+
             function actualizarVisibilidad() {
                 const seleccionado = document.querySelector('input[name="tipo_incidencia"]:checked').value;
-                
+
                 autonomoSelect.style.display = (seleccionado === 'autonomo') ? 'block' : 'none';
                 servicioSelect.style.display = (seleccionado === 'servicio') ? 'block' : 'none';
-                
+
                 // Reset values when changing selection
                 if (seleccionado !== 'autonomo') {
                     document.getElementById('id_autonomo').value = '';
@@ -366,14 +418,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     document.getElementById('id_servicio').value = '';
                 }
             }
-            
+
             tipoRadios.forEach(radio => {
                 radio.addEventListener('change', actualizarVisibilidad);
             });
-            
+
             // Inicializar estado
             actualizarVisibilidad();
         });
     </script>
 </body>
+
 </html>
