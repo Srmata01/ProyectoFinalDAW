@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-05-2025 a las 11:56:31
+-- Tiempo de generación: 15-05-2025 a las 19:24:32
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -136,8 +136,23 @@ CREATE TABLE `reservas` (
 --
 
 INSERT INTO `reservas` (`id_reserva`, `id_cliente`, `id_servicio`, `fecha_hora`, `estado`, `fecha_creacion`, `estado_confirmacion`) VALUES
-(1, 13, 7, '2025-05-12 08:00:00', 'pendiente', '2025-05-07 07:26:33', 'pendiente'),
-(2, 13, 7, '2025-05-13 09:00:00', 'pendiente', '2025-05-07 08:03:31', 'pendiente');
+(1, 13, 7, '2025-05-12 08:00:00', 'cancelada', '2025-05-07 07:26:33', 'pendiente'),
+(2, 13, 7, '2025-05-13 09:00:00', 'completada', '2025-05-07 08:03:31', 'aceptada');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `reset_tokens`
+--
+
+CREATE TABLE `reset_tokens` (
+  `id` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `token` varchar(64) NOT NULL,
+  `fecha_creacion` datetime NOT NULL DEFAULT current_timestamp(),
+  `fecha_expiracion` datetime NOT NULL,
+  `usado` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -276,6 +291,13 @@ ALTER TABLE `reservas`
   ADD KEY `fk_reserva_servicio` (`id_servicio`);
 
 --
+-- Indices de la tabla `reset_tokens`
+--
+ALTER TABLE `reset_tokens`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_usuario` (`id_usuario`);
+
+--
 -- Indices de la tabla `servicios`
 --
 ALTER TABLE `servicios`
@@ -340,6 +362,12 @@ ALTER TABLE `reservas`
   MODIFY `id_reserva` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT de la tabla `reset_tokens`
+--
+ALTER TABLE `reset_tokens`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `servicios`
 --
 ALTER TABLE `servicios`
@@ -385,6 +413,12 @@ ALTER TABLE `portfolios`
 ALTER TABLE `reservas`
   ADD CONSTRAINT `fk_reserva_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_reserva_servicio` FOREIGN KEY (`id_servicio`) REFERENCES `servicios` (`id_servicio`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `reset_tokens`
+--
+ALTER TABLE `reset_tokens`
+  ADD CONSTRAINT `reset_tokens_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `servicios`
