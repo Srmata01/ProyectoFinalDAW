@@ -10,17 +10,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if (!empty($email)) {
         try {
-            $stmt = $pdo->prepare("SELECT id_usuario FROM usuarios WHERE email = ?");
+            // Verificar si el email existe en la base de datos
+            $stmt = $pdo->prepare("SELECT id_usuario, nombre FROM usuarios WHERE email = ?");
             $stmt->execute([$email]);
+            $usuario = $stmt->fetch();
             
-            if ($stmt->rowCount() > 0) {
-                // Aquí iría la lógica para enviar el email de recuperación
-                $mensaje = "Si el correo existe en nuestra base de datos, recibirás un email con las instrucciones para recuperar tu contraseña.";
+            if ($usuario) {
+                // Generar un token aleatorio
+                $token = bin2hex(random_bytes(32)); // 64 caracteres hexadecimales
+                $id_usuario = $usuario['id_usuario'];
+                
+                // Establecer fecha de expiración (24 horas)
+                $fecha_expiracion = date('Y-m-d H:i:s', strtotime('+24 hours'));
+                
+                // Eliminar tokens antiguos del usuario
+                $stmt = $pdo->prepare("DELETE FROM reset_tokens WHERE id_usuario = ?");
+                $stmt->execute([$id_usuario]);
+                
+                // Guardar el token en la base de datos
+                $stmt = $pdo->prepare("INSERT INTO reset_tokens (id_usuario, token, fecha_expiracion) VALUES (?, ?, ?)");
+                $stmt->execute([$id_usuario, $token, $fecha_expiracion]);
+                
+                // Redirigir directamente a la página de restablecimiento
+                header("Location: reset_password.php?token=" . $token);
+                exit;
             } else {
-                $mensaje = "Si el correo existe en nuestra base de datos, recibirás un email con las instrucciones para recuperar tu contraseña.";
+                // Si el email no existe, mostrar un mensaje de error genérico
+                $error = "No se ha encontrado ninguna cuenta con ese correo electrónico.";
             }
         } catch (PDOException $e) {
             $error = "Ha ocurrido un error. Por favor, inténtalo más tarde.";
+            // Para desarrollo, puedes descomentar la siguiente línea
+            // $error .= "<br>Error: " . $e->getMessage();
         }
     } else {
         $error = "Por favor, introduce un email válido.";

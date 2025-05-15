@@ -225,11 +225,10 @@
                 margin: 20px 0;
                 padding: 15px;
                 border-radius: var(--radius-md);
-            }
-
-            .filtros-container select,
+            }            .filtros-container select,
             .filtros-container button,
-            .filtros-container .btn-orden {
+            .filtros-container .btn-orden,
+            .filtros-container .btn-limpiar {
                 padding: 10px 15px;
                 border: 1px solid var(--color-border);
                 border-radius: var(--radius-sm);
@@ -240,6 +239,11 @@
                 color: inherit;
                 display: inline-block;
                 text-align: center;
+            }
+            
+            .filtros-container .btn-limpiar {
+                background-color: var(--color-primary-light);
+                font-weight: bold;
             }
 
             .filtros-container .btn-orden.active {
@@ -324,13 +328,18 @@
             <div class="filtros-container">
                 <form action="buscarservicio.php" method="GET" id="filtros-form">
                     <!-- Mantener el parámetro de búsqueda actual -->
-                    <input type="hidden" name="q" value="<?php echo htmlspecialchars($busqueda); ?>">
-
-                    <select name="localidad" id="filtro_localidad">
+                    <input type="hidden" name="q" value="<?php echo htmlspecialchars($busqueda); ?>">                    <select name="localidad" id="filtro_localidad">
                         <option value="">Todas las localidades</option>
-                        <option value="Madrid" <?php echo ($localidad == 'Madrid') ? 'selected' : ''; ?>>Madrid</option>
-                        <option value="Barcelona" <?php echo ($localidad == 'Barcelona') ? 'selected' : ''; ?>>Barcelona</option>
-                        <option value="Valencia" <?php echo ($localidad == 'Valencia') ? 'selected' : ''; ?>>Valencia</option>
+                        <?php
+                        // Obtener todas las localidades disponibles en la base de datos
+                        $stmt_loc = $pdo->query("SELECT DISTINCT localidad FROM servicios ORDER BY localidad");
+                        $localidades = $stmt_loc->fetchAll(PDO::FETCH_COLUMN);
+                        
+                        foreach ($localidades as $loc) {
+                            $selected = ($localidad == $loc) ? 'selected' : '';
+                            echo "<option value=\"" . htmlspecialchars($loc) . "\" $selected>" . htmlspecialchars($loc) . "</option>";
+                        }
+                        ?>
                     </select>
 
                     <select name="precio" id="filtro_precio">
@@ -346,8 +355,6 @@
                         <option value="60" <?php echo ($duracion == '60') ? 'selected' : ''; ?>>Hasta 60 min</option>
                         <option value="120" <?php echo ($duracion == '120') ? 'selected' : ''; ?>>Hasta 120 min</option>
                     </select>
-
-                    <button type="submit">Aplicar filtros</button>
                 </form>
 
                 <div class="orden-container">
@@ -357,6 +364,7 @@
                     <a href="?q=<?php echo urlencode($busqueda); ?>&localidad=<?php echo urlencode($localidad); ?>&precio=<?php echo urlencode($precio); ?>&duracion=<?php echo urlencode($duracion); ?>&orden=desc" class="btn-orden <?php echo ($orden == 'desc') ? 'active' : ''; ?>">
                         Mayor precio
                     </a>
+                    <a href="buscarservicio.php<?php echo !empty($busqueda) ? '?q=' . urlencode($busqueda) : ''; ?>" class="btn-limpiar">Limpiar filtros</a>
                 </div>
             </div>
 
@@ -454,9 +462,7 @@
                     <img src="../media/logo.png" alt="FixItNow Logo" class="footer-logo-img">
                 </div>
             </div>
-        </footer>
-
-        <script>
+        </footer>        <script>
             // Añadir funcionalidad para aplicar filtros automáticamente cuando cambian
             document.addEventListener('DOMContentLoaded', function() {
                 // Obtener los elementos de filtro
