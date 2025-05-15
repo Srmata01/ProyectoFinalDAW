@@ -91,7 +91,7 @@ foreach ($servicios as &$servicio) {
         }
         
         .servicio-card {
-            height: 100%;
+            height: 300px; /* Altura fija */
             width: 100%;
             display: flex;
             flex-direction: column;
@@ -100,6 +100,7 @@ foreach ($servicios as &$servicio) {
             padding: 15px;
             background-color: #fff;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden; /* Para que el contenido no desborde */
         }
         
         .servicio-card:hover {
