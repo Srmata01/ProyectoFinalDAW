@@ -236,7 +236,7 @@ foreach ($servicios as &$servicio) {
         .ver-todos-btn {
             display: inline-block;
             padding: 12px 30px;
-            background-color: #4CAF50;
+            background-color:rgb(255, 158, 31);
             color: white;
             text-decoration: none;
             border-radius: 5px;
@@ -247,7 +247,7 @@ foreach ($servicios as &$servicio) {
         }
         
         .ver-todos-btn:hover {
-            background-color: #45a049;
+            background-color:rgb(203, 115, 0);
             transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
