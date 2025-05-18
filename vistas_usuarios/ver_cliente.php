@@ -2,6 +2,9 @@
 require_once '../config/database.php';
 session_start();
 
+// Incluir el componente de valoraciones simplificado
+require_once '../valoraciones/valoraciones_simple.php';
+
 // Verificar que hay un usuario autenticado
 if (!isset($_SESSION['usuario'])) {
     $_SESSION['redirect_after_login'] = $_SERVER['REQUEST_URI'];
@@ -85,8 +88,12 @@ try {
                     <p>Por ahora, puedes contactar con <?= htmlspecialchars($cliente['nombre'] . ' ' . $cliente['apellido']) ?> a través de:</p>
                     <p><strong>Teléfono:</strong> <?= htmlspecialchars($cliente['telefono']) ?></p>
                     <p><strong>Email:</strong> <?= htmlspecialchars($cliente['email']) ?></p>
-                    <p style="margin-top: 20px;"><small>Este cliente ha realizado <?= $cliente['total_reservas'] ?> reserva(s) de tus servicios.</small></p>
-                </div>
+                    <p style="margin-top: 20px;"><small>Este cliente ha realizado <?= $cliente['total_reservas'] ?> reserva(s) de tus servicios.</small></p>                </div>
+                
+                <?php 
+                // Mostrar componente de valoraciones simplificado
+                mostrarValoraciones($cliente['id_usuario']);
+                ?>
                 
                 <div class="form-actions">
                     <a href="perfil_autonomo.php" class="submit-btn">Volver a mi perfil</a>

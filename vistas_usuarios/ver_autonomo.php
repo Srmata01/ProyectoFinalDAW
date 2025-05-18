@@ -8,6 +8,9 @@ if (!isset($_SESSION['usuario'])) {
     exit();
 }
 
+// Incluir el componente de valoraciones simplificado
+require_once '../valoraciones/valoraciones_simple.php';
+
 if (!isset($_GET['id'])) {
     header('Location: ../main.php');
     exit();
@@ -200,8 +203,12 @@ try {
                                 <div class="swiper-button-next"></div>
                                 <div class="swiper-button-prev"></div>
                             </div>
-                        </div>
-                    <?php endif; ?>
+                        </div>                    <?php endif; ?>
+
+                    <?php 
+                    // Mostrar componente de valoraciones después del portafolio
+                    mostrarValoraciones($autonomo['id_usuario']);
+                    ?>
 
                     <h2>Servicios ofrecidos (<?= $autonomo['total_servicios'] ?>)</h2>
                     <?php if (!empty($servicios)): ?>

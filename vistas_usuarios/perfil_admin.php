@@ -83,7 +83,16 @@ try {
                     </tbody>
                 </table>
             </div>
-        </div>        <div class="document-container">
+        </div>
+        
+        <div class="document-container">
+            <h2 class="document-title">Valoraciones de Usuarios</h2>
+            <div class="form-actions" style="margin-bottom: 15px;">
+                <a href="../valoraciones/admin.php" class="submit-btn">Gestionar Valoraciones</a>
+            </div>
+        </div>
+        
+        <div class="document-container">
             <h2 class="document-title">Incidencias Reportadas</h2>
             <div class="form-actions" style="margin-bottom: 15px;">
                 <a href="../incidencias/admin.php" class="submit-btn">Gestionar Incidencias</a>
