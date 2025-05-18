@@ -14,15 +14,16 @@ try {
     // Obtener info del autónomo
     $stmt = $pdo->prepare("SELECT * FROM usuarios u WHERE u.id_usuario = ? AND u.id_tipo_usuario = 3");
     $stmt->execute([$id_autonomo]);
-    $autonomo = $stmt->fetch();
-
-    // Servicios ofrecidos
+    $autonomo = $stmt->fetch();    // Servicios ofrecidos
     $stmt = $pdo->prepare("SELECT * FROM servicios WHERE id_autonomo = ? ORDER BY nombre ASC");
     $stmt->execute([$id_autonomo]);
-    $servicios = $stmt->fetchAll();    // Reservas adaptadas a la nueva estructura con estado_confirmacion
+    $servicios = $stmt->fetchAll();
+    
+    // Reservas adaptadas a la nueva estructura con estado_confirmacion
     $stmt = $pdo->prepare("
         SELECT r.*, s.nombre as servicio, 
                CONCAT(c.nombre, ' ', c.apellido) as cliente,
+               c.id_usuario as id_cliente,
                c.telefono as telefono_cliente,
                DATE_FORMAT(r.fecha_hora, '%d/%m/%Y') as fecha_formateada,
                TIME_FORMAT(r.fecha_hora, '%H:%i') as hora_inicio_formateada,
@@ -194,10 +195,18 @@ if (isset($_SESSION['error'])) {
                                     } elseif ($reserva['estado_confirmacion'] == 'rechazada') {
                                         $estilo_fila = 'background-color: #f8d7da;'; // Rojo claro para rechazadas
                                     }
-                                    ?>
-                                    <tr style="<?= $estilo_fila ?>">
-                                        <td><?= htmlspecialchars($reserva['servicio']) ?></td>
-                                        <td><?= htmlspecialchars($reserva['cliente']) ?></td>
+                                    ?>                                    <tr style="<?= $estilo_fila ?>">
+                                        <td><?= htmlspecialchars($reserva['servicio']) ?></td>                                        <td>
+                                            <?php if (isset($reserva['id_cliente'])): ?>
+                                                <a href="ver_cliente.php?id=<?= $reserva['id_cliente'] ?>" 
+                                                   title="Ver detalles del cliente" 
+                                                   style="color: var(--color-primary); text-decoration: underline;">
+                                                    <?= htmlspecialchars($reserva['cliente']) ?>
+                                                </a>
+                                            <?php else: ?>
+                                                <?= htmlspecialchars($reserva['cliente']) ?>
+                                            <?php endif; ?>
+                                        </td>
                                         <td><?= htmlspecialchars($reserva['telefono_cliente']) ?></td>
                                         <td><?= htmlspecialchars($reserva['fecha_formateada']) ?></td>
                                         <td><?= htmlspecialchars($reserva['hora_inicio_formateada']) ?></td>

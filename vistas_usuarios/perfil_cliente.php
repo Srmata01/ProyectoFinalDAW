@@ -18,14 +18,15 @@ try {
         WHERE u.id_usuario = ?
     ");
     $stmt->execute([$id_cliente]);
-    $cliente = $stmt->fetch();
-
-    if (!$cliente) {
+    $cliente = $stmt->fetch();    if (!$cliente) {
         throw new Exception("No se pudo cargar tu perfil de cliente");
-    }    // Consulta actualizada para incluir el estado_confirmacion
+    }
+    
+    // Consulta actualizada para incluir el estado_confirmacion
     $stmt = $pdo->prepare("
         SELECT r.*, s.nombre as servicio, s.precio, s.duracion,
                CONCAT(a.nombre, ' ', a.apellido) as autonomo,
+               a.id_usuario as id_autonomo,
                a.telefono as telefono_autonomo,
                DATE_FORMAT(r.fecha_hora, '%d/%m/%Y') as fecha_formateada,
                TIME_FORMAT(r.fecha_hora, '%H:%i') as hora_inicio_formateada,
@@ -178,10 +179,15 @@ try {
                                         $estilo_fila = 'background-color: #f8d7da;'; // Rojo claro
                                         $estado_texto = '<span style="color: #721c24; font-weight: bold;">Rechazada</span>';
                                     }
-                                    ?>
-                                    <tr style="<?= $estilo_fila ?>">
+                                    ?>                                    <tr style="<?= $estilo_fila ?>">
                                         <td><?= htmlspecialchars($reserva['servicio'] ?? '') ?></td>
-                                        <td><?= htmlspecialchars($reserva['autonomo'] ?? '') ?></td>
+                                        <td>
+                                            <a href="../vistas_usuarios/ver_autonomo.php?id=<?= $reserva['id_autonomo'] ?? '' ?>" 
+                                               title="Ver perfil del profesional" 
+                                               style="color: var(--color-primary); text-decoration: underline;">
+                                                <?= htmlspecialchars($reserva['autonomo'] ?? '') ?>
+                                            </a>
+                                        </td>
                                         <td><?= htmlspecialchars($reserva['fecha_formateada'] ?? '') ?></td>
                                         <td><?= htmlspecialchars($reserva['hora_inicio_formateada'] ?? '') ?></td>
                                         <td><?= htmlspecialchars($reserva['hora_fin_formateada'] ?? '') ?></td>

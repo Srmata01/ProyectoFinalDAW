@@ -90,9 +90,8 @@ try {
                     $id_servicio, 
                     $fecha_hora_inicio
                 ]);
-                
-                // Redirigir al perfil del cliente
-                $_SESSION['mensaje'] = "Tu reserva ha sido registrada. El profesional debe confirmarla antes de que sea definitiva.";
+                  // Redirigir al perfil del cliente
+                $_SESSION['mensaje'] = "Tu reserva ha sido registrada. El profesional debe confirmarla antes de que sea definitiva. <a href='../vistas_usuarios/ver_autonomo.php?id={$id_autonomo}' style='color: var(--color-primary); font-weight: bold;'>Ver perfil del profesional</a>";
                 header('Location: ../vistas_usuarios/perfil_cliente.php');
                 exit();
             } else {

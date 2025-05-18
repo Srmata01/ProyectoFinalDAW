@@ -125,14 +125,16 @@ try {
                         <p><?= htmlspecialchars($servicio['descripcion']) ?></p>
                         
                         <h3>Duración estimada</h3>
-                        <p><?= $servicio['duracion'] ?> minutos</p>
-
-                        <div class="precio-reserva">
+                        <p><?= $servicio['duracion'] ?> minutos</p>                            <div class="precio-reserva">
                             <div class="precio"><?= number_format($servicio['precio'], 2) ?> €</div>
-                            <?php if (isset($_SESSION['usuario']) && $_SESSION['usuario']['tipo'] == 2): ?>
-                                <a href="../reservas/crear.php?servicio=<?= $servicio['id_servicio'] ?>" 
-                                   class="submit-btn">Reservar este servicio</a>
-                            <?php endif; ?>
+                            <div style="display: flex; gap: 10px;">
+                                <a href="../vistas_usuarios/ver_autonomo.php?id=<?= $servicio['autonomo_id'] ?>" 
+                                   class="submit-btn" style="background-color: #6c757d;">Ver perfil del profesional</a>
+                                <?php if (isset($_SESSION['usuario']) && $_SESSION['usuario']['tipo'] == 2): ?>
+                                    <a href="../reservas/crear.php?servicio=<?= $servicio['id_servicio'] ?>" 
+                                       class="submit-btn">Reservar este servicio</a>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     </div>
                 </div>
