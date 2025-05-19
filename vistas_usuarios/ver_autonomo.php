@@ -8,8 +8,18 @@ if (!isset($_SESSION['usuario'])) {
     exit();
 }
 
-// Incluir el componente de valoraciones simplificado
-require_once '../valoraciones/valoraciones_simple.php';
+// Incluir el componente de valoraciones
+$valoraciones_file = '../valoraciones/valoraciones_simple.php';
+if (file_exists($valoraciones_file)) {
+    require_once $valoraciones_file;
+} else {
+    die("Error: No se pudo encontrar el archivo de valoraciones ($valoraciones_file)");
+}
+
+// Verificar que la función existe
+if (!function_exists('mostrarValoraciones')) {
+    die("Error: La función mostrarValoraciones no está disponible");
+}
 
 if (!isset($_GET['id'])) {
     header('Location: ../main.php');
@@ -203,11 +213,13 @@ try {
                                 <div class="swiper-button-next"></div>
                                 <div class="swiper-button-prev"></div>
                             </div>
-                        </div>                    <?php endif; ?>
-
-                    <?php 
+                        </div>                    <?php endif; ?>                    <?php 
                     // Mostrar componente de valoraciones después del portafolio
-                    mostrarValoraciones($autonomo['id_usuario']);
+                    if (isset($autonomo['id_usuario']) && is_numeric($autonomo['id_usuario'])) {
+                        mostrarValoraciones($autonomo['id_usuario']);
+                    } else {
+                        echo '<div class="error">Error: No se pudo obtener el ID del usuario para mostrar valoraciones</div>';
+                    }
                     ?>
 
                     <h2>Servicios ofrecidos (<?= $autonomo['total_servicios'] ?>)</h2>

@@ -1,14 +1,17 @@
-<?php
+﻿<?php
 /**
- * Archivo para mostrar las valoraciones de un usuario
- * 
- * Uso:
- * 1. Incluir este archivo en la página donde se quieren mostrar las valoraciones:
- *    <?php require_once '../valoraciones/valoraciones_simple.php'; ?>
- * 
- * 2. Llamar a la función para mostrar las valoraciones:
- *    <?php mostrarValoraciones($id_usuario); ?>
+ * Componente para mostrar valoraciones de usuarios
  */
+
+// Iniciar sesión si no está iniciada
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Incluir la conexión a la base de datos si no está incluida
+if (!function_exists("conectarBaseDatos") && !isset($pdo)) {
+    require_once __DIR__ . "/../config/database.php";
+}
 
 /**
  * Muestra las valoraciones recibidas por un usuario
@@ -19,7 +22,7 @@ function mostrarValoraciones($id_usuario) {
     global $pdo;
     
     if (!is_numeric($id_usuario) || $id_usuario <= 0) {
-        echo '<p class="error">ID de usuario no válido</p>';
+        echo "<p class=\"error\">ID de usuario no válido</p>";
         return;
     }
 
@@ -44,14 +47,13 @@ function mostrarValoraciones($id_usuario) {
         $stmt->execute([$id_usuario]);
         $stats = $stmt->fetch();
         
-        $media = round(floatval($stats['media'] ?? 0), 1);
-        $total = intval($stats['total'] ?? 0);
+        $media = round(floatval($stats["media"] ?? 0), 1);
+        $total = intval($stats["total"] ?? 0);
         
         // Verificar si el usuario actual ha valorado a este usuario
-        $mi_valoracion = null;
         $ha_valorado = false;
-        if (isset($_SESSION['usuario']) && isset($_SESSION['usuario']['id'])) {
-            $id_emisor = $_SESSION['usuario']['id'];
+        if (isset($_SESSION["usuario"]) && isset($_SESSION["usuario"]["id"])) {
+            $id_emisor = $_SESSION["usuario"]["id"];
             if ($id_emisor != $id_usuario) {  // No se puede valorar a uno mismo
                 $stmt = $pdo->prepare("
                     SELECT id_valoracion FROM valoraciones_usuarios 
@@ -63,27 +65,24 @@ function mostrarValoraciones($id_usuario) {
         }
         
         // Determinar tipo de usuario para los enlaces
-        $tipo_usuario = '';
+        $tipo_usuario = "";
         $stmt = $pdo->prepare("SELECT tu.tipo FROM usuarios u JOIN tipos_usuarios tu ON u.id_tipo_usuario = tu.id_tipo_usuario WHERE u.id_usuario = ?");
         $stmt->execute([$id_usuario]);
         $res = $stmt->fetch();
         if ($res) {
-            $tipo_usuario = strtolower($res['tipo']) === 'autónomo' || strtolower($res['tipo']) === 'autonomo' ? 'autonomo' : 'cliente';
+            $tipo_usuario = strtolower($res["tipo"]) === "autónomo" || strtolower($res["tipo"]) === "autonomo" ? "autonomo" : "cliente";
         }
-
-        // Mostrar el HTML de las valoraciones
         ?>
+        
         <div class="valoraciones-section">
             <div class="valoraciones-header">
                 <h2>Valoraciones</h2>
                 
-                <?php if (isset($_SESSION['usuario']) && $_SESSION['usuario']['id'] != $id_usuario) : ?>
+                <?php if (isset($_SESSION["usuario"]) && $_SESSION["usuario"]["id"] != $id_usuario && !$ha_valorado) : ?>
                     <div class="valoracion-actions">
-                        <?php if ($ha_valorado): ?>
-                            <a href="../valoraciones/crear.php?id_usuario=<?= $id_usuario ?>&tipo=<?= $tipo_usuario ?>" class="btn-valoracion">Editar mi valoración</a>
-                        <?php else: ?>
-                            <a href="../valoraciones/crear.php?id_usuario=<?= $id_usuario ?>&tipo=<?= $tipo_usuario ?>" class="btn-valoracion">Añadir valoración</a>
-                        <?php endif; ?>
+                        <a href="../valoraciones/crear.php?id_usuario=<?= $id_usuario ?>" class="btn-valoracion">
+                            Añadir valoración
+                        </a>
                     </div>
                 <?php endif; ?>
             </div>
@@ -104,39 +103,43 @@ function mostrarValoraciones($id_usuario) {
                     <span class="rating-number"><?= $media ?></span>
                     <span class="rating-count">(<?= $total ?> valoraciones)</span>
                 </div>
-            </div>            <div class="valoraciones-lista">
+            </div>
+
+            <div class="valoraciones-lista">
                 <?php if (count($valoraciones) > 0) : ?>
-                    <?php foreach ($valoraciones as $valoracion) : ?>                        <div class="valoracion-item">
-                            <?php if (!empty($valoracion['foto_perfil'])) : ?>
-                                <img src="data:image/jpeg;base64,<?= base64_encode($valoracion['foto_perfil']) ?>" 
-                                     alt="Foto de <?= htmlspecialchars($valoracion['nombre']) ?>" 
+                    <?php foreach ($valoraciones as $valoracion) : ?>
+                        <div class="valoracion-item">
+                            <?php if (!empty($valoracion["foto_perfil"])) : ?>
+                                <img src="data:image/jpeg;base64,<?= base64_encode($valoracion["foto_perfil"]) ?>" 
+                                     alt="Foto de <?= htmlspecialchars($valoracion["nombre"]) ?>" 
                                      class="valoracion-usuario-img">
                             <?php else : ?>
                                 <div class="valoracion-usuario-img default">
-                                    <?= strtoupper(substr($valoracion['nombre'], 0, 1) . substr($valoracion['apellido'], 0, 1)) ?>
+                                    <?= strtoupper(substr($valoracion["nombre"], 0, 1) . substr($valoracion["apellido"], 0, 1)) ?>
                                 </div>
                             <?php endif; ?>
                             
                             <div class="valoracion-content">
                                 <div class="valoracion-header">
                                     <div class="valoracion-nombre">
-                                        <?= htmlspecialchars($valoracion['nombre'] . ' ' . $valoracion['apellido']) ?>
+                                        <?= htmlspecialchars($valoracion["nombre"] . " " . $valoracion["apellido"]) ?>
                                     </div>
                                     <div class="valoracion-fecha">
-                                        <?= date('d/m/Y', strtotime($valoracion['fecha_creacion'])) ?>
+                                        <?= date("d/m/Y", strtotime($valoracion["fecha_creacion"])) ?>
                                     </div>
                                 </div>
                                 <div class="valoracion-estrellas">
                                     <?php for ($i = 1; $i <= 5; $i++) : ?>
-                                        <?php if ($i <= $valoracion['puntuacion']) : ?>
+                                        <?php if ($i <= $valoracion["puntuacion"]) : ?>
                                             <span class="star">★</span>
                                         <?php else : ?>
                                             <span class="star empty">☆</span>
                                         <?php endif; ?>
                                     <?php endfor; ?>
-                                </div>                                <?php if (!empty($valoracion['comentario'])) : ?>
+                                </div>
+                                <?php if (!empty($valoracion["comentario"])) : ?>
                                     <div class="valoracion-comentario">
-                                        <?= nl2br($valoracion['comentario']) ?>
+                                        <?= nl2br(htmlspecialchars($valoracion["comentario"])) ?>
                                     </div>
                                 <?php endif; ?>
                             </div>
@@ -273,7 +276,8 @@ function mostrarValoraciones($id_usuario) {
             color: #555;
             line-height: 1.4;
         }
-          .mensaje-sin-valoraciones {
+        
+        .mensaje-sin-valoraciones {
             color: #666;
             font-style: italic;
             text-align: center;
@@ -282,7 +286,7 @@ function mostrarValoraciones($id_usuario) {
         </style>
         <?php
     } catch (PDOException $e) {
-        echo '<div class="error">Error al cargar las valoraciones: ' . $e->getMessage() . '</div>';
+        echo "<div class=\"error\">Error al cargar las valoraciones: " . $e->getMessage() . "</div>";
     }
 }
 ?>

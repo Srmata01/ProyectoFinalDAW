@@ -2,7 +2,7 @@
 require_once '../config/database.php';
 session_start();
 
-// Incluir el componente de valoraciones simplificado
+// Incluir el componente de valoraciones
 require_once '../valoraciones/valoraciones_simple.php';
 
 // Verificar que hay un usuario autenticado
