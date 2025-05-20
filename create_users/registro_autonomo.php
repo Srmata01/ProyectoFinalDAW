@@ -206,6 +206,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </form>
         </div>
     </div>
+    <!-- ✅ FIN ZONA CON GRADIENTE ANIMADO -->
 
     <?php 
     // Definir la ruta base para el footer

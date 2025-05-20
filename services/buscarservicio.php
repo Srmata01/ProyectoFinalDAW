@@ -409,36 +409,15 @@
                 <div class="no-resultados">
                     <p>No se encontraron servicios que coincidan con tu búsqueda.</p>
                     <p>Intenta con otros términos o filtros de búsqueda.</p>
-                </div>
-            <?php endif; ?>
+                </div>            <?php endif; ?>
         </main>
 
-        <footer class="app-footer">
-            <div class="footer-container">
-                <div class="footer-section">
-                    <h4 class="footer-title">Información Personal</h4>
-                    <ul class="footer-list">
-                        <li><a href="../politicaprivacidad.php" class="footer-link">Política de privacidad</a></li>
-                        <li><a href="../politicacookiesdatos.php" class="footer-link">Política de Cookies y protección de
-                                datos</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h4 class="footer-title">Contacto</h4>
-                    <ul class="footer-list">
-                        <li><a href="mailto:fixitnow@gmail.com" class="footer-link">fixitnow@gmail.com</a></li>
-                        <li><a href="tel:+34690096690" class="footer-link">+34 690 096 690</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4 class="footer-title">¿Eres miembro?</h4>
-                    <ul class="footer-list">
-                        <li><a href="../create_users/index.php" class="footer-link">Únete a Nosotros</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
+        <?php 
+        // Definir la ruta base para el footer
+        $base_path = '../';
+        include '../includes/footer.php'; 
+        ?>
+        
                     <h4 class="footer-title">¿Tienes algún problema?</h4>
                     <ul class="footer-list">
                         <li><a href="../incidencias/crear.php" class="footer-link">Reportar incidencia</a></li>

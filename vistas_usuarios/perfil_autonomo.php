@@ -227,18 +227,20 @@ if (isset($_SESSION['error'])) {
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
-                    </div>
-                <?php else: ?>
+                    </div>                <?php else: ?>
                     <p class="document-text">No tienes reservas activas.</p>
                 <?php endif; ?>
             </div>
         </div>
     </div>
 
-    <footer>
-        <div class="footer-container">
-            <div class="footer-section">
-                <h4>Información Personal</h4>
+    <?php 
+    // Definir la ruta base para el footer
+    $base_path = '../';
+    include '../includes/footer.php'; 
+    ?>
+</body>
+</html>
                 <ul>
                     <li><a href="../politicaprivacidad.php">Política de privacidad</a></li>
                     <li><a href="../politicacookiesdatos.php">Política de Cookies y protección de datos</a></li>

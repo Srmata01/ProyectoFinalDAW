@@ -58,54 +58,11 @@ require_once 'config/database.php';
                 <img src="media/politica-privacidad.jpg" alt="" style="display: block; margin: 40px auto; width: 50%; max-width: 350px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);">
             </p>
             <a href="media/politica_privacidad_document.pdf" download class="download-button">Descargar Documento</a>
-        </div>
-    </main>
+        </div>    </main>
 
-    <footer>
-        <div class="footer-container">
-            <div class="footer-section">
-                <h4>Información Personal</h4>
-                <ul>
-                    <li><a href="politicaprivacidad.php">Política de privacidad</a></li>
-                    <li><a href="politicacookiesdatos.php">Política de Cookies y protección de datos</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section">
-                <h4>Contacto</h4>
-                <ul>
-                    <li><a href="mailto:fixitnow@gmail.com">fixitnow@gmail.com</a></li>
-                    <li><a href="tel:+34690096690">+34 690 096 690</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Eres miembro?</h4>
-                <ul>
-                    <li><a href="create_users/index.php">Únete a Nosotros</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section">
-                <h4>¿Tienes algún problema?</h4>
-                <ul>
-                    <li><a href="incidencias/crear.php">Reportar incidencia</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section social-media">
-                <div class="social-icons">
-                    <a href="#"><img src="media/twitter-icon.png" alt="Twitter"></a>
-                    <a href="#"><img src="media/instagram-icon.png" alt="Instagram"></a>
-                    <a href="#"><img src="media/facebook-icon.png" alt="Facebook"></a>
-                    <a href="#"><img src="media/tiktok-icon.png" alt="TikTok"></a>
-                </div>
-            </div>
-
-            <div class="footer-logo">
-                <img src="media/logo.png" alt="FixItNow Logo">
-            </div>
-        </div>
-    </footer> <!-- Agregar referencia al script del buscador reutilizable -->
+    <?php include 'includes/footer.php'; ?>
+    
+    <!-- Agregar referencia al script del buscador reutilizable -->
 </body>
 
 </html>

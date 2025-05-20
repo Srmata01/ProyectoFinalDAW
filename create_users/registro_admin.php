@@ -187,10 +187,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                 </form>
         </div>
-    </div>    <?php 
+    </div>
+    <!-- ✅ FIN ZONA CON GRADIENTE ANIMADO -->
+
+    <?php 
     // Definir la ruta base para el footer
     $base_path = '../';
     include '../includes/footer.php'; 
     ?>
 </body>
+
 </html>
