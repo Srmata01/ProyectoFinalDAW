@@ -16,10 +16,10 @@ require_once 'config/database.php';
     <style>
         /* Estilo para limitar el tamaño de la imagen de perfil */
         .login-profile-box img {
-        max-height: 40px;
-        max-width: 40px;
-        border-radius: 50%;
-        object-fit: cover;
+            max-height: 40px;
+            max-width: 40px;
+            border-radius: 50%;
+            object-fit: cover;
         }
     </style>
 </head>
@@ -31,12 +31,12 @@ require_once 'config/database.php';
                 <a href="main.php" class="logo-link">
                     <img src="media/logo.png" alt="Logo FixItNow" class="logo">
                 </a>
-            </div>            
+            </div>
             <div class="search-container">
                 <div class="search-box">
-                    <input type="text" placeholder="Buscar por servicio o ciudad..." 
-                           id="buscador-principal" 
-                           class="search-input">
+                    <input type="text" placeholder="Buscar por servicio o ciudad..."
+                        id="buscador-principal"
+                        class="search-input">
                     <img src="media/lupa.png" alt="Buscar" class="search-icon" id="btn-buscar">
                 </div>
             </div>
@@ -50,22 +50,12 @@ require_once 'config/database.php';
         <div class="document-container">
             <h2 class="document-title">Documentación sobre la Política de Privacidad</h2>
             <br><br>
-            <p class="document-text">Aquí puedes descargar el documento con toda la información necesaria sobre nuestra
-                política de cookies.Aquí puedes descargar el documento con toda la información necesaria sobre nuestra
-                política de cookies.Aquí puedes descargar el documento con toda la información necesaria sobre nuestra
-                política de cookies.
+            <p class="document-text">
+            En Fix It Now, respetamos tu privacidad y protegemos tus datos personales conforme al Reglamento General de Protección de Datos (RGPD) y la legislación española vigente. Los datos personales que nos proporciones a través de formularios, correos electrónicos o cualquier otro medio serán tratados con confidencialidad y únicamente para gestionar los servicios solicitados, mejorar la atención al cliente, y facilitar el contacto entre usuarios y profesionales del sector de la fontanería y lampistería.
+
                 <br><br>
-                Aquí puedes descargar el documento con toda la información necesaria sobre nuestra política de
-                cookies.Aquí puedes descargar el documento con toda la información necesaria sobre nuestra política de
-                cookies.Aquí puedes descargar el documento con toda la información necesaria sobre nuestra política de
-                cookies.
+                El responsable del tratamiento es nuestra empresa, ubicada en Cataluña, España. No compartimos tus datos con terceros sin tu consentimiento, salvo obligación legal. Puedes ejercer tus derechos de acceso, rectificación, supresión, limitación y oposición enviando un correo electrónico a info@fixitnow.com. Al usar nuestra web, aceptas esta política de privacidad.
                 <br><br>
-                Aquí puedes descargar el documento con toda la información necesaria sobre nuestra política de
-                cookies.Aquí puedes descargar el documento con toda la información necesaria sobre nuestra política de
-                cookies.Aquí puedes descargar el documento con toda la información necesaria sobre nuestra política de
-                cookies.
-                <br><br>
-                Aquí puedes descargar el documento con toda la información necesaria sobre nuestra política de cookies.
             </p>
             <br><br>
             <a href="media/politica_privacidad_document.pdf" download class="download-button">Descargar Documento</a>
@@ -88,13 +78,14 @@ require_once 'config/database.php';
                     <li><a href="mailto:fixitnow@gmail.com">fixitnow@gmail.com</a></li>
                     <li><a href="tel:+34690096690">+34 690 096 690</a></li>
                 </ul>
-            </div>            <div class="footer-section">
+            </div>
+            <div class="footer-section">
                 <h4>Eres miembro?</h4>
                 <ul>
                     <li><a href="create_users/index.php">Únete a Nosotros</a></li>
                 </ul>
             </div>
-            
+
             <div class="footer-section">
                 <h4>¿Tienes algún problema?</h4>
                 <ul>
@@ -115,8 +106,7 @@ require_once 'config/database.php';
                 <img src="media/logo.png" alt="FixItNow Logo">
             </div>
         </div>
-    </footer>    <!-- Agregar referencia al script del buscador reutilizable -->
+    </footer> <!-- Agregar referencia al script del buscador reutilizable -->
 </body>
 
 </html>
-        
