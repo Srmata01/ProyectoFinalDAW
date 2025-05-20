@@ -96,7 +96,8 @@ require_once 'config/database.php';
                 <br><br>
                 Para más información sobre cómo gestionamos las cookies, puedes consultar la configuración de tu navegador o escribirnos a info@fixitnow.com.
             </p>
-            <br><br>
+
+            <img src="media/politica-cookies.jpg" alt="" style="display: block; margin: 40px auto; width: 50%; max-width: 400px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);">
             <a href="media/politica_cookies_document.pdf" download class="download-button">Descargar Documento</a>
         </div>
     </main>

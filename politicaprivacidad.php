@@ -55,9 +55,8 @@ require_once 'config/database.php';
 
                 <br><br>
                 El responsable del tratamiento es nuestra empresa, ubicada en Cataluña, España. No compartimos tus datos con terceros sin tu consentimiento, salvo obligación legal. Puedes ejercer tus derechos de acceso, rectificación, supresión, limitación y oposición enviando un correo electrónico a info@fixitnow.com. Al usar nuestra web, aceptas esta política de privacidad.
-                <br><br>
+                <img src="media/politica-privacidad.jpg" alt="" style="display: block; margin: 40px auto; width: 50%; max-width: 350px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);">
             </p>
-            <br><br>
             <a href="media/politica_privacidad_document.pdf" download class="download-button">Descargar Documento</a>
         </div>
     </main>

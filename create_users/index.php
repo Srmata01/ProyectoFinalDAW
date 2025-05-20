@@ -49,7 +49,7 @@
     .document-container3 {
         background-color: transparent !important;
         box-shadow: none;
-        margin-top: -50px;
+        margin-top: 80px;
     }
 
     .document-title {
