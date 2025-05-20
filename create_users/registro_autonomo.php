@@ -130,14 +130,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .submit-btn:hover {
             background-color: #e04e00;
         }
+        .error-message {
+            background-color: rgba(255, 0, 0, 0.8);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .container1 {
+            background-color: transparent !important;
+        }
     </style>
 </head>
 <body>
-    <div class="video-background">
-        <video autoplay muted loop>
-            <source src="../media/background-video.mp4" type="video/mp4">
-        </video>
-    </div>
+
 
     <header>
         <div class="header-container">
@@ -152,50 +159,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </header>
 
-    <div class="container1">
-        <div class="content">
-            <h1>Registrate como Autónomo</h1>
+   <!-- ✅ INICIO ZONA CON GRADIENTE ANIMADO -->
+   <div class="app-main">
+        <div class="content-wrapper">
+                <div class="content">
+                    <h1>Regístrate como Autonomo</h1>
+                </div>
+
+                <form method="post" class="form-grid" enctype="multipart/form-data">
+                    <?php if (isset($error)): ?>
+                        <div class="error-message"><?= htmlspecialchars($error) ?></div>
+                    <?php endif; ?>
+
+                    <div class="form-row">
+                        <label>Nombre:
+                            <input type="text" name="nombre" required>
+                        </label>
+                        <label>Apellido:
+                            <input type="text" name="apellido" required>
+                        </label>
+                        <label>NIF/CIF:
+                            <input type="text" name="nif" required placeholder="NIF personal o CIF de empresa">
+                        </label>
+                    </div>
+                    <div class="form-row">
+                        <label>Email:
+                            <input type="email" name="email" required>
+                        </label>
+                        <label>Contraseña:
+                            <input type="password" name="password" required>
+                        </label>
+                        <label>Teléfono:
+                            <input type="tel" name="telefono">
+                        </label>
+                    </div>
+                    <div class="form-row">
+                        <label>Dirección:
+                            <textarea name="direccion" rows="1"></textarea>
+                        </label>
+                        <label>Foto de perfil:
+                            <input type="file" name="foto_perfil" accept="image/*">
+                        </label>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Registrarse</button>
+                    </div>
+                </form>
         </div>
-        
-        <form method="post" class="form-grid" enctype="multipart/form-data">
-            <?php if (isset($error)): ?>
-                <div class="error-message"><?= htmlspecialchars($error) ?></div>
-            <?php endif; ?>
-            
-            <div class="form-row">
-                <label>Nombre:
-                    <input type="text" name="nombre" required>
-                </label>
-                <label>Apellido:
-                    <input type="text" name="apellido" required>
-                </label>
-                <label>NIF/CIF:
-                    <input type="text" name="nif" required placeholder="NIF personal o CIF de empresa">
-                </label>
-            </div>
-            <div class="form-row">
-                <label>Email:
-                    <input type="email" name="email" required>
-                </label>
-                <label>Contraseña:
-                    <input type="password" name="password" required>
-                </label>
-                <label>Teléfono:
-                    <input type="tel" name="telefono">
-                </label>
-            </div>
-            <div class="form-row">
-                <label>Dirección:
-                    <textarea name="direccion" rows="1"></textarea>
-                </label>
-                <label>Foto de perfil:
-                    <input type="file" name="foto_perfil" accept="image/*">
-                </label>
-            </div>
-            <div class="form-actions">
-                <button type="submit" class="submit-btn">Registrarse</button>
-            </div>
-        </form>
     </div>
 
     <footer>

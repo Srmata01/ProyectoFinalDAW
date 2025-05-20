@@ -665,20 +665,20 @@ input[type="file"]::-webkit-file-upload-button:hover {
     }
 }
 
-/* (255, 213, 171, 0.9), rgba(251, 230, 192, 0.9) */
-.app-main {
+
+/* .app-main {
     position: relative;
     flex: 1;
     background: linear-gradient(-45deg,
-        rgba(255, 180, 110, 0.7),  /* Naranja con 70% opacidad */
-        rgba(255, 220, 150, 0.7),  /* Amarillo con 70% opacidad */
-        rgba(255, 148, 91, 0.7),   /* Naranja oscuro con 70% opacidad */
-        rgba(255, 255, 255, 0.7));  /* Blanco con 70% opacidad */
+        rgba(255, 180, 110, 0.1),  
+        rgba(255, 220, 150, 0.1),  
+        rgba(255, 148, 91, 0.1),   
+        rgba(255, 255, 255, 0.1));  
     background-size: 400% 400%;
     animation: moveBackground 8s ease infinite;
     padding-bottom: 60px;
     min-height: calc(100vh - 100px);
-}
+} */
 
 @keyframes moveBackground {
     0% {
@@ -692,4 +692,29 @@ input[type="file"]::-webkit-file-upload-button:hover {
         background-position: 0% 50%;
         background-size: 400% 400%;
     }
+}
+
+.app-main {
+    position: relative;
+    flex: 1;
+    background: linear-gradient(-45deg,
+        rgba(255, 180, 110, 0.3),
+        rgba(255, 220, 150, 0.3),
+        rgba(255, 148, 91, 0.3),
+        rgba(255, 255, 255, 0.3));
+    background-size: 400% 400%;
+    animation: moveBackground 8s ease infinite;
+    padding-bottom: 60px;
+    min-height: calc(100vh - 100px);
+
+    z-index: -1; /* Fondo detrás */
+}
+
+/* Contenedor para el contenido dentro de app-main */
+.app-main > .content-wrapper {
+    position: relative;
+    z-index: 1; /* Contenido sobre el fondo */
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px;
 }

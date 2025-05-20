@@ -11,12 +11,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nif = $_POST['nif'] ?? '';
     $foto_perfil = null;
 
-    // Procesamiento de la foto de perfil
     if (isset($_FILES['foto_perfil']) && $_FILES['foto_perfil']['error'] === UPLOAD_ERR_OK) {
         $foto_temp = $_FILES['foto_perfil']['tmp_name'];
         $foto_tipo = $_FILES['foto_perfil']['type'];
-        
-        // Verificar que sea una imagen
+
         if (strpos($foto_tipo, 'image/') === 0) {
             $foto_perfil = file_get_contents($foto_temp);
         }
@@ -28,17 +26,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $error = "La contraseña debe tener al menos 8 caracteres";
     } else {
         try {
-            // Verificar si el email ya está registrado
             $stmt = $pdo->prepare("SELECT id_usuario FROM usuarios WHERE email = ?");
             $stmt->execute([$email]);
-            
+
             if ($stmt->rowCount() > 0) {
                 $error = "Este email ya está registrado";
             } else {
-                // Inserción en la tabla 'usuarios' para un cliente
                 $stmt = $pdo->prepare("INSERT INTO usuarios 
                       (nombre, apellido, email, contraseña, telefono, direccion, DNI, id_tipo_usuario, id_estado_usuario, foto_perfil) 
-                      VALUES (?, ?, ?, ?, ?, ?, ?, 2, 1, ?)");  // Cambiar id_tipo_usuario de 3 (autónomo) a 2 (cliente)
+                      VALUES (?, ?, ?, ?, ?, ?, ?, 2, 1, ?)");
                 $stmt->execute([
                     $nombre,
                     $apellido,
@@ -49,8 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $nif,
                     $foto_perfil
                 ]);
-                
-                header("Location: registro_exitoso.php?tipo=cliente"); // Redirigir a página de registro de cliente
+
+                header("Location: registro_exitoso.php?tipo=cliente");
                 exit();
             }
         } catch (PDOException $e) {
@@ -69,28 +65,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="../styles.css">
     <link rel="icon" type="image/png" href="../media/logo.png">
     <style>
-        .video-background {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            overflow: hidden;
-            z-index: -1;
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(-45deg,
+                rgba(255, 180, 110, 0.1),
+                rgba(255, 220, 150, 0.1),
+                rgba(255, 148, 91, 0.1),
+                rgba(255, 255, 255, 0.1));
+            background-size: 400% 400%;
+            animation: moveBackground 8s ease infinite;
+            min-height: 100vh;
         }
-        .video-background video {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            min-width: 100%; min-height: 100%;
-            object-fit: cover;
+
+        @keyframes moveBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
+
         .content {
-            position: relative;
-            z-index: 1;
             color: orange;
             text-align: center;
             font-size: 2rem;
             padding: 20px;
         } 
+
         .form-grid {
             background-color: #8585855c;
             backdrop-filter: blur(10px);
@@ -104,22 +105,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             margin: auto;
             margin-top: -5px;
         }
+
         .form-row {
             display: flex;
             flex-wrap: wrap;
             gap: 1rem;
         }
+
         .form-row label {
             flex: 1;
             display: flex;
             flex-direction: column;
         }
+
         input, textarea {
             padding: 0.5rem;
             border: none;
             border-radius: 8px;
             background-color: rgba(255,255,255,0.8);
         }
+
         .submit-btn {
             background-color: #ff5e00;
             color: white;
@@ -129,18 +134,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             cursor: pointer;
             font-size: 1rem;
         }
+
         .submit-btn:hover {
             background-color: #e04e00;
         }
+
+        .error-message {
+            background-color: rgba(255, 0, 0, 0.8);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+     
+    .container1 {
+        background-color: transparent !important;
+    }
+</style>
     </style>
 </head>
 <body>
-    <div class="video-background">
-        <video autoplay muted loop>
-            <source src="../media/background-video.mp4" type="video/mp4">
-        </video>
-    </div>
-
     <header>
         <div class="header-container">
             <div class="logo-container">
@@ -154,51 +168,55 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </header>
 
-    <div class="container1">
-        <div class="content">
-            <h1>Regístrate como Cliente</h1>
+    <!-- ✅ INICIO ZONA CON GRADIENTE ANIMADO -->
+    <div class="app-main">
+        <div class="content-wrapper">
+                <div class="content">
+                    <h1>Regístrate como Cliente</h1>
+                </div>
+
+                <form method="post" class="form-grid" enctype="multipart/form-data">
+                    <?php if (isset($error)): ?>
+                        <div class="error-message"><?= htmlspecialchars($error) ?></div>
+                    <?php endif; ?>
+
+                    <div class="form-row">
+                        <label>Nombre:
+                            <input type="text" name="nombre" required>
+                        </label>
+                        <label>Apellido:
+                            <input type="text" name="apellido" required>
+                        </label>
+                        <label>NIF/CIF:
+                            <input type="text" name="nif" required placeholder="NIF personal o CIF de empresa">
+                        </label>
+                    </div>
+                    <div class="form-row">
+                        <label>Email:
+                            <input type="email" name="email" required>
+                        </label>
+                        <label>Contraseña:
+                            <input type="password" name="password" required>
+                        </label>
+                        <label>Teléfono:
+                            <input type="tel" name="telefono">
+                        </label>
+                    </div>
+                    <div class="form-row">
+                        <label>Dirección:
+                            <textarea name="direccion" rows="1"></textarea>
+                        </label>
+                        <label>Foto de perfil:
+                            <input type="file" name="foto_perfil" accept="image/*">
+                        </label>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Registrarse</button>
+                    </div>
+                </form>
         </div>
-        
-        <form method="post" class="form-grid" enctype="multipart/form-data">
-            <?php if (isset($error)): ?>
-                <div class="error-message"><?= htmlspecialchars($error) ?></div>
-            <?php endif; ?>
-            
-            <div class="form-row">
-                <label>Nombre:
-                    <input type="text" name="nombre" required>
-                </label>
-                <label>Apellido:
-                    <input type="text" name="apellido" required>
-                </label>
-                <label>NIF/CIF:
-                    <input type="text" name="nif" required placeholder="NIF personal o CIF de empresa">
-                </label>
-            </div>
-            <div class="form-row">
-                <label>Email:
-                    <input type="email" name="email" required>
-                </label>
-                <label>Contraseña:
-                    <input type="password" name="password" required>
-                </label>
-                <label>Teléfono:
-                    <input type="tel" name="telefono">
-                </label>
-            </div>
-            <div class="form-row">
-                <label>Dirección:
-                    <textarea name="direccion" rows="1"></textarea>
-                </label>
-                <label>Foto de perfil:
-                    <input type="file" name="foto_perfil" accept="image/*">
-                </label>
-            </div>
-            <div class="form-actions">
-                <button type="submit" class="submit-btn">Registrarse</button>
-            </div>
-        </form>
     </div>
+    <!-- ✅ FIN ZONA CON GRADIENTE ANIMADO -->
 
     <footer>
         <div class="footer-container">
