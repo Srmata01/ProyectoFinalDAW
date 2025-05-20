@@ -7,13 +7,13 @@ $tipo = isset($_GET['tipo']) ? htmlspecialchars($_GET['tipo']) : 'usuario';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro Exitoso</title>
-    <link rel="stylesheet" href="../styles.css">
-    <style>
+    <link rel="stylesheet" href="../styles.css">    <style>
         body {
             margin: 0;
             padding: 0;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             background-color: #f5f5f5;
@@ -27,6 +27,7 @@ $tipo = isset($_GET['tipo']) ? htmlspecialchars($_GET['tipo']) : 'usuario';
             text-align: center;
             max-width: 500px;
             width: 100%;
+            margin: 2rem 0;
         }
         
         .success-icon {
@@ -53,10 +54,14 @@ $tipo = isset($_GET['tipo']) ? htmlspecialchars($_GET['tipo']) : 'usuario';
         .success-button:hover {
             background-color:rgb(140, 140, 140);
         }
+
+        footer {
+            width: 100%;
+            margin-top: auto;
+        }
     </style>
 </head>
-<body>
-    <div class="success-container">
+<body>    <div class="success-container">
         <div class="success-icon">✓</div>
         <h1>¡Registro completado con éxito!</h1>
         <br>
@@ -67,5 +72,11 @@ $tipo = isset($_GET['tipo']) ? htmlspecialchars($_GET['tipo']) : 'usuario';
         <br>
         <a href="../login.php" class="success-button">Volver al inicio de sesión</a>
     </div>
+
+    <?php 
+    // Definir la ruta base para el footer
+    $base_path = '../';
+    include '../includes/footer.php'; 
+    ?>
 </body>
 </html>

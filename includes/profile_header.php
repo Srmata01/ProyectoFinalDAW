@@ -51,8 +51,11 @@ if (isset($_SESSION['usuario'])) {
                       strpos($_SERVER['PHP_SELF'], '/vistas_usuarios/') !== false ||
                       strpos($_SERVER['PHP_SELF'], '/reservas/') !== false ||
                       strpos($_SERVER['PHP_SELF'], '/portfolio/') !== false ||
+                      strpos($_SERVER['PHP_SELF'], '/create_users/') !== false ||
                       strpos($_SERVER['PHP_SELF'], '/incidencias/') !== false;
-    $login_url = ($is_subdirectory ? '../' : '') . 'login.php';
+    
+    // Usar una ruta absoluta desde la raíz del servidor para evitar problemas de redirección
+    $login_url = "/smata/ProyectoFinalDAW/login.php";
     ?>
     <a href="<?= $login_url ?>" class="profile-btn">
         <span class="user-name">Iniciar Sesión</span>
