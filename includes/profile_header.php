@@ -2,14 +2,14 @@
 require_once __DIR__ . '/../config/database.php';
 
 if (isset($_SESSION['usuario'])) {
-    $in_profile_page = strpos($_SERVER['PHP_SELF'], 'perfil_') !== false;
-      if (!$in_profile_page) {        // Determinar si estamos en un subdirectorio
+    $in_profile_page = strpos($_SERVER['PHP_SELF'], 'perfil_') !== false;      if (!$in_profile_page) {        // Determinar si estamos en un subdirectorio
         $is_subdirectory = strpos($_SERVER['PHP_SELF'], '/services/') !== false || 
         strpos($_SERVER['PHP_SELF'], '/vistas_usuarios/') !== false ||
         strpos($_SERVER['PHP_SELF'], '/reservas/') !== false ||
         strpos($_SERVER['PHP_SELF'], '/portfolio/') !== false ||
         strpos($_SERVER['PHP_SELF'], '/incidencias/') !== false ||
-        strpos($_SERVER['PHP_SELF'], '/valoraciones/') !== false;
+        strpos($_SERVER['PHP_SELF'], '/valoraciones/') !== false ||
+        strpos($_SERVER['PHP_SELF'], '/admin/') !== false;
         $base_path = $is_subdirectory ? '../' : '';
         
         $perfil_url = '';
@@ -52,7 +52,8 @@ if (isset($_SESSION['usuario'])) {
                       strpos($_SERVER['PHP_SELF'], '/portfolio/') !== false ||
                       strpos($_SERVER['PHP_SELF'], '/create_users/') !== false ||
                       strpos($_SERVER['PHP_SELF'], '/incidencias/') !== false ||
-                      strpos($_SERVER['PHP_SELF'], '/valoraciones/') !== false;
+                      strpos($_SERVER['PHP_SELF'], '/valoraciones/') !== false ||
+                      strpos($_SERVER['PHP_SELF'], '/admin/') !== false;
     
     // Usar una ruta absoluta desde la raíz del servidor para evitar problemas de redirección
     $login_url = "/smata/ProyectoFinalDAW/login.php";

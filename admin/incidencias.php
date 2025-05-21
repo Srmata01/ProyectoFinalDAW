@@ -274,8 +274,7 @@ try {
                                 </div>
                             </td>
                         </tr>
-                    <?php endforeach; ?>
-                </tbody>
+                    <?php endforeach; ?>                </tbody>
             </table>
         <?php endif; ?>
         

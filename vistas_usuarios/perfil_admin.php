@@ -64,23 +64,22 @@ try {
 <head>
     <meta charset="UTF-8">
     <title>Dashboard Administrador</title>
-    <link rel="stylesheet" href="vistas.css">    <style>
-        .admin-dashboard {
-            display: flex;
-            flex-wrap: wrap;
+    <link rel="stylesheet" href="vistas.css">    <style>        .admin-dashboard {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, auto);
             gap: 20px;
-            justify-content: space-between;
             padding: 20px 0;
         }
         
         .admin-card {
-            flex: 1 1 calc(50% - 20px);
-            min-width: 300px;
             background-color: #f9f9f9;
             border-radius: 10px;
             padding: 15px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
         }
           .admin-card h2 {
             margin-top: 0;
@@ -88,17 +87,22 @@ try {
             border-bottom: 2px solid #FF9B00;
             color: #333;
         }
-        
-        .admin-table {
+          .admin-table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 15px;
+            flex: 1;
+            overflow: hidden;
+            table-layout: fixed;
         }
         
         .admin-table th, .admin-table td {
             padding: 8px;
             text-align: left;
             border-bottom: 1px solid #ddd;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
         
         .admin-table th {
@@ -109,8 +113,7 @@ try {
         .admin-table tr:hover {
             background-color: #f1f1f1;
         }
-        
-        .view-more-btn {
+          .view-more-btn {
             display: block;
             text-align: center;
             background-color: #FF9B00;
@@ -120,6 +123,7 @@ try {
             text-decoration: none;
             font-weight: bold;
             transition: all 0.3s ease;
+            margin-top: auto;
         }
           .view-more-btn:hover {
             background-color: #e38a00;
@@ -145,7 +149,8 @@ try {
     </header>    <div class="container1">
         <h1 class="document-title">Panel de Administración</h1>
         
-        <div class="admin-dashboard">            <!-- Card de Usuarios -->
+        <div class="admin-dashboard">
+            <!-- Primera fila, primera columna: Usuarios -->
             <div class="admin-card">
                 <h2>Usuarios</h2>
                 <table class="admin-table">
@@ -155,8 +160,7 @@ try {
                             <th>Tipo</th>
                             <th>Estado</th>
                         </tr>
-                    </thead>
-                    <tbody>
+                    </thead>                    <tbody>
                         <?php if (count($usuarios) > 0): ?>
                             <?php foreach ($usuarios as $usuario): ?>
                                 <tr>
@@ -165,16 +169,30 @@ try {
                                     <td><?= htmlspecialchars($usuario['estado_usuario']) ?></td>
                                 </tr>
                             <?php endforeach; ?>
+                            <?php 
+                            // Añadir filas vacías si no hay suficientes usuarios
+                            for ($i = count($usuarios); $i < 5; $i++): ?>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            <?php endfor; ?>
                         <?php else: ?>
-                            <tr>
-                                <td colspan="3">No hay usuarios registrados.</td>
-                            </tr>
+                            <?php for ($i = 0; $i < 5; $i++): ?>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            <?php endfor; ?>
                         <?php endif; ?>
                     </tbody>
                 </table>
                 <a href="../admin/usuarios.php" class="view-more-btn">Gestionar Usuarios</a>
             </div>
-              <!-- Card de Servicios -->
+
+            <!-- Primera fila, segunda columna: Servicios -->
             <div class="admin-card">
                 <h2>Servicios</h2>
                 <table class="admin-table">
@@ -184,8 +202,7 @@ try {
                             <th>Autónomo</th>
                             <th>Precio</th>
                         </tr>
-                    </thead>
-                    <tbody>
+                    </thead>                    <tbody>
                         <?php if (count($servicios) > 0): ?>
                             <?php foreach ($servicios as $servicio): ?>
                                 <tr>
@@ -194,16 +211,30 @@ try {
                                     <td><?= htmlspecialchars($servicio['precio']) ?> €</td>
                                 </tr>
                             <?php endforeach; ?>
+                            <?php 
+                            // Añadir filas vacías si no hay suficientes servicios
+                            for ($i = count($servicios); $i < 5; $i++): ?>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            <?php endfor; ?>
                         <?php else: ?>
-                            <tr>
-                                <td colspan="3">No hay servicios registrados.</td>
-                            </tr>
+                            <?php for ($i = 0; $i < 5; $i++): ?>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            <?php endfor; ?>
                         <?php endif; ?>
                     </tbody>
                 </table>
                 <a href="../admin/servicios.php" class="view-more-btn">Gestionar Servicios</a>
             </div>
-              <!-- Card de Valoraciones -->
+
+            <!-- Segunda fila, primera columna: Valoraciones -->
             <div class="admin-card">
                 <h2>Valoraciones</h2>
                 <table class="admin-table">
@@ -213,8 +244,7 @@ try {
                             <th>Receptor</th>
                             <th>Puntuación</th>
                         </tr>
-                    </thead>
-                    <tbody>
+                    </thead>                    <tbody>
                         <?php if (count($valoraciones) > 0): ?>
                             <?php foreach ($valoraciones as $valoracion): ?>
                                 <tr>
@@ -223,16 +253,30 @@ try {
                                     <td><?= str_repeat('★', (int)$valoracion['puntuacion']) . str_repeat('☆', 5 - (int)$valoracion['puntuacion']) ?></td>
                                 </tr>
                             <?php endforeach; ?>
+                            <?php 
+                            // Añadir filas vacías si no hay suficientes valoraciones
+                            for ($i = count($valoraciones); $i < 5; $i++): ?>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            <?php endfor; ?>
                         <?php else: ?>
-                            <tr>
-                                <td colspan="3">No hay valoraciones registradas.</td>
-                            </tr>
+                            <?php for ($i = 0; $i < 5; $i++): ?>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            <?php endfor; ?>
                         <?php endif; ?>
                     </tbody>
                 </table>
                 <a href="../admin/valoraciones.php" class="view-more-btn">Gestionar Valoraciones</a>
             </div>
-              <!-- Card de Incidencias -->
+
+            <!-- Segunda fila, segunda columna: Incidencias -->
             <div class="admin-card">
                 <h2>Incidencias</h2>
                 <table class="admin-table">
@@ -242,8 +286,7 @@ try {
                             <th>Título</th>
                             <th>ID</th>
                         </tr>
-                    </thead>
-                    <tbody>
+                    </thead>                    <tbody>
                         <?php if (count($incidencias) > 0): ?>
                             <?php foreach ($incidencias as $incidencia): ?>
                                 <tr>
@@ -252,10 +295,23 @@ try {
                                     <td><?= htmlspecialchars($incidencia['id_incidencia']) ?></td>
                                 </tr>
                             <?php endforeach; ?>
+                            <?php 
+                            // Añadir filas vacías si no hay suficientes incidencias
+                            for ($i = count($incidencias); $i < 5; $i++): ?>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            <?php endfor; ?>
                         <?php else: ?>
-                            <tr>
-                                <td colspan="3">No hay incidencias registradas.</td>
-                            </tr>
+                            <?php for ($i = 0; $i < 5; $i++): ?>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            <?php endfor; ?>
                         <?php endif; ?>
                     </tbody>
                 </table>
