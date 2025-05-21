@@ -9,9 +9,6 @@ if (!isset($_SESSION['usuario']) || !isset($_SESSION['usuario']['id'])) {
     exit();
 }
 
-// Determinar la ruta base según el directorio
-$base_path = '../';
-
 // Variables para mensajes
 $mensaje = '';
 $tipo_mensaje = '';
@@ -91,14 +88,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $imagen_incidencia = null;
             if (isset($_FILES['imagen_incidencia']) && $_FILES['imagen_incidencia']['error'] === UPLOAD_ERR_OK) {
                 $imagen_incidencia = file_get_contents($_FILES['imagen_incidencia']['tmp_name']);
-            }
-
-            // Insertar la incidencia en la base de datos
+            }            // Insertar la incidencia en la base de datos
             $stmt = $pdo->prepare("
                 INSERT INTO incidencias (persona_incidencia, mail_contacto, titulo_incidencia, cuerpo_incidencia, imagen_incidencia)
                 VALUES (?, ?, ?, ?, ?)
-            ");
-            $stmt->execute([$persona_incidencia, $mail_contacto, $titulo_incidencia, $cuerpo_incidencia, $imagen_incidencia]);
+            ");            $stmt->execute([$persona_incidencia, $mail_contacto, $titulo_incidencia, $cuerpo_incidencia, $imagen_incidencia]);
 
             // Redirigir al main.php después de registrar la incidencia
             header('Location: ../main.php?mensaje=incidencia_registrada');
@@ -347,55 +341,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <button type="submit" class="form-submit">Enviar Incidencia</button>
-        </form>
-    </div>
+        </form>    </div>
 
-    <footer>
-        <div class="footer-container">
-            <div class="footer-section">
-                <h4>Información Personal</h4>
-                <ul>
-                    <li><a href="../politicaprivacidad.php">Política de privacidad</a></li>
-                    <li><a href="../politicacookiesdatos.php">Política de Cookies y protección de datos</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section">
-                <h4>Contacto</h4>
-                <ul>
-                    <li><a href="mailto:fixitnow@gmail.com">fixitnow@gmail.com</a></li>
-                    <li><a href="tel:+34690096690">+34 690 096 690</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section">
-                <h4>¿Eres miembro?</h4>
-                <ul>
-                    <li><a href="../create_users/index.php">Únete a Nosotros</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section">
-                <h4>¿Tienes algún problema?</h4>
-                <ul>
-                    <li><a href="../incidencias/crear.php">Reportar incidencia</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section social-media">
-                <div class="social-icons">
-                    <a href="#"><img src="../media/twitter-icon.png" alt="Twitter"></a>
-                    <a href="#"><img src="../media/instagram-icon.png" alt="Instagram"></a>
-                    <a href="#"><img src="../media/facebook-icon.png" alt="Facebook"></a>
-                    <a href="#"><img src="../media/tiktok-icon.png" alt="TikTok"></a>
-                </div>
-            </div>
-
-            <div class="footer-logo">
-                <img src="../media/logo.png" alt="FixItNow Logo">
-            </div>
-        </div>
-    </footer>
+    <?php include '../includes/footer.php'; ?>
 
     <script>
         // Script para mostrar/ocultar los selectores según la opción elegida

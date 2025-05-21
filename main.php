@@ -15,43 +15,8 @@ $stmt_recientes = $pdo->prepare("
 $stmt_recientes->execute();
 $servicios_recientes = $stmt_recientes->fetchAll(PDO::FETCH_ASSOC);
 
-$busqueda = $_GET['q'] ?? '';
-$localidad = $_GET['localidad'] ?? '';
-$precio = $_GET['precio'] ?? '';
-$duracion = $_GET['duracion'] ?? '';
-$orden = $_GET['orden'] ?? '';
-
-$sql = "SELECT s.id_servicio, s.nombre, s.descripcion, s.precio, s.duracion, s.localidad, u.nombre AS nombre_autonomo, u.foto_perfil AS imagen_autonomo
-        FROM servicios s
-        JOIN usuarios u ON s.id_autonomo = u.id_usuario
-        WHERE s.nombre LIKE :busqueda";
-
-$params = [':busqueda' => "%$busqueda%"];
-
-if ($localidad) {
-    $sql .= " AND s.localidad LIKE :localidad";
-    $params[':localidad'] = "%$localidad%";
-}
-if ($precio) {
-    $sql .= " AND s.precio <= :precio";
-    $params[':precio'] = $precio;
-}
-if ($duracion) {
-    $sql .= " AND s.duracion <= :duracion";
-    $params[':duracion'] = $duracion;
-}
-if ($orden == 'asc') {
-    $sql .= " ORDER BY s.precio ASC";
-} elseif ($orden == 'desc') {
-    $sql .= " ORDER BY s.precio DESC";
-}
-
-$stmt = $pdo->prepare($sql);
-$stmt->execute($params);
-$servicios = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 // Verificar que cada servicio tiene todos los campos necesarios
-foreach ($servicios as &$servicio) {
+foreach ($servicios_recientes as &$servicio) {
     if (!isset($servicio['id_servicio'])) {
         $servicio['id_servicio'] = '';
     }
@@ -153,28 +118,7 @@ foreach ($servicios as &$servicio) {
             </div>
             <div class="login-profile-box">
                 <?php include 'includes/profile_header.php'; ?>
-            </div>
-        </div>    </header>    <!-- Mensajes de alerta para el usuario -->
-    <?php if(isset($_GET['mensaje'])): ?>
-        <?php if($_GET['mensaje'] == 'incidencia_registrada'): ?>
-            <div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 15px; margin: 15px; border-radius: 5px; text-align: center;">
-                Su incidencia ha sido registrada correctamente. Nos pondremos en contacto con usted lo antes posible.
-            </div>
-        <?php elseif($_GET['mensaje'] == 'reserva_creada'): ?>
-            <div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 15px; margin: 15px; border-radius: 5px; text-align: center;">
-                Tu reserva ha sido registrada. El profesional debe confirmarla antes de que sea definitiva.
-            </div>
-        <?php elseif($_GET['mensaje'] == 'reserva_aceptada'): ?>
-            <div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 15px; margin: 15px; border-radius: 5px; text-align: center;">
-                ¡Buenas noticias! El profesional ha aceptado tu reserva.
-            </div>
-        <?php elseif($_GET['mensaje'] == 'reserva_rechazada'): ?>
-            <div class="alert alert-danger" style="background-color: #f8d7da; color: #721c24; padding: 15px; margin: 15px; border-radius: 5px; text-align: center;">
-                Lo sentimos, el profesional ha rechazado tu reserva. Puedes buscar otro servicio similar.
-            </div>
-        <?php endif; ?>
-    <?php endif; ?>
-    
+            </div>        </div>    </header>    
     <!-- Sección de video y búsqueda -->
     <div class="video-background">
         <video autoplay muted loop>
@@ -249,92 +193,14 @@ foreach ($servicios as &$servicio) {
         .ver-todos-btn:hover {
             background-color:rgb(203, 115, 0);
             transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-    </style>
-
-    <footer>
-        <div class="footer-container">
-            <div class="footer-section">
-                <h4>Información Personal</h4>
-                <ul>
-                    <li><a href="politicaprivacidad.php">Política de privacidad</a></li>
-                    <li><a href="politicacookiesdatos.php">Política de Cookies y protección de datos</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section">
-                <h4>Contacto</h4>
-                <ul>
-                    <li><a href="mailto:fixitnow@gmail.com">fixitnow@gmail.com</a></li>
-                    <li><a href="tel:+34690096690">+34 690 096 690</a></li>
-                </ul>
-            </div>            <div class="footer-section">
-                <h4>Eres miembro?</h4>
-                <ul>
-                    <li><a href="create_users/index.php">Únete a Nosotros</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-section">
-                <h4>¿Tienes algún problema?</h4>
-                <ul>
-                    <li><a href="incidencias/crear.php">Reportar incidencia</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section social-media">
-                <div class="social-icons">
-                    <a href="#"><img src="media/twitter-icon.png" alt="Twitter"></a>
-                    <a href="#"><img src="media/instagram-icon.png" alt="Instagram"></a>
-                    <a href="#"><img src="media/facebook-icon.png" alt="Facebook"></a>
-                    <a href="#"><img src="media/tiktok-icon.png" alt="TikTok"></a>
-                </div>
-            </div>
-
-            <div class="footer-logo">
-                <img src="media/logo.png" alt="FixItNow Logo">
-            </div>
-        </div>
-    </footer>    <!-- Agregar referencia al script del buscador reutilizable -->
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);        }
+    </style>    <?php 
+    // Incluir el footer compartido (archivo en raíz, así que no necesita $base_path)
+    include 'includes/footer.php'; 
+    ?>
+    
+    <!-- Agregar referencia al script del buscador reutilizable -->
     <script src="services/js/buscador.js" defer></script>
-
-    <script>
-        // Inicializar los eventos para los filtros
-        document.addEventListener('DOMContentLoaded', function() {
-            const filtroLocalidad = document.getElementById('filtro_localidad');
-            const filtroPrecio = document.getElementById('filtro_precio');
-            const filtroDuracion = document.getElementById('filtro_duracion');
-            const ordenAsc = document.getElementById('orden_asc');
-            const ordenDesc = document.getElementById('orden_desc');
-            
-            // Función para aplicar filtros
-            function aplicarFiltros() {
-                const localidad = filtroLocalidad.value;
-                const precio = filtroPrecio.value;
-                const duracion = filtroDuracion.value;
-                const orden = window.ordenActual || '';
-                
-                window.location.href = `services/buscarservicio.php?localidad=${encodeURIComponent(localidad)}&precio=${encodeURIComponent(precio)}&duracion=${encodeURIComponent(duracion)}&orden=${orden}`;
-            }
-            
-            // Asignar eventos a los filtros
-            filtroLocalidad.addEventListener('change', aplicarFiltros);
-            filtroPrecio.addEventListener('change', aplicarFiltros);
-            filtroDuracion.addEventListener('change', aplicarFiltros);
-            
-            // Eventos para los botones de orden
-            ordenAsc.addEventListener('click', function() {
-                window.ordenActual = 'asc';
-                aplicarFiltros();
-            });
-            
-            ordenDesc.addEventListener('click', function() {
-                window.ordenActual = 'desc';
-                aplicarFiltros();
-            });
-        });
-    </script>
 </body>
 
 </html>

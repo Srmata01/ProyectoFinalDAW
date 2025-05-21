@@ -11,23 +11,37 @@ $id_autonomo = $_SESSION['usuario']['id'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
+        // Verificar primero si el usuario está activo
         $stmt = $pdo->prepare("
-            INSERT INTO servicios 
-            (id_autonomo, nombre, descripcion, precio, duracion, estado, localidad) 
-            VALUES (?, ?, ?, ?, ?, 'activo', ?)
+            SELECT eu.estado 
+            FROM usuarios u
+            JOIN estados_usuarios eu ON u.id_estado_usuario = eu.id_estado_usuario
+            WHERE u.id_usuario = ?
         ");
+        $stmt->execute([$id_autonomo]);
+        $usuario = $stmt->fetch();
         
-        $stmt->execute([
-            $id_autonomo,
-            $_POST['nombre'],
-            $_POST['descripcion'],
-            $_POST['precio'],
-            $_POST['duracion'],
-            $_POST['localidad']
-        ]);
-        
-        header('Location: ../vistas_usuarios/perfil_autonomo.php');
-        exit;
+        if (strtolower($usuario['estado']) != 'activo') {
+            $error = "No puedes crear servicios porque tu cuenta está inactiva. Contacta con el administrador.";
+        } else {
+            $stmt = $pdo->prepare("
+                INSERT INTO servicios 
+                (id_autonomo, nombre, descripcion, precio, duracion, estado, localidad) 
+                VALUES (?, ?, ?, ?, ?, 'activo', ?)
+            ");
+            
+            $stmt->execute([
+                $id_autonomo,
+                $_POST['nombre'],
+                $_POST['descripcion'],
+                $_POST['precio'],
+                $_POST['duracion'],
+                $_POST['localidad']
+            ]);
+            
+            header('Location: ../vistas_usuarios/perfil_autonomo.php');
+            exit;
+        }
     } catch (PDOException $e) {
         $error = "Error al crear el servicio: " . $e->getMessage();
     }

@@ -22,10 +22,12 @@ try {
                u.nombre as autonomo_nombre, 
                u.apellido as autonomo_apellido,
                u.telefono as autonomo_telefono,
-               u.foto_perfil as autonomo_foto
+               u.foto_perfil as autonomo_foto,
+               eu.estado as estado_usuario
         FROM servicios s
         JOIN usuarios u ON s.id_autonomo = u.id_usuario
-        WHERE s.id_servicio = ? AND s.estado = 'activo'
+        JOIN estados_usuarios eu ON u.id_estado_usuario = eu.id_estado_usuario
+        WHERE s.id_servicio = ? AND s.estado = 'activo' AND eu.estado = 'Activo'
     ");
     $stmt->execute([$id_servicio]);
     $servicio = $stmt->fetch();

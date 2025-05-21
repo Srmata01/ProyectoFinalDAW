@@ -16,7 +16,19 @@ if (!$id_servicio) {
 }
 
 try {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Verificar primero si el usuario está activo
+    $stmt = $pdo->prepare("
+        SELECT eu.estado 
+        FROM usuarios u
+        JOIN estados_usuarios eu ON u.id_estado_usuario = eu.id_estado_usuario
+        WHERE u.id_usuario = ?
+    ");
+    $stmt->execute([$id_autonomo]);
+    $usuario = $stmt->fetch();
+    
+    if (strtolower($usuario['estado']) != 'activo') {
+        $error = "No puedes editar servicios porque tu cuenta está inactiva. Contacta con el administrador.";
+    } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare("
             UPDATE servicios 
             SET nombre = ?, descripcion = ?, precio = ?, duracion = ?, estado = ?, localidad = ?

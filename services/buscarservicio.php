@@ -11,7 +11,8 @@
     $sql = "SELECT s.id_servicio, s.nombre, s.descripcion, s.precio, s.duracion, s.localidad, u.nombre AS nombre_autonomo, u.apellido AS apellido_autonomo, u.foto_perfil AS imagen_autonomo
             FROM servicios s
             JOIN usuarios u ON s.id_autonomo = u.id_usuario
-            WHERE 1=1"; // Siempre verdadero, para añadir condiciones con AND
+            JOIN estados_usuarios eu ON u.id_estado_usuario = eu.id_estado_usuario
+            WHERE s.estado = 'activo' AND eu.estado = 'Activo'"; // Solo servicios activos de usuarios activos
 
     $params = [];
 
@@ -322,13 +323,12 @@
                 <?php else: ?>
                     Servicios disponibles
                 <?php endif; ?>
-            </h1>
-
-            <!-- Filtros de búsqueda -->
+            </h1>            <!-- Filtros de búsqueda -->
             <div class="filtros-container">
                 <form action="buscarservicio.php" method="GET" id="filtros-form">
                     <!-- Mantener el parámetro de búsqueda actual -->
-                    <input type="hidden" name="q" value="<?php echo htmlspecialchars($busqueda); ?>">                    <select name="localidad" id="filtro_localidad">
+                    <input type="hidden" name="q" value="<?php echo htmlspecialchars($busqueda); ?>">                    
+                    <select name="localidad" id="filtro_localidad" onchange="this.form.submit()">
                         <option value="">Todas las localidades</option>
                         <?php
                         // Obtener todas las localidades disponibles en la base de datos
@@ -342,14 +342,14 @@
                         ?>
                     </select>
 
-                    <select name="precio" id="filtro_precio">
+                    <select name="precio" id="filtro_precio" onchange="this.form.submit()">
                         <option value="">Cualquier precio</option>
                         <option value="50" <?php echo ($precio == '50') ? 'selected' : ''; ?>>Hasta 50€</option>
                         <option value="100" <?php echo ($precio == '100') ? 'selected' : ''; ?>>Hasta 100€</option>
                         <option value="200" <?php echo ($precio == '200') ? 'selected' : ''; ?>>Hasta 200€</option>
                     </select>
 
-                    <select name="duracion" id="filtro_duracion">
+                    <select name="duracion" id="filtro_duracion" onchange="this.form.submit()">
                         <option value="">Cualquier duración</option>
                         <option value="30" <?php echo ($duracion == '30') ? 'selected' : ''; ?>>Hasta 30 min</option>
                         <option value="60" <?php echo ($duracion == '60') ? 'selected' : ''; ?>>Hasta 60 min</option>
@@ -360,11 +360,10 @@
                 <div class="orden-container">
                     <a href="?q=<?php echo urlencode($busqueda); ?>&localidad=<?php echo urlencode($localidad); ?>&precio=<?php echo urlencode($precio); ?>&duracion=<?php echo urlencode($duracion); ?>&orden=asc" class="btn-orden <?php echo ($orden == 'asc') ? 'active' : ''; ?>">
                         Menor precio
-                    </a>
-                    <a href="?q=<?php echo urlencode($busqueda); ?>&localidad=<?php echo urlencode($localidad); ?>&precio=<?php echo urlencode($precio); ?>&duracion=<?php echo urlencode($duracion); ?>&orden=desc" class="btn-orden <?php echo ($orden == 'desc') ? 'active' : ''; ?>">
+                    </a>                    <a href="?q=<?php echo urlencode($busqueda); ?>&localidad=<?php echo urlencode($localidad); ?>&precio=<?php echo urlencode($precio); ?>&duracion=<?php echo urlencode($duracion); ?>&orden=desc" class="btn-orden <?php echo ($orden == 'desc') ? 'active' : ''; ?>">
                         Mayor precio
                     </a>
-                    <a href="buscarservicio.php<?php echo !empty($busqueda) ? '?q=' . urlencode($busqueda) : ''; ?>" class="btn-limpiar">Limpiar filtros</a>
+                    <a href="buscarservicio.php" class="btn-limpiar">Limpiar filtros</a>
                 </div>
             </div>
 
@@ -408,53 +407,12 @@
             <?php else: ?>
                 <div class="no-resultados">
                     <p>No se encontraron servicios que coincidan con tu búsqueda.</p>
-                    <p>Intenta con otros términos o filtros de búsqueda.</p>
-                </div>            <?php endif; ?>
-        </main>
+                    <p>Intenta con otros términos o filtros de búsqueda.</p>                </div>            <?php endif; ?>        </main>
 
         <?php 
         // Definir la ruta base para el footer
         $base_path = '../';
         include '../includes/footer.php'; 
         ?>
-        
-                    <h4 class="footer-title">¿Tienes algún problema?</h4>
-                    <ul class="footer-list">
-                        <li><a href="../incidencias/crear.php" class="footer-link">Reportar incidencia</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section social-media">
-                    <div class="social-icons">
-                        <a href="#" class="social-link"><img src="../media/twitter-icon.png" alt="Twitter"
-                                class="social-icon"></a>
-                        <a href="#" class="social-link"><img src="../media/instagram-icon.png" alt="Instagram"
-                                class="social-icon"></a>
-                        <a href="#" class="social-link"><img src="../media/facebook-icon.png" alt="Facebook"
-                                class="social-icon"></a>
-                        <a href="#" class="social-link"><img src="../media/tiktok-icon.png" alt="TikTok"
-                                class="social-icon"></a>
-                    </div>
-                </div>
-
-                <div class="footer-logo">
-                    <img src="../media/logo.png" alt="FixItNow Logo" class="footer-logo-img">
-                </div>
-            </div>
-        </footer>        <script>
-            // Añadir funcionalidad para aplicar filtros automáticamente cuando cambian
-            document.addEventListener('DOMContentLoaded', function() {
-                // Obtener los elementos de filtro
-                const filtros = document.querySelectorAll('#filtro_localidad, #filtro_precio, #filtro_duracion');
-
-                // Añadir eventos de cambio
-                filtros.forEach(filtro => {
-                    filtro.addEventListener('change', function() {
-                        document.getElementById('filtros-form').submit();
-                    });
-                });
-            });
-        </script>
     </body>
-
-    </html>
+</html>

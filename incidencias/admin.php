@@ -257,8 +257,7 @@ try {
             </table>
         <?php else: ?>
             <p class="no-incidencias">No hay incidencias pendientes.</p>
-        <?php endif; ?>
-    </div>
+        <?php endif; ?>    </div>
     
     <!-- Modal para mostrar imagen ampliada -->
     <div id="imagenModal" class="modal" onclick="this.style.display='none'">
@@ -266,9 +265,11 @@ try {
         <img class="modal-content" id="imagenAmpliada">
     </div>
 
-    <footer>
-        <div class="footer-container">
-            <div class="footer-section">
+    <?php 
+    // Definir la ruta base para el footer
+    $base_path = '../';
+    include '../includes/footer.php'; 
+    ?>
                 <h4>Información Personal</h4>
                 <ul>
                     <li><a href="../politicaprivacidad.php">Política de privacidad</a></li>
