@@ -55,9 +55,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Incidencias - FixItNow</title>
-    <link rel="stylesheet" href="../vistas_usuarios/vistas.css">
-    <style>
-        .admin-table {
+    <link rel="stylesheet" href="../vistas_usuarios/vistas.css">    <style>        .admin-table {
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
@@ -77,31 +75,9 @@ try {
             background-color: #f1f1f1;
         }
         
-        .incidencias-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        
-        .incidencias-table th, 
-        .incidencias-table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        .incidencias-table th {
-            background-color: #f8f8f8;
-            font-weight: bold;
-        }
-        
-        .incidencias-table tr:hover {
-            background-color: #f5f5f5;
-        }
-        
         .imagen-incidencia {
-            max-width: 100px;
-            max-height: 100px;
+            max-width: 150px;
+            max-height: 150px;
             border-radius: 4px;
         }
         
@@ -126,64 +102,13 @@ try {
         
         .btn-resolver:hover {
             background-color: #45a049;
-        }
-        
-        .truncate {
-            max-width: 300px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .volver-btn {
-            display: block;
-            width: 200px;
-            margin: 20px auto 0;
-            padding: 10px;
-            background-color: #6c757d;
-            color: white;
-            text-align: center;
-            border-radius: 4px;
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
-        
-        .volver-btn:hover {
-            background-color: #5a6268;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.7);
-        }
-        
-        .modal-content {
-            background-color: #fefefe;
-            margin: 10% auto;
-            padding: 20px;
-            border-radius: 8px;
-            width: 80%;
-            max-width: 700px;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-        
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        
-        .close:hover {
-            color: black;
+        }        .descripcion-completa {
+            max-width: 350px;
+            white-space: pre-line;
+            overflow-wrap: break-word;
+            text-indent: 0;
+            padding: 0;
+            margin: 0;
         }
         
         .mensaje-box {
@@ -218,9 +143,7 @@ try {
                 </div>
             </div>
         </div>
-    </header>
-
-    <div class="container1">
+    </header>    <div class="container1">
         <div class="document-container">
             <h1 class="document-title">Gestión de Incidencias</h1>
         
@@ -228,38 +151,39 @@ try {
                 <div class="mensaje-box mensaje-<?= $tipo_mensaje ?>">
                     <?= htmlspecialchars($mensaje) ?>
                 </div>            <?php endif; ?>
+            
+            <div class="admin-section">                <h2>Listado de Incidencias</h2>
         
-            <?php if (empty($incidencias)): ?>
-                <p>No hay incidencias registradas en el sistema.</p>
-            <?php else: ?>
-                <table class="incidencias-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Persona</th>
-                            <th>Email</th>
-                            <th>Título</th>
-                            <th>Descripción</th>
-                            <th>Imagen</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                <tbody>
+                <?php if (empty($incidencias)): ?>
+                    <p>No hay incidencias registradas en el sistema.</p>
+                <?php else: ?>
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Persona</th>
+                                <th>Email</th>
+                                <th>Título</th>
+                                <th>Descripción</th>
+                                <th>Imagen</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                    <tbody>
                     <?php foreach ($incidencias as $incidencia): ?>
                         <tr>
                             <td><?= $incidencia['id_incidencia'] ?></td>
                             <td><?= htmlspecialchars($incidencia['persona_incidencia']) ?></td>
                             <td><?= htmlspecialchars($incidencia['mail_contacto']) ?></td>
-                            <td><?= htmlspecialchars($incidencia['titulo_incidencia']) ?></td>
-                            <td class="truncate">
-                                <?= htmlspecialchars(substr($incidencia['cuerpo_incidencia'], 0, 100) . (strlen($incidencia['cuerpo_incidencia']) > 100 ? '...' : '')) ?>
-                                <button class="ver-mas" onclick="verDetalle(<?= $incidencia['id_incidencia'] ?>, '<?= htmlspecialchars(addslashes($incidencia['titulo_incidencia'])) ?>', '<?= htmlspecialchars(addslashes($incidencia['cuerpo_incidencia'])) ?>')">Ver más</button>
+                            <td><?= htmlspecialchars($incidencia['titulo_incidencia']) ?></td>                            <td>
+                                <div class="descripcion-completa">
+                                    <?= htmlspecialchars(trim($incidencia['cuerpo_incidencia'])) ?>
+                                </div>
                             </td>
                             <td>
                                 <?php if ($incidencia['imagen_incidencia']): ?>
                                     <img src="data:image/jpeg;base64,<?= base64_encode($incidencia['imagen_incidencia']) ?>" 
-                                         alt="Imagen de incidencia" class="imagen-incidencia"
-                                         onclick="abrirImagen('data:image/jpeg;base64,<?= base64_encode($incidencia['imagen_incidencia']) ?>')">
+                                         alt="Imagen de incidencia" class="imagen-incidencia">
                                 <?php else: ?>
                                     <em>Sin imagen</em>
                                 <?php endif; ?>
@@ -273,66 +197,21 @@ try {
                                     </form>
                                 </div>
                             </td>
-                        </tr>
-                    <?php endforeach; ?>                </tbody>
-            </table>
-        <?php endif; ?>
-        
-        <a href="../vistas_usuarios/perfil_admin.php" class="volver-btn">Volver al Panel de Administración</a>
-    </div>
-    
-    <!-- Modal para ver detalle completo -->
-    <div id="detalleModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="cerrarModal()">&times;</span>
-            <h2 id="modalTitulo"></h2>
-            <p id="modalCuerpo" style="white-space: pre-wrap;"></p>
+                        </tr>                    <?php endforeach; ?>                </tbody>
+                    </table>
+                <?php endif; ?>
+            </div>
+            
+            <div class="admin-actions">
+                <a href="../vistas_usuarios/perfil_admin.php" class="submit-btn" style="background-color: #6c757d;">Volver al Panel</a>
+            </div>
         </div>
     </div>
-    
-    <!-- Modal para ver imagen ampliada -->
-    <div id="imagenModal" class="modal">
-        <div class="modal-content" style="text-align: center;">
-            <span class="close" onclick="cerrarImagenModal()">&times;</span>
-            <img id="imagenAmpliada" style="max-width: 100%; max-height: 80vh;">
-        </div>
-    </div>
-    
-    <script>
-        function verDetalle(id, titulo, cuerpo) {
-            document.getElementById('modalTitulo').textContent = titulo;
-            document.getElementById('modalCuerpo').textContent = cuerpo;
-            document.getElementById('detalleModal').style.display = 'block';
-        }
-        
-        function cerrarModal() {
-            document.getElementById('detalleModal').style.display = 'none';
-        }
-        
-        function abrirImagen(src) {
-            document.getElementById('imagenAmpliada').src = src;
-            document.getElementById('imagenModal').style.display = 'block';
-        }
-        
-        function cerrarImagenModal() {
-            document.getElementById('imagenModal').style.display = 'none';
-        }
-        
-        // Cerrar modales si se hace clic fuera de ellos
-        window.onclick = function(event) {
-            if (event.target == document.getElementById('detalleModal')) {
-                cerrarModal();
-            }
-            if (event.target == document.getElementById('imagenModal')) {
-                cerrarImagenModal();
-            }
-        }
-    </script>
     
     <?php
-    // Definir ruta base para el footer
+    // Definir la ruta base para las rutas relativas en el footer
     $base_path = '../';
-    include '../includes/footer.php';
+    include '../includes/footer.php'; 
     ?>
 </body>
 </html>

@@ -181,12 +181,13 @@ try {
                             <img src="data:image/jpeg;base64,<?= base64_encode($autonomo['foto_perfil']) ?>" 
                                  alt="Foto de perfil" class="foto-perfil">
                         <?php endif; ?>
-                        <div>
-                            <h1 class="document-title">
+                        <div>                            <h1 class="document-title">
                                 <?= htmlspecialchars($autonomo['nombre'] . ' ' . $autonomo['apellido']) ?>
                             </h1>
-                            <p><strong>Teléfono:</strong> <?= htmlspecialchars($autonomo['telefono']) ?></p>
-                            <p><strong>Email:</strong> <?= htmlspecialchars($autonomo['email']) ?></p>
+                            <?php if (isset($_GET['mostrar_contacto']) && $_GET['mostrar_contacto'] == 1): ?>
+                                <p><strong>Teléfono:</strong> <?= htmlspecialchars($autonomo['telefono']) ?></p>
+                                <p><strong>Email:</strong> <?= htmlspecialchars($autonomo['email']) ?></p>
+                            <?php endif; ?>
                             <?php if (!empty($autonomo['descripcion'])): ?>
                                 <div style="margin-top: 20px;">
                                     <h3>Sobre mí</h3>

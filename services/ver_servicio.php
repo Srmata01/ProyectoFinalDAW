@@ -15,13 +15,11 @@ if (!isset($_GET['id'])) {
 
 $id_servicio = $_GET['id'];
 
-try {
-    $stmt = $pdo->prepare("
+try {    $stmt = $pdo->prepare("
         SELECT s.*, 
                u.id_usuario as autonomo_id,
                u.nombre as autonomo_nombre, 
                u.apellido as autonomo_apellido,
-               u.telefono as autonomo_telefono,
                u.foto_perfil as autonomo_foto,
                eu.estado as estado_usuario
         FROM servicios s
@@ -112,13 +110,11 @@ try {
                             <img src="data:image/jpeg;base64,<?= base64_encode($servicio['autonomo_foto']) ?>" 
                                  alt="Foto del profesional" class="autonomo-foto">
                         <?php endif; ?>
-                        <div>
-                            <h3>Profesional: 
+                        <div>                            <h3>Profesional: 
                                 <a href="../vistas_usuarios/ver_autonomo.php?id=<?= $servicio['autonomo_id'] ?>">
                                     <?= htmlspecialchars($servicio['autonomo_nombre'] . ' ' . $servicio['autonomo_apellido']) ?>
                                 </a>
                             </h3>
-                            <p>Teléfono: <?= htmlspecialchars($servicio['autonomo_telefono']) ?></p>
                         </div>
                     </div>
 
@@ -127,8 +123,7 @@ try {
                         <p><?= htmlspecialchars($servicio['descripcion']) ?></p>
                         
                         <h3>Duración estimada</h3>
-                        <p><?= $servicio['duracion'] ?> minutos</p>                            <div class="precio-reserva">
-                            <div class="precio"><?= number_format($servicio['precio'], 2) ?> €</div>
+                        <p><?= $servicio['duracion'] ?> minutos</p>                            <div class="precio-reserva">                            <div class="precio"><?= number_format($servicio['precio'], 2) ?> €</div>
                             <div style="display: flex; gap: 10px;">
                                 <a href="../vistas_usuarios/ver_autonomo.php?id=<?= $servicio['autonomo_id'] ?>" 
                                    class="submit-btn" style="background-color: #6c757d;">Ver perfil del profesional</a>

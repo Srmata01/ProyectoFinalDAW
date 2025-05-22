@@ -48,9 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $persona_incidencia = $_SESSION['usuario']['nombre'] . ' ' . $_SESSION['usuario']['apellido'];
             $mail_contacto = $_SESSION['usuario']['email'] ?? '';
             $titulo_incidencia = $_POST['titulo_incidencia'];
-            $cuerpo_incidencia = $_POST['cuerpo_incidencia'];
-
-            // Construir detalles adicionales
+            $cuerpo_incidencia = $_POST['cuerpo_incidencia'];            // Construir detalles adicionales
             $detalles = '';
             if (!empty($_POST['tipo_incidencia'])) {
                 if ($_POST['tipo_incidencia'] === 'autonomo' && !empty($_POST['id_autonomo'])) {
@@ -60,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $stmt->execute([$id_autonomo]);
                     $autonomo = $stmt->fetch();
                     if ($autonomo) {
-                        $detalles .= "Incidencia sobre Autónomo: {$autonomo['nombre_completo']} (ID: {$id_autonomo})\n";
+                        $detalles .= "Incidencia sobre Autónomo: {$autonomo['nombre_completo']}";
                     }
                 } elseif ($_POST['tipo_incidencia'] === 'servicio' && !empty($_POST['id_servicio'])) {
                     $id_servicio = $_POST['id_servicio'];
@@ -74,12 +72,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $stmt->execute([$id_servicio]);
                     $servicio = $stmt->fetch();
                     if ($servicio) {
-                        $detalles .= "Incidencia sobre Servicio: {$servicio['nombre']} de {$servicio['autonomo']} (ID: {$id_servicio})\n";
+                        $detalles .= "Incidencia sobre Servicio: {$servicio['nombre']} de {$servicio['autonomo']}";
                     }
-                }
-            }
-
-            // Añadir los detalles al cuerpo de la incidencia
+                }            }            // Añadir los detalles al cuerpo de la incidencia
             if (!empty($detalles)) {
                 $cuerpo_incidencia = $detalles . "\n\n" . $cuerpo_incidencia;
             }

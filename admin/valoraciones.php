@@ -221,10 +221,8 @@ try {
                             <?php endif; ?>
                         </div>
                     <?php endif; ?>
-                <?php endif; ?>
-            </div>
-              <div class="admin-actions">
-                <a href="../vistas_usuarios/perfil_admin.php" class="submit-btn">Volver al Panel de Administración</a>
+                <?php endif; ?>            </div>              <div class="admin-actions">
+                <a href="../vistas_usuarios/perfil_admin.php" class="submit-btn" style="background-color: #6c757d;">Volver al Panel</a>
             </div>
         </div>
     </div>
