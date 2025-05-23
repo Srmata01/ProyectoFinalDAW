@@ -22,6 +22,107 @@ if (!isset($base_path)) {
         $base_path = '../';
     }
 }
+
+// Incluir el CSS específico del footer utilizando scoped styles para evitar conflictos
+echo '<style>
+/* Estilos exclusivos para el footer, no afectan al resto de la página */
+body > footer {
+    background-color: rgba(210, 210, 210, 0.5);
+    padding: var(--space-sm, 0.5rem) 0;
+    width: 100%;
+    margin-top: auto;
+}
+
+body > footer .footer-container {
+    max-width: 1200px;
+    height: auto;
+    min-height: 50px;
+    margin: 0 auto;
+    padding: var(--space-xs, 0.25rem) var(--space-md, 1rem);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+body > footer .footer-section {
+    flex: 1 1 150px;
+    margin: var(--space-xs, 0.25rem);
+}
+
+body > footer .footer-section h4 {
+    font-size: var(--font-size-xs, 0.75rem);
+    font-weight: bold;
+    color: var(--color-primary-dark, #E08A00);
+    margin-bottom: var(--space-xs, 0.25rem);
+}
+
+body > footer .footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+body > footer .footer-section ul li a {
+    text-decoration: none;
+    color: var(--color-text-lighter, #555);
+    font-size: var(--font-size-xs, 0.75rem);
+    line-height: 1.5;
+}
+
+body > footer .social-icons img {
+    width: 24px;
+    margin: 0 var(--space-xs, 0.25rem);
+    transition: transform 0.3s ease;
+}
+
+body > footer .social-icons img:hover {
+    transform: translateY(-2px);
+}
+
+body > footer .footer-logo {
+    text-align: center;
+}
+
+body > footer .footer-logo img {
+    width: 80px;
+}
+
+/* Responsive styles - Específicos para el footer */
+@media (max-width: 768px) {
+    body > footer .footer-container {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: var(--space-sm, 0.5rem);
+    }
+    
+    body > footer .footer-section {
+        flex: 0 0 100%;
+        margin: var(--space-xs, 0.25rem) 0;
+        text-align: center;
+    }
+    
+    body > footer .footer-logo {
+        flex: 0 0 100%;
+        order: -1;
+        margin-bottom: var(--space-sm, 0.5rem);
+    }
+}
+
+@media (max-width: 576px) {
+    body > footer {
+        padding: var(--space-xs, 0.25rem) 0;
+    }
+    
+    body > footer .footer-container {
+        flex-direction: column;
+        padding: var(--space-xs, 0.25rem);
+    }
+    
+    body > footer .footer-logo img {
+        width: 60px;
+    }
+}
+</style>';
 ?>
 <footer>
     <div class="footer-container">

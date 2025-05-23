@@ -1,0 +1,123 @@
+/* 
+ * AVISO IMPORTANTE:
+ * Los estilos del footer ahora están integrados directamente en el archivo footer.php.
+ * Este archivo se mantiene como respaldo en caso de que alguna página lo incluya directamente,
+ * pero no contiene estilos activos.
+ */
+
+/* Contenedor principal del footer */
+body > footer .footer-container {
+    max-width: 1200px;
+    height: auto;
+    min-height: 50px;
+    margin: 0 auto;
+    padding: var(--space-xs) var(--space-md);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+/* Secciones del footer */
+body > footer .footer-section {
+    flex: 1 1 150px;
+    margin: var(--space-xs);
+}
+
+body > footer .footer-section h4 {
+    font-size: var(--font-size-xs);
+    font-weight: bold;
+    color: var(--color-primary-dark);
+    margin-bottom: var(--space-xs);
+}
+
+body > footer .footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+body > footer .footer-section ul li a {
+    text-decoration: none;
+    color: var(--color-text-lighter);
+    font-size: var(--font-size-xs);
+    line-height: 1.5;
+}
+
+/* Iconos sociales específicamente dentro del footer */
+body > footer .social-icons img {
+    width: 24px;
+    margin: 0 var(--space-xs);
+    transition: transform 0.3s ease;
+}
+
+body > footer .social-icons img:hover {
+    transform: translateY(-2px);
+}
+
+/* Logo en el footer */
+body > footer .footer-logo {
+    text-align: center;
+}
+
+body > footer .footer-logo img {
+    width: 80px;
+}
+
+/* Responsive styles - Específicos para el footer */
+@media (max-width: 768px) {
+    /* Aseguramos que estos estilos solo afecten al footer */
+    body > footer .footer-container {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: var(--space-sm);
+    }
+    
+    body > footer .footer-section {
+        flex: 0 0 100%;
+        margin: var(--space-xs) 0;
+        text-align: center;
+    }
+    
+    body > footer .footer-section h4 {
+        font-size: var(--font-size-xs);
+        margin-bottom: var(--space-xs);
+    }
+    
+    body > footer .footer-section ul li a {
+        font-size: var(--font-size-xs);
+    }
+    
+    body > footer .footer-logo {
+        flex: 0 0 100%;
+        order: -1;
+        margin-bottom: var(--space-sm);
+    }
+}
+
+@media (max-width: 576px) {
+    body > footer {
+        padding: var(--space-xs) 0;
+    }
+    
+    body > footer .footer-container {
+        flex-direction: column;
+        padding: var(--space-xs);
+    }
+    
+    body > footer .footer-section {
+        flex: 0 0 100%;
+        margin: var(--space-xs) 0;
+    }
+    
+    body > footer .social-icons {
+        margin: var(--space-xs) 0;
+    }
+    
+    body > footer .footer-logo img {
+        width: 60px;
+    }
+    
+    body > footer .footer-logo p {
+        font-size: var(--font-size-sm);
+    }
+}

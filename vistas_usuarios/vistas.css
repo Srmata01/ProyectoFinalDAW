@@ -5,14 +5,28 @@
     --color-text-light: #494949;
     --color-background: rgba(210, 210, 210, 0.5);
     --color-background-content: rgba(210, 210, 210, 0.688);
-    --radius-sm: 5px;
-    --radius-md: 10px;
+    --radius-sm: 4px;
+    --radius-md: 8px;
     --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     --color-primary-light: #FFC72C;
     --color-border: #D2D2D2;
     --color-text-lighter: #555;
-    --radius-lg: 10px;
+    --radius-lg: 8px;
     --transition: all 0.3s ease;
+    
+    /* Tamaños base reducidos */
+    --font-size-xs: 0.75rem;   /* 12px */
+    --font-size-sm: 0.875rem;  /* 14px */
+    --font-size-md: 1rem;      /* 16px */
+    --font-size-lg: 1.125rem;  /* 18px */
+    --font-size-xl: 1.25rem;   /* 20px */
+    
+    /* Espaciados */
+    --space-xs: 0.25rem;   /* 4px */
+    --space-sm: 0.5rem;    /* 8px */
+    --space-md: 1rem;      /* 16px */
+    --space-lg: 1.5rem;    /* 24px */
+    --space-xl: 2rem;      /* 32px */
 }
 
 /* Estilos básicos */
@@ -24,6 +38,8 @@ body {
     display: flex;
     flex-direction: column;
     position: relative;
+    font-size: var(--font-size-md);
+    line-height: 1.5;
 }
 
 /* Header y contenedor principal */
@@ -34,24 +50,24 @@ header {
 }
 
 .header-container {
-    max-width: 1400px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 24px;
-    height: 100px;
+    padding: 0 var(--space-md);
+    height: 70px; /* Reduced from 100px */
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
 .logo-container img {
-    height: 80px;
+    height: 70px; /* Reduced from 80px */
 }
 
 /* Buscador */
 .search-container {
     flex: 1;
-    max-width: 600px;
-    margin: 0 24px;
+    max-width: 500px; /* Reduced from 600px */
+    margin: 0 var(--space-md);
 }
 
 .search-box {
@@ -62,10 +78,10 @@ header {
 
 .search-input {
     width: 100%;
-    padding: 10px 16px 10px 40px;
+    padding: 8px 14px 8px 32px; /* Reduced from 10px 16px 10px 40px */
     border-radius: var(--radius-lg);
     border: 1px solid var(--color-border);
-    font-size: 14px;
+    font-size: var(--font-size-sm); /* Using variable instead of 14px */
     color: var(--color-text);
     outline: none;
     transition: var(--transition);
@@ -74,11 +90,11 @@ header {
 .search-box img {
     position: absolute;
     top: 50%;
-    right: 10px;
+    right: 8px; /* Reduced from 10px */
     transform: translateY(-50%);
     cursor: pointer;
-    width: 20px;
-    height: 20px;
+    width: 16px; /* Reduced from 20px */
+    height: 16px; /* Reduced from 20px */
 }
 
 .search-input:focus {
@@ -88,16 +104,16 @@ header {
 
 /* Contenedor principal */
 .container1 {
-    padding: 20px;
-    min-height: calc(100vh - 220px);
+    padding: var(--space-sm); /* Reduced from var(--space-md) */
+    min-height: calc(100vh - 160px); /* Further reduced from 180px to match even smaller components */
 }
 
 /* Diseño de dos columnas */
 .profile-columns-container {
     display: flex;
-    gap: 30px;
+    gap: var(--space-md); /* Further reduced from var(--space-lg) */
     width: 100%;
-    max-width: 1400px;
+    max-width: 1100px; /* Further reduced from 1200px */
     margin: 0 auto;
 }
 
@@ -105,18 +121,38 @@ header {
     flex: 1;
     background-color: var(--color-background-content);
     border-radius: var(--radius-md);
-    padding: 20px;
+    padding: var(--space-sm); /* Further reduced from var(--space-md) */
+}
+
+/* Espaciado reducido para elementos del perfil */
+.profile-column > * {
+    margin-bottom: var(--space-sm);
+}
+
+.profile-column h2 {
+    margin-top: var(--space-xs);
+    margin-bottom: var(--space-xs);
+}
+
+.profile-column form {
+    margin: var(--space-xs) 0;
+}
+
+/* Reducción específica para tablas en perfil */
+.profile-column .form-grid {
+    margin-bottom: var(--space-xs);
 }
 
 /* Estilos de tabla */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin: 10px 0;
+    margin: var(--space-xs) 0; /* Further reduced from var(--space-sm) */
+    font-size: var(--font-size-xs); /* Further reduced from var(--font-size-sm) */
 }
 
 th, td {
-    padding: 10px;
+    padding: var(--space-xs) var(--space-sm); /* Further reduced from var(--space-sm) with horizontal and vertical padding */
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
@@ -125,14 +161,14 @@ th, td {
 .submit-btn {
     background-color: var(--color-primary);
     color: white;
-    padding: 8px 16px;
+    padding: 4px 8px; /* Further reduced from 6px 12px */
     border: none;
     border-radius: var(--radius-sm);
     cursor: pointer;
     text-decoration: none;
     display: inline-block;
-    font-size: 14px;
-    margin-bottom: 20px;
+    font-size: var(--font-size-xs); /* Same as before */
+    margin-bottom: var(--space-sm); /* Reduced from var(--space-md) */
     transition: background-color 0.3s ease;
 }
 
@@ -143,14 +179,14 @@ th, td {
 .delete-btn {
     background-color: #e74c3c;
     color: white;
-    padding: 8px 16px;
+    padding: 4px 8px; /* Further reduced from 6px 12px */
     border: none;
     border-radius: var(--radius-sm);
     cursor: pointer;
     text-decoration: none;
     display: inline-block;
-    font-size: 14px;
-    margin-bottom: 20px;
+    font-size: var(--font-size-xs); /* Same as before */
+    margin-bottom: var(--space-sm); /* Reduced from var(--space-md) */
     transition: background-color 0.3s ease;
 }
 
@@ -160,27 +196,34 @@ th, td {
 
 .button-group {
     display: flex;
-    gap: 10px;
+    gap: 6px; /* Reduced from 10px */
     flex-wrap: wrap;
 }
 
 /* Foto de perfil */
 .profile-photo-container {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: var(--space-sm); /* Further reduced from var(--space-md) */
 }
 
 .profile-photo-container img {
-    width: 150px;
-    height: 150px;
+    width: 100px; /* Further reduced from 120px */
+    height: 100px; /* Further reduced from 120px */
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid var(--color-primary);
+    border: 1px solid var(--color-primary); /* Further reduced from 2px */
+}
+
+/* Estilos específicos para avatar grande en perfil */
+.profile-photo-container .user-avatar {
+    width: 100px !important; /* Match the profile photo size */
+    height: 100px !important;
+    font-size: 2em !important;
 }
 
 .user-avatar {
-    width: 40px;
-    height: 40px;
+    width: 32px; /* Reduced from 40px */
+    height: 32px; /* Reduced from 40px */
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -189,6 +232,7 @@ th, td {
     color: white;
     font-weight: 500;
     overflow: hidden;
+    font-size: var(--font-size-sm); /* Added to reduce font size */
 }
 
 .user-avatar img {
@@ -200,32 +244,62 @@ th, td {
 /* Formularios */
 .form-row {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Further reduced from 180px */
+    gap: var(--space-sm); /* Further reduced from var(--space-md) */
+    margin-bottom: var(--space-sm); /* Further reduced from var(--space-md) */
 }
 
 .form-row input,
 .form-row textarea {
     width: 100%;
-    padding: 8px;
+    padding: 4px; /* Further reduced from 6px */
     border: 1px solid #ddd;
     border-radius: var(--radius-sm);
+    font-size: var(--font-size-xs); /* Further reduced from var(--font-size-sm) */
+}
+
+/* Form label styles */
+.form-row label {
+    font-size: var(--font-size-xs);
+    margin-bottom: var(--space-xs);
+    display: block;
+}
+
+label {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-light);
+}
+
+/* Acciones de formulario más compactas */
+.form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-top: var(--space-sm); /* Reduced from likely larger value */
+    margin-bottom: var(--space-sm);
+}
+
+.form-actions .submit-btn,
+.form-actions a.submit-btn {
+    margin-bottom: var(--space-xs); /* Further reduced */
+    font-size: var(--font-size-xs);
+    padding: 3px 6px;
+    min-width: auto;
 }
 
 /* Footer */
 footer {
     background-color: var(--color-background);
-    padding: 20px 0;
+    padding: var(--space-md) 0; /* Using variable instead of 20px 0 */
     width: 100%;
     margin-top: auto;
 }
 
 .footer-container {
-    max-width: 1400px;
+    max-width: 1200px; /* Reduced from 1400px */
     margin: 0 auto;
-    padding: 0 24px;
-    height: 60px;
+    padding: 0 var(--space-md); /* Using variable instead of 24px */
+    height: 50px; /* Reduced from 60px */
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -233,14 +307,15 @@ footer {
 
 .footer-section {
     flex: 1;
-    min-width: 150px;
-    margin: 10px;
+    min-width: 130px; /* Reduced from 150px */
+    margin: 8px; /* Reduced from 10px */
 }
 
 .footer-section h4, .footer-title {
-    font-size: 13px;
+    font-size: var(--font-size-xs); /* Reduced from 13px */
     font-weight: bold;
     color: var(--color-primary-dark);
+    margin-bottom: var(--space-xs);
 }
 
 .footer-section ul, .footer-list {
@@ -251,22 +326,22 @@ footer {
 .footer-section ul li a, .footer-link {
     text-decoration: none;
     color: var(--color-text-lighter);
-    font-size: 12px;
+    font-size: var(--font-size-xs); /* Using variable instead of 12px */
 }
 
 .social-icons img, .social-icon {
-    width: 30px;
-    margin: 0 5px;
+    width: 24px; /* Reduced from 30px */
+    margin: 0 4px; /* Reduced from 0 5px */
 }
 
 .footer-logo img, .footer-logo-img {
-    width: 100px;
+    width: 80px; /* Reduced from 100px */
 }
 
 .footer-logo p {
     color: var(--color-primary);
     font-weight: bold;
-    font-size: 18px;
+    font-size: var(--font-size-md); /* Reduced from 18px */
 }
 
 /* Login Profile Box */
@@ -284,13 +359,14 @@ footer {
     text-decoration: none;
     background: transparent;
     border: none;
-    padding: 4px;
-    margin-left: 10px;
+    padding: 3px; /* Reduced from 4px */
+    margin-left: 8px; /* Reduced from 10px */
     cursor: pointer;
     transition: background-color 0.2s ease;
-    border-radius: 10px;
+    border-radius: 8px; /* Reduced from 10px */
     opacity: 0.8;
-    gap: 10px;
+    gap: 8px; /* Reduced from 10px */
+    font-size: var(--font-size-sm);
 }
 
 .login-profile-box a:hover {
@@ -298,11 +374,11 @@ footer {
 }
 
 .login-profile-box img {
-    width: 32px;
-    height: 32px;
+    width: 28px; /* Reduced from 32px */
+    height: 28px; /* Reduced from 32px */
     border-radius: 50%;
     object-fit: cover;
-    margin-left: 10px;
+    margin-left: 8px; /* Reduced from 10px */
 }
 
 /* Profile Container */
@@ -314,16 +390,17 @@ footer {
 .profile-btn {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px; /* Reduced from 8px */
     background: none;
     border: none;
     cursor: pointer;
-    padding: 8px 16px;
-    border-radius: 20px;
+    padding: 6px 12px; /* Reduced from 8px 16px */
+    border-radius: 16px; /* Reduced from 20px */
     transition: all 0.3s ease;
     text-decoration: none;
     color: #2d2d2d;
     border: 1px solid #d2d2d2;
+    font-size: var(--font-size-sm);
 }
 
 .profile-btn:hover {
@@ -335,11 +412,201 @@ footer {
 .user-name {
     color: #2d2d2d;
     font-weight: 500;
-    margin-left: 8px;
+    margin-left: 6px; /* Reduced from 8px */
+    font-size: var(--font-size-sm);
 }
 
 @media (max-width: 768px) {
     .user-name {
         display: none;
     }
+}
+
+/* Responsive design */
+@media (max-width: 992px) {
+    .header-container {
+        padding: 0 var(--space-sm);
+    }
+    
+    .logo-container img {
+        height: 60px;
+    }
+    
+    .container1 {
+        padding: var(--space-sm);
+    }
+    
+    .profile-columns-container {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        height: 60px;
+    }
+    
+    .search-container {
+        max-width: 300px;
+    }
+    
+    .profile-columns-container {
+        flex-direction: column;
+        gap: var(--space-md);
+    }
+    
+    .profile-column {
+        width: 100%;
+    }
+    
+    .form-row {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+    
+    .footer-container {
+        height: auto;
+        flex-wrap: wrap;
+    }
+    
+    .form-grid {
+        overflow-x: auto;
+        max-width: 100%;
+    }
+    
+    table {
+        min-width: 500px;
+    }
+}
+
+@media (max-width: 576px) {
+    html {
+        font-size: 14px;
+    }
+    
+    .header-container {
+        flex-wrap: wrap;
+        height: auto;
+        padding: var(--space-xs);
+    }
+    
+    .logo-container {
+        order: 1;
+        width: 50%;
+    }
+    
+    .logo-container img {
+        height: 50px;
+    }
+    
+    .search-container {
+        order: 3;
+        width: 100%;
+        max-width: 100%;
+        margin: var(--space-xs) 0;
+    }
+    
+    .user-container {
+        order: 2;
+        width: 50%;
+        justify-content: flex-end;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: var(--space-xs);
+    }
+    
+    table {
+        font-size: var(--font-size-xs);
+    }
+    
+    th, td {
+        padding: 2px var(--space-xs);
+    }
+    
+    .profile-photo-container img {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .profile-photo-container .user-avatar {
+        width: 80px !important;
+        height: 80px !important;
+        font-size: 1.5em !important;
+    }
+    
+    .button-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .submit-btn, .delete-btn {
+        width: 100%;
+        margin-bottom: var(--space-xs);
+        padding: 3px 6px;
+    }
+    
+    .profile-column {
+        padding: var(--space-xs);
+    }
+    
+    /* Compactar aún más los separadores de sección */
+    .document-title {
+        font-size: var(--font-size-sm);
+        padding-bottom: 2px;
+        margin-bottom: var(--space-xs);
+    }
+}
+
+/* Estilo para los títulos */
+.document-title {
+    color: var(--color-primary);
+    margin-bottom: var(--space-sm); /* Reduced from larger margin */
+    font-size: var(--font-size-md); /* Smaller size */
+    padding-bottom: var(--space-xs);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.document-subtitle {
+    color: var(--color-text);
+    margin: var(--space-sm) 0; /* Smaller margin */
+    font-size: var(--font-size-sm);
+}
+
+.document-text {
+    margin-bottom: var(--space-sm); /* Smaller margin */
+    color: var(--color-text-light);
+    font-size: var(--font-size-xs);
+}
+
+/* Alert styles */
+.alert {
+    padding: var(--space-sm) !important;
+    margin: var(--space-sm) !important;
+    border-radius: var(--radius-sm) !important;
+    font-size: var(--font-size-xs) !important;
+    text-align: center;
+}
+
+.alert-success {
+    background-color: #d4edda !important;
+    color: #155724 !important;
+}
+
+.alert-danger {
+    background-color: #f8d7da !important;
+    color: #721c24 !important;
+}
+
+/* Estilo para enlaces en documentos */
+.document-link {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-size: var(--font-size-xs);
+    transition: var(--transition);
+}
+
+.document-link:hover {
+    text-decoration: underline;
+    color: var(--color-primary-dark);
 }

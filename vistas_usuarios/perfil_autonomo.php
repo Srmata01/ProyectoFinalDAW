@@ -74,21 +74,19 @@ if (isset($_SESSION['error'])) {
                 </div>
             </div>
 
-            <div class="user-container">
-                <div class="profile-container">
+            <div class="user-container">                <div class="profile-container">
                     <?php include '../includes/profile_header.php'; ?>
-                    <a href="../includes/logout.php" class="submit-btn" style="margin-left: 10px;">Cerrar sesión</a>
+                    <a href="../includes/logout.php" class="submit-btn" style="margin-left: var(--space-xs);">Cerrar sesión</a>
                 </div>
             </div>
         </div>
-    </header>    <div class="container1">
-        <?php if (isset($mensaje)): ?>
-            <div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 15px; margin: 15px; border-radius: 5px; text-align: center;">
+    </header>    <div class="container1">        <?php if (isset($mensaje)): ?>
+            <div class="alert alert-success">
                 <?= htmlspecialchars($mensaje) ?>
             </div>
         <?php endif; ?>
         <?php if (isset($error)): ?>
-            <div class="alert alert-danger" style="background-color: #f8d7da; color: #721c24; padding: 15px; margin: 15px; border-radius: 5px; text-align: center;">
+            <div class="alert alert-danger">
                 <?= htmlspecialchars($error) ?>
             </div>
         <?php endif; ?>
@@ -97,13 +95,11 @@ if (isset($_SESSION['error'])) {
             <!-- Columna izquierda: Datos del autónomo -->
             <div class="profile-column">
                 <h2 class="document-title">Mis Datos</h2>
-                <div class="profile-photo-container">
-                    <?php if (!empty($autonomo['foto_perfil'])): ?>
+                <div class="profile-photo-container">                    <?php if (!empty($autonomo['foto_perfil'])): ?>
                         <img src="data:image/jpeg;base64,<?= base64_encode($autonomo['foto_perfil']) ?>" 
-                             alt="Foto de perfil" 
-                             style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;">
+                             alt="Foto de perfil">
                     <?php else: ?>
-                        <div class="user-avatar" style="width: 150px; height: 150px; margin: 0 auto; font-size: 3em;">
+                        <div class="user-avatar">
                             <?= strtoupper(substr($autonomo['nombre'], 0, 1)) ?>
                         </div>
                     <?php endif; ?>
@@ -126,9 +122,7 @@ if (isset($_SESSION['error'])) {
                     </div>
                 </form>
                 
-                <!-- Servicios del autónomo -->
-                <h2 class="document-title" style="margin-top: 30px;">Mis Servicios</h2>
-                <div class="form-actions" style="margin-bottom: 20px;">
+                <!-- Servicios del autónomo -->                <h2 class="document-title">Mis Servicios</h2>                <div class="form-actions">
                     <a href="../services/crear.php" class="submit-btn">Añadir nuevo servicio</a>
                 </div>
                 <?php if ($servicios): ?>
@@ -152,10 +146,9 @@ if (isset($_SESSION['error'])) {
                                         <td><?= number_format($servicio['precio'], 2) ?></td>
                                         <td><?= $servicio['duracion'] ?></td>
                                         <td><?= ucfirst($servicio['estado']) ?></td>
-                                        <td class="form-actions">
-                                            <a href="../services/editar.php?id=<?= $servicio['id_servicio'] ?>" class="submit-btn">Editar</a>
+                                        <td class="form-actions">                                            <a href="../services/editar.php?id=<?= $servicio['id_servicio'] ?>" class="submit-btn">Editar</a>
                                             <button onclick="eliminarServicio(<?= $servicio['id_servicio'] ?>)" 
-                                                    class="submit-btn" style="background-color: #dc3545;">Eliminar</button>
+                                                    class="delete-btn">Eliminar</button>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -200,7 +193,7 @@ if (isset($_SESSION['error'])) {
                                             <?php if (isset($reserva['id_cliente'])): ?>
                                                 <a href="ver_cliente.php?id=<?= $reserva['id_cliente'] ?>" 
                                                    title="Ver detalles del cliente" 
-                                                   style="color: var(--color-primary); text-decoration: underline;">
+                                                   class="document-link">
                                                     <?= htmlspecialchars($reserva['cliente']) ?>
                                                 </a>
                                             <?php else: ?>
@@ -213,10 +206,11 @@ if (isset($_SESSION['error'])) {
                                         <td><?= htmlspecialchars($reserva['hora_fin_formateada']) ?></td>
                                         <td><?= ucfirst($reserva['estado']) ?></td>
                                         <td><strong><?= ucfirst($reserva['estado_confirmacion']) ?></strong></td>
-                                        <td class="form-actions">
-                                            <?php if ($reserva['estado'] == 'pendiente' && $reserva['estado_confirmacion'] == 'pendiente'): ?>
-                                                <a href="../reservas/aceptar_reserva.php?id=<?= $reserva['id_reserva'] ?>" class="submit-btn" style="background-color: #28a745;">Aceptar</a>
-                                                <a href="../reservas/rechazar_reserva.php?id=<?= $reserva['id_reserva'] ?>" class="submit-btn" style="background-color: #dc3545;">Rechazar</a>
+                                        <td class="form-actions">                                            <?php if ($reserva['estado'] == 'pendiente' && $reserva['estado_confirmacion'] == 'pendiente'): ?>
+                                                <div class="button-group">
+                                                    <a href="../reservas/aceptar_reserva.php?id=<?= $reserva['id_reserva'] ?>" class="submit-btn">Aceptar</a>
+                                                    <a href="../reservas/rechazar_reserva.php?id=<?= $reserva['id_reserva'] ?>" class="delete-btn">Rechazar</a>
+                                                </div>
                                             <?php elseif ($reserva['estado'] == 'pendiente' && $reserva['estado_confirmacion'] == 'aceptada'): ?>
                                                 <a href="../reservas/completar_reserva.php?id=<?= $reserva['id_reserva'] ?>" class="submit-btn">Completar</a>
                                             <?php else: ?>
@@ -232,52 +226,7 @@ if (isset($_SESSION['error'])) {
                 <?php endif; ?>
             </div>
         </div>
-    </div>
-
-    <?php 
-    // Definir la ruta base para el footer
-    $base_path = '../';
-    include '../includes/footer.php'; 
-    ?>
-</body>
-</html>
-                <ul>
-                    <li><a href="../politicaprivacidad.php">Política de privacidad</a></li>
-                    <li><a href="../politicacookiesdatos.php">Política de Cookies y protección de datos</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-section">
-                <h4>Contacto</h4>
-                <ul>
-                    <li><a href="mailto:fixitnow@gmail.com">fixitnow@gmail.com</a></li>
-                    <li><a href="tel:+34690096690">+34 690 096 690</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-section">
-                <h4>¿Eres miembro?</h4>
-                <ul>
-                    <li><a href="../create_users/index.php">Únete a Nosotros</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-section social-media">
-                <div class="social-icons">
-                    <a href="#"><img src="../media/twitter-icon.png" alt="Twitter"></a>
-                    <a href="#"><img src="../media/instagram-icon.png" alt="Instagram"></a>
-                    <a href="#"><img src="../media/facebook-icon.png" alt="Facebook"></a>
-                    <a href="#"><img src="../media/tiktok-icon.png" alt="TikTok"></a>
-                </div>
-            </div>
-            
-            <div class="footer-logo">
-                <img src="../media/logo.png" alt="FixItNow Logo">
-            </div>
-        </div>
-    </footer>
-
-    <script>
+    </div>    <script>
     function eliminarServicio(id) {
         if (confirm('¿Estás seguro de que deseas eliminar este servicio?')) {
             const xhr = new XMLHttpRequest();
@@ -301,5 +250,11 @@ if (isset($_SESSION['error'])) {
         }
     }
     </script>
+
+    <?php 
+    // Definir la ruta base para el footer
+    $base_path = '../';
+    include '../includes/footer.php'; 
+    ?>
 </body>
 </html>
