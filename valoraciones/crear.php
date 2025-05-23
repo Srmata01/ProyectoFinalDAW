@@ -149,7 +149,7 @@ $tipo_usuario = $usuario_receptor ? ($usuario_receptor['tipo_usuario'] === 'Aut√
     <header>
         <div class="header-container">
             <div class="logo-container">
-                <a href="../main.php">
+                <a href="../index.php">
                     <img src="../media/logo.png" alt="Logo FixItNow" class="logo">
                 </a>
             </div>
@@ -204,7 +204,7 @@ $tipo_usuario = $usuario_receptor ? ($usuario_receptor['tipo_usuario'] === 'Aut√
             </form>
         <?php else: ?>
             <p>No se ha proporcionado un ID de usuario v√°lido para valorar.</p>
-            <a href="../main.php" class="form-submit" style="display: inline-block; width: auto; min-width: 200px; margin-top: 20px;">
+            <a href="../index.php" class="form-submit" style="display: inline-block; width: auto; min-width: 200px; margin-top: 20px;">
                 Volver al Inicio
             </a>
         <?php endif; ?>    </div>

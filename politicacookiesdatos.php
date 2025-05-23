@@ -28,7 +28,7 @@ require_once 'config/database.php';
     <header class="app-header">
         <div class="header-container">
             <div class="logo-container">
-                <a href="main.php" class="logo-link">
+                <a href="index.php" class="logo-link">
                     <img src="media/logo.png" alt="Logo FixItNow" class="logo">
                 </a>
             </div>

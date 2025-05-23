@@ -22,7 +22,7 @@ if (!function_exists('mostrarValoraciones')) {
 }
 
 if (!isset($_GET['id'])) {
-    header('Location: ../main.php');
+    header('Location: ../index.php');
     exit();
 }
 
@@ -38,10 +38,8 @@ try {
         GROUP BY u.id_usuario
     ");
     $stmt->execute([$id_autonomo]);
-    $autonomo = $stmt->fetch();
-
-    if (!$autonomo) {
-        header('Location: ../main.php');
+    $autonomo = $stmt->fetch();    if (!$autonomo) {
+        header('Location: ../index.php');
         exit();
     }
 
@@ -160,7 +158,7 @@ try {
     <header>
         <div class="header-container">
             <div class="logo-container">
-                <a href="../main.php">
+                <a href="../index.php">
                     <img src="../media/logo.png" alt="Logo" class="logo">
                 </a>
             </div>

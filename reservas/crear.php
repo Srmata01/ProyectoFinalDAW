@@ -228,7 +228,7 @@ $dias_js_json = json_encode($dias_js);
     <header>
         <div class="header-container">
             <div class="logo-container">
-                <a href="../main.php">
+                <a href="../index.php">
                     <img src="../media/logo.png" alt="Logo FixItNow" class="logo">
                 </a>
             </div>

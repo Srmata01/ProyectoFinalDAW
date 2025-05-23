@@ -112,16 +112,16 @@ foreach ($servicios_recientes as &$servicio) {
     <header>
         <div class="header-container">
             <div class="logo-container">
-                <a href="main.php">
+                <a href="index.php">
                     <img src="media/logo.png" alt="Logo FixItNow" class="logo">
                 </a>
-            </div>
-            <div class="login-profile-box">
+            </div>            <div class="login-profile-box">
                 <?php include 'includes/profile_header.php'; ?>
-            </div>        </div>    </header>    
+            </div>        </div>    </header>      
+    
     <!-- Sección de video y búsqueda -->
     <div class="video-background">
-        <video autoplay muted loop>
+        <video autoplay muted loop playsinline>
             <source src="media/videocorp1.mp4" type="video/mp4">
             Tu navegador no soporta videos en HTML5.
         </video>
@@ -196,11 +196,28 @@ foreach ($servicios_recientes as &$servicio) {
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);        }
     </style>    <?php 
     // Incluir el footer compartido (archivo en raíz, así que no necesita $base_path)
-    include 'includes/footer.php'; 
-    ?>
-    
-    <!-- Agregar referencia al script del buscador reutilizable -->
+    include 'includes/footer.php';    ?>      <!-- Agregar referencia al script del buscador reutilizable -->
     <script src="services/js/buscador.js" defer></script>
+    
+    <!-- Script simplificado para el video de fondo -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var video = document.querySelector('.video-background video');
+            
+            // Si hay error al reproducir el video, mostrar imagen de fondo
+            video.addEventListener('error', function() {
+                document.querySelector('.video-background').style.backgroundImage = "url('media/wpfijo1.jpg')";
+                document.querySelector('.video-background').style.backgroundSize = "cover";
+            });
+            
+            // Intentar reproducir el video
+            video.play().catch(function() {
+                // Si no se puede reproducir automáticamente, mostrar imagen de fondo
+                document.querySelector('.video-background').style.backgroundImage = "url('media/wpfijo1.jpg')";
+                document.querySelector('.video-background').style.backgroundSize = "cover";
+            });
+        });
+    </script>
 </body>
 
 </html>

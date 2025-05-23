@@ -49,23 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Administrador - FixItNow</title>
     <link rel="stylesheet" href="../styles.css">
-    <link rel="icon" href="../media/logo.png">
-    <style>
-        .video-background {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            overflow: hidden;
-            z-index: -1;
-        }
-        .video-background video {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            min-width: 100%;
-            min-height: 100%;
-            object-fit: cover;
-        }
+    <link rel="icon" href="../media/logo.png">    <style>
         .content {
             position: relative;
             z-index: 1;
@@ -130,15 +114,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <header>
         <div class="header-container">
             <div class="logo-container">
-                <a href="../main.php">
+                <a href="../index.php">
                     <img src="../media/logo.png" alt="Logo FixItNow" class="logo">
                 </a>
             </div>
             <div class="login-profile-box">
                 <?php include '../includes/profile_header.php'; ?>
             </div>
-        </div>
-    </header>
+        </div>    </header>
 
    <!-- ✅ INICIO ZONA CON GRADIENTE ANIMADO -->
    <div class="app-main">
@@ -180,6 +163,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </label>
                         <label>Foto de perfil:
                             <input type="file" name="foto_perfil" accept="image/*">
+                        </label>
+                        <label>Código de Administrador:
+                            <input type="password" name="codigo_admin" required>
                         </label>
                     </div>
                     <div class="form-actions">

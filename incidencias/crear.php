@@ -87,10 +87,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $pdo->prepare("
                 INSERT INTO incidencias (persona_incidencia, mail_contacto, titulo_incidencia, cuerpo_incidencia, imagen_incidencia)
                 VALUES (?, ?, ?, ?, ?)
-            ");            $stmt->execute([$persona_incidencia, $mail_contacto, $titulo_incidencia, $cuerpo_incidencia, $imagen_incidencia]);
-
-            // Redirigir al main.php después de registrar la incidencia
-            header('Location: ../main.php?mensaje=incidencia_registrada');
+            ");            $stmt->execute([$persona_incidencia, $mail_contacto, $titulo_incidencia, $cuerpo_incidencia, $imagen_incidencia]);            // Redirigir al index.php después de registrar la incidencia
+            header('Location: ../index.php?mensaje=incidencia_registrada');
             exit();
         } catch (PDOException $e) {
             $mensaje = 'Error al registrar la incidencia: ' . $e->getMessage();
@@ -260,7 +258,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <header>
         <div class="header-container">
             <div class="logo-container">
-                <a href="../main.php">
+                <a href="../index.php">
                     <img src="../media/logo.png" alt="Logo FixItNow" class="logo">
                 </a>
             </div>

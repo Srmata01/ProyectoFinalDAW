@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                     header("Location: vistas_usuarios/perfil_autonomo.php");
                                     break;
                                 default:
-                                    header("Location: main.php");
+                                    header("Location: index.php");
                                     break;
                             }
                         }
@@ -96,7 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <header>
         <div class="header-container">
             <div class="logo-container">
-                <a href="main.php">
+                <a href="index.php">
                     <img src="media/logo.png" alt="Logo FixItNow" class="logo">
                 </a>
             </div>

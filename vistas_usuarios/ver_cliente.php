@@ -15,13 +15,13 @@ if (!isset($_SESSION['usuario'])) {
 // Verificar que el usuario es un autónomo para ver perfiles de clientes
 if ($_SESSION['usuario']['tipo'] != 3) {
     $_SESSION['error'] = "No tienes permisos para acceder a esta página.";
-    header('Location: ../main.php');
+    header('Location: ../index.php');
     exit();
 }
 
 // Verificar que se proporcionó un ID de cliente
 if (!isset($_GET['id'])) {
-    header('Location: ../main.php');
+    header('Location: ../index.php');
     exit();
 }
 
@@ -65,7 +65,7 @@ try {
     <header>
         <div class="header-container">
             <div class="logo-container">
-                <a href="../main.php">
+                <a href="../index.php">
                     <img src="../media/logo.png" alt="Logo FixItNow" class="logo">
                 </a>
             </div>

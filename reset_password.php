@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $token_valido) {
     <header>
         <div class="header-container">
             <div class="logo-container">
-                <a href="main.php">
+                <a href="index.php">
                     <img src="media/logo.png" alt="Logo FixItNow" class="logo">
                 </a>
             </div>
