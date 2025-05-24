@@ -1,6 +1,9 @@
 <?php
-require_once '../config/database.php';
 session_start();
+require_once '../config/database.php';
+
+$base_path = '../'; // Definimos base_path ya que estamos en un subdirectorio
+require_once $base_path . 'includes/header_template.php';
 
 // Validación de sesión y tipo de usuario
 if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['tipo'] != 3) {
@@ -60,27 +63,10 @@ if (isset($_SESSION['error'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil de Autónomo</title>
     <link rel="stylesheet" href="vistas.css">
+    <link rel="stylesheet" href="../includes/responsive-header.css">
+    <link rel="stylesheet" href="../includes/footer.css">
 </head>
-<body>
-    <header>
-        <div class="header-container">
-            <div class="logo-container">
-                <a href="../index.php">
-                    <img src="../media/logo.png" alt="Logo FixItNow" class="logo">
-                </a>
-            </div>            <div class="search-container">
-                <div class="search-box">                    <input type="text" placeholder="Buscar por servicio o localidad..." class="search-input">
-                    <img src="../media/lupa.png" alt="Buscar" class="search-icon">
-                </div>
-            </div>
-
-            <div class="user-container">                <div class="profile-container">
-                    <?php include '../includes/profile_header.php'; ?>
-                    <a href="../includes/logout.php" class="submit-btn" style="margin-left: var(--space-xs);">Cerrar sesión</a>
-                </div>
-            </div>
-        </div>
-    </header>    <div class="container1">        <?php if (isset($mensaje)): ?>
+<body>    <div class="container1"><?php if (isset($mensaje)): ?>
             <div class="alert alert-success">
                 <?= htmlspecialchars($mensaje) ?>
             </div>
@@ -114,40 +100,35 @@ if (isset($_SESSION['error'])) {
                         <label>Dirección: <input type="text" name="direccion" value="<?= htmlspecialchars($_SESSION['usuario']['direccion']) ?>"></label>
                         <label>DNI/NIF: <input type="text" name="DNI" value="<?= htmlspecialchars($autonomo['DNI'] ?? '') ?>"></label>
                         <label>Foto de perfil: <input type="file" name="foto_perfil" accept="image/*"></label>
-                    </div>
-                    <div class="form-actions">
+                    </div>                    <div class="form-actions">
                         <button type="submit" class="submit-btn">Guardar Cambios</button>
-                        <a href="../portfolio/index.php" class="submit-btn">Gestionar Galería de Trabajos</a>
-                        <a href="../reservas/horarios_autonomo.php" class="submit-btn">Gestionar Horarios</a>
+                        <button type="button" class="submit-btn" onclick="window.location.href='../portfolio/index.php'">Galería</button>
+                        <button type="button" class="submit-btn" onclick="window.location.href='../reservas/horarios_autonomo.php'">Horarios</button>
                     </div>
                 </form>
                 
                 <!-- Servicios del autónomo -->                <h2 class="document-title">Mis Servicios</h2>                <div class="form-actions">
-                    <a href="../services/crear.php" class="submit-btn">Añadir nuevo servicio</a>
+                    <button type="button" class="submit-btn" onclick="window.location.href='../services/crear.php'">Añadir Servicio</button>
                 </div>
                 <?php if ($servicios): ?>
                     <div class="form-grid">
                         <table>
-                            <thead>
-                                <tr>
+                            <thead>                                <tr>
                                     <th>Nombre</th>
-                                    <th>Descripción</th>
-                                    <th>Precio (€)</th>
-                                    <th>Duración (min)</th>
+                                    <th>Precio</th>
+                                    <th>Duración</th>
                                     <th>Estado</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($servicios as $servicio): ?>
-                                    <tr id="servicio-<?= $servicio['id_servicio'] ?>">
-                                        <td><?= htmlspecialchars($servicio['nombre']) ?></td>
-                                        <td><?= htmlspecialchars($servicio['descripcion']) ?></td>
+                                    <tr id="servicio-<?= $servicio['id_servicio'] ?>">                                        <td><?= htmlspecialchars($servicio['nombre']) ?></td>
                                         <td><?= number_format($servicio['precio'], 2) ?></td>
                                         <td><?= $servicio['duracion'] ?></td>
-                                        <td><?= ucfirst($servicio['estado']) ?></td>
-                                        <td class="form-actions">                                            <a href="../services/editar.php?id=<?= $servicio['id_servicio'] ?>" class="submit-btn">Editar</a>
-                                            <button onclick="eliminarServicio(<?= $servicio['id_servicio'] ?>)" 
+                                        <td><?= ucfirst($servicio['estado']) ?></td>                                        <td class="form-actions">
+                                            <button type="button" class="submit-btn" onclick="window.location.href='../services/editar.php?id=<?= $servicio['id_servicio'] ?>'">Editar</button>
+                                            <button type="button" onclick="eliminarServicio(<?= $servicio['id_servicio'] ?>)" 
                                                     class="delete-btn">Eliminar</button>
                                         </td>
                                     </tr>
@@ -166,10 +147,8 @@ if (isset($_SESSION['error'])) {
                 <?php if ($reservas): ?>
                     <div class="form-grid">
                         <table>                            <thead>
-                                <tr>
-                                    <th>Servicio</th>
+                                <tr>                                    <th>Servicio</th>
                                     <th>Cliente</th>
-                                    <th>Teléfono</th>
                                     <th>Fecha</th>
                                     <th>Hora Inicio</th>
                                     <th>Hora Fin</th>
@@ -198,21 +177,18 @@ if (isset($_SESSION['error'])) {
                                                 </a>
                                             <?php else: ?>
                                                 <?= htmlspecialchars($reserva['cliente']) ?>
-                                            <?php endif; ?>
-                                        </td>
-                                        <td><?= htmlspecialchars($reserva['telefono_cliente']) ?></td>
+                                            <?php endif; ?>                                        </td>
                                         <td><?= htmlspecialchars($reserva['fecha_formateada']) ?></td>
                                         <td><?= htmlspecialchars($reserva['hora_inicio_formateada']) ?></td>
                                         <td><?= htmlspecialchars($reserva['hora_fin_formateada']) ?></td>
                                         <td><?= ucfirst($reserva['estado']) ?></td>
                                         <td><strong><?= ucfirst($reserva['estado_confirmacion']) ?></strong></td>
-                                        <td class="form-actions">                                            <?php if ($reserva['estado'] == 'pendiente' && $reserva['estado_confirmacion'] == 'pendiente'): ?>
-                                                <div class="button-group">
-                                                    <a href="../reservas/aceptar_reserva.php?id=<?= $reserva['id_reserva'] ?>" class="submit-btn">Aceptar</a>
-                                                    <a href="../reservas/rechazar_reserva.php?id=<?= $reserva['id_reserva'] ?>" class="delete-btn">Rechazar</a>
+                                        <td class="form-actions">                                            <?php if ($reserva['estado'] == 'pendiente' && $reserva['estado_confirmacion'] == 'pendiente'): ?>                                                <div class="button-group">
+                                                    <button type="button" class="submit-btn" onclick="window.location.href='../reservas/aceptar_reserva.php?id=<?= $reserva['id_reserva'] ?>'">Aceptar</button>
+                                                    <button type="button" class="delete-btn" onclick="window.location.href='../reservas/rechazar_reserva.php?id=<?= $reserva['id_reserva'] ?>'">Rechazar</button>
                                                 </div>
                                             <?php elseif ($reserva['estado'] == 'pendiente' && $reserva['estado_confirmacion'] == 'aceptada'): ?>
-                                                <a href="../reservas/completar_reserva.php?id=<?= $reserva['id_reserva'] ?>" class="submit-btn">Completar</a>
+                                                <button type="button" class="submit-btn" onclick="window.location.href='../reservas/completar_reserva.php?id=<?= $reserva['id_reserva'] ?>'">✔</button>
                                             <?php else: ?>
                                                 -
                                             <?php endif; ?>
@@ -251,10 +227,6 @@ if (isset($_SESSION['error'])) {
     }
     </script>
 
-    <?php 
-    // Definir la ruta base para el footer
-    $base_path = '../';
-    include '../includes/footer.php'; 
-    ?>
+    <?php include $base_path . 'includes/footer.php'; ?>
 </body>
 </html>

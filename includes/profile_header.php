@@ -30,17 +30,16 @@ if (isset($_SESSION['usuario'])) {
         $stmt->execute([$_SESSION['usuario']['id']]);
         $usuario = $stmt->fetch();
         $foto_perfil = $usuario['foto_perfil'];
-        ?>
-        <div class="profile-container">
-            <a href="<?= $perfil_url ?>" class="profile-btn" style="text-decoration: none;">
-                <?php if ($foto_perfil): ?>
-                    <div class="user-avatar">
-                        <img src="data:image/jpeg;base64,<?= base64_encode($foto_perfil) ?>" alt="Foto de perfil">
-                    </div>
-                <?php else: ?>
-                    <div class="user-avatar"><?= strtoupper(substr($_SESSION['usuario']['nombre'], 0, 1)) ?></div>
-                <?php endif; ?>
-                <span class="user-name"><?= htmlspecialchars($_SESSION['usuario']['nombre'] . ' ' . $_SESSION['usuario']['apellido']) ?></span>
+        ?>        <div class="profile-container">            <a href="<?= $perfil_url ?>" class="profile-btn">
+                <div class="profile-info">
+                    <?php if ($foto_perfil): ?>
+                        <div class="user-avatar">
+                            <img src="data:image/jpeg;base64,<?= base64_encode($foto_perfil) ?>" alt="Foto de perfil">
+                        </div>
+                    <?php else: ?>
+                        <div class="user-avatar"><?= strtoupper(substr($_SESSION['usuario']['nombre'], 0, 1)) ?></div>
+                    <?php endif; ?>
+                </div>
             </a>
         </div>
     <?php

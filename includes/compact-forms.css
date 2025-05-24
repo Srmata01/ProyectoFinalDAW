@@ -1,0 +1,335 @@
+/* Estilos base para formularios compactos */
+body {
+    background: linear-gradient(-45deg, rgba(255, 180, 110, 0.7), rgba(255, 220, 150, 0.7), rgba(255, 148, 91, 0.7), rgba(255, 255, 255, 0.7));
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Contenedores de formularios */
+.incidencias-container,
+.valoraciones-container {
+    max-width: 600px;
+    margin: 100px auto 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.valoraciones-container {
+    max-width: 800px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* Títulos de sección */
+.incidencias-title,
+.valoraciones-title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 22px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.valoraciones-title {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.incidencias-title:after,
+.valoraciones-title:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(to right, #FF8C42, #FFB347);
+}
+
+.valoraciones-title:after {
+    width: 80px;
+    height: 3px;
+}
+
+/* Estructura de formularios */
+.incidencias-form,
+.valoraciones-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Grupos de formulario */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: left;
+    margin-bottom: 12px;
+}
+
+.form-group label {
+    font-weight: 500;
+    color: #555;
+    font-size: 14px;
+}
+
+/* Campos de formulario */
+select,
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+textarea {
+    padding: 8px;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    font-size: 14px;
+    width: 100%;
+    transition: all 0.3s;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Estados de campos */
+select:focus,
+input:focus,
+textarea:focus {
+    border-color: #FF8C42;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255,140,66,0.1);
+}
+
+/* Grupos de radio buttons */
+.form-radio-group {
+    display: flex;
+    gap: 15px;
+    margin: 15px 0;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.form-radio-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+input[type="radio"] {
+    accent-color: #FF8C42;
+}
+
+/* Contenedor de selección */
+.select-container {
+    margin-top: 12px;
+    display: none;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mensajes de estado */
+.mensaje-box {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.mensaje-error {
+    background-color: #ffdddd;
+    color: #ff0000;
+}
+
+.mensaje-success {
+    background-color: #ddffdd;
+    color: #009900;
+}
+
+/* Botones y acciones */
+.form-submit,
+.btn-secundario {
+    width: auto;
+    min-width: 120px;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 8px;
+}
+
+.form-submit {
+    background: linear-gradient(to right, #FF8C42, #FFB347);
+    color: white;
+}
+
+.btn-secundario {
+    background-color: #6c757d;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.form-submit:hover,
+.btn-secundario:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.btn-secundario:hover {
+    background-color: #5a6268;
+}
+
+/* Sistema de valoración por estrellas */
+.star-rating {
+    display: inline-flex;
+    flex-direction: row-reverse;
+    font-size: 24px;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.star-rating input {
+    display: none;
+}
+
+.star-rating label {
+    color: #ddd;
+    cursor: pointer;
+    padding: 0 3px;
+    transition: color 0.2s;
+}
+
+.star-rating :checked ~ label,
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: #FFD700;
+}
+
+/* Información de usuario */
+.usuario-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.usuario-foto {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+    background-color: #f1f1f1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #555;
+}
+
+.usuario-nombre {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.usuario-tipo {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+    .incidencias-container,
+    .valoraciones-container {
+        max-width: 100%;
+        margin: 60px 15px;
+        padding: 15px;
+    }
+
+    .incidencias-title,
+    .valoraciones-title {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        font-size: 13px;
+    }
+
+    select,
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea {
+        font-size: 13px;
+        padding: 6px;
+    }
+
+    .form-submit,
+    .btn-secundario {
+        padding: 8px;
+        font-size: 13px;
+    }
+
+    .star-rating {
+        font-size: 20px;
+    }
+
+    .usuario-foto {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+
+    .usuario-nombre {
+        font-size: 14px;
+    }
+
+    .usuario-tipo {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .incidencias-container,
+    .valoraciones-container {
+        margin: 40px 10px;
+        padding: 10px;
+    }
+
+    .form-radio-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .btn-secundario {
+        margin-top: 8px;
+    }
+}

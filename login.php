@@ -91,6 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <title>Iniciar Sesión</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="includes/responsive-header.css">
 </head>
 <body>
     <header>
@@ -103,36 +104,42 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="login-profile-box">
                 <?php include 'includes/profile_header.php'; ?>
             </div>
-        </div>
-    </header>
-
-    <div class="container1">
-        <div class="form-container">
+        </div>    </header>    <div class="responsive-container" style="margin-top: 5rem;">
+        <div class="responsive-form-container">
             <h2 class="form-title">Iniciar Sesión</h2>
 
             <?php if (!empty($error)): ?>
-                <div class="error-message" style="color:red; margin-bottom:15px;">
+                <div class="error-message">
                     <?= htmlspecialchars($error) ?>
                 </div>
             <?php endif; ?>
 
             <form method="POST" action="">
-                <label for="email">Correo electrónico:</label>
-                <input type="email" name="email" id="email" required
-                    value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
+                <div class="form-group">
+                    <label for="email">Correo electrónico:</label>
+                    <input type="email" name="email" id="email" required
+                        value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" 
+                        placeholder="tucorreo@ejemplo.com">
+                </div>
 
-                <label for="password">Contraseña:</label>
-                <input type="password" name="password" id="password" required minlength="8">
+                <div class="form-group">
+                    <label for="password">Contraseña:</label>
+                    <input type="password" name="password" id="password" required minlength="8" 
+                        placeholder="Tu contraseña">
+                </div>
 
                 <button type="submit" class="submit-btn">Entrar</button>
             </form>
 
-            <p class="option-description">
-                <a href="" class="no-account-link">¿No tienes cuenta?</a>
-                <a href="create_users/index.php" class="register-link">Regístrate!</a><br>
-                <br>
-                <a href="recuperar_password.php" class="register-link">¿Olvidaste tu contraseña?</a>
-            </p>
+            <div class="option-links">
+                <p class="option-description">
+                    <a>¿No tienes cuenta?</a>
+                    <a href="create_users/index.php" class="register-link">Regístrate</a>
+                </p>
+                <p class="option-description">
+                    <a href="recuperar_password.php" class="recover-link">¿Olvidaste tu contraseña?</a>
+                </p>
+            </div>
         </div>
     </div>
 

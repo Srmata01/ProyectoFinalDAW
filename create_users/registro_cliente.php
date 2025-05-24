@@ -55,7 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -63,103 +62,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Cliente - FixItNow</title>
     <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../includes/responsive-header.css">
+    <link rel="stylesheet" href="../includes/footer.css">
     <link rel="icon" type="image/png" href="../media/logo.png">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(-45deg,
-                rgba(255, 180, 110, 0.1),
-                rgba(255, 220, 150, 0.1),
-                rgba(255, 148, 91, 0.1),
-                rgba(255, 255, 255, 0.1));
-            background-size: 400% 400%;
-            animation: moveBackground 8s ease infinite;
-            min-height: 100vh;
-        }
-
-        @keyframes moveBackground {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .content {
-            color: orange;
-            text-align: center;
-            font-size: 2rem;
-            padding: 20px;
-        } 
-
-        .form-grid {
-            background-color: #8585855c;
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            color: white;
-            width: 80%;
-            margin: auto;
-            margin-top: -5px;
-        }
-
-        .form-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .form-row label {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        input, textarea {
-            padding: 0.5rem;
-            border: none;
-            border-radius: 8px;
-            background-color: rgba(255,255,255,0.8);
-        }
-
-        .submit-btn {
-            background-color: #ff5e00;
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        .submit-btn:hover {
-            background-color: #e04e00;
-        }
-
-        .error-message {
-            background-color: rgba(255, 0, 0, 0.8);
-            color: white;
-            padding: 0.5rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-     
-    .container1 {
-        background-color: transparent !important;
-    }
-</style>
-    </style>
 </head>
-<body>
+<body class="app">
     <header>
         <div class="header-container">
             <div class="logo-container">
                 <a href="../index.php">
-                    <img src="../media/logo.png" alt="Logo FixItNow" class="logo">
+                    <img src="../media/logo.png" alt="Logo FixItNow" class="logo" style="height: 45px;">
                 </a>
             </div>
             <div class="login-profile-box">
@@ -167,60 +79,71 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
         </div>
     </header>
+   <!-- ✅ INICIO ZONA CON GRADIENTE ANIMADO -->
+   <div class="app-main">
+        <div class="registro-container">
+            <div class="registro-form">
+                <h1 class="registro-title">Regístrate como Cliente</h1>
 
-    <!-- ✅ INICIO ZONA CON GRADIENTE ANIMADO -->
-    <div class="app-main">
-        <div class="content-wrapper">
-                <div class="content">
-                    <h1>Regístrate como Cliente</h1>
-                </div>
-
-                <form method="post" class="form-grid" enctype="multipart/form-data">
+                <form method="post" enctype="multipart/form-data">
                     <?php if (isset($error)): ?>
-                        <div class="error-message"><?= htmlspecialchars($error) ?></div>
+                        <div class="registro-error"><?= htmlspecialchars($error) ?></div>
                     <?php endif; ?>
 
-                    <div class="form-row">
-                        <label>Nombre:
-                            <input type="text" name="nombre" required>
-                        </label>
-                        <label>Apellido:
-                            <input type="text" name="apellido" required>
-                        </label>
-                        <label>NIF/CIF:
-                            <input type="text" name="nif" required placeholder="NIF personal o CIF de empresa">
-                        </label>
+                    <div class="registro-grid">
+                        <div class="registro-field">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" id="nombre" name="nombre" class="registro-input" required>
+                        </div>
+
+                        <div class="registro-field">
+                            <label for="apellido">Apellido</label>
+                            <input type="text" id="apellido" name="apellido" class="registro-input" required>
+                        </div>
+
+                        <div class="registro-field">
+                            <label for="nif">DNI/NIF</label>
+                            <input type="text" id="nif" name="nif" class="registro-input" required 
+                                   placeholder="DNI o NIF">
+                        </div>
+
+                        <div class="registro-field">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" class="registro-input" required>
+                        </div>
+
+                        <div class="registro-field">
+                            <label for="password">Contraseña</label>
+                            <input type="password" id="password" name="password" class="registro-input" required 
+                                   minlength="8" placeholder="Mínimo 8 caracteres">
+                        </div>
+
+                        <div class="registro-field">
+                            <label for="telefono">Teléfono</label>
+                            <input type="tel" id="telefono" name="telefono" class="registro-input">
+                        </div>
                     </div>
-                    <div class="form-row">
-                        <label>Email:
-                            <input type="email" name="email" required>
-                        </label>
-                        <label>Contraseña:
-                            <input type="password" name="password" required>
-                        </label>
-                        <label>Teléfono:
-                            <input type="tel" name="telefono">
-                        </label>
+
+                    <div class="registro-field">
+                        <label for="direccion">Dirección</label>
+                        <textarea id="direccion" name="direccion" class="registro-textarea" rows="2"></textarea>
                     </div>
-                    <div class="form-row">
-                        <label>Dirección:
-                            <textarea name="direccion" rows="1"></textarea>
-                        </label>
-                        <label>Foto de perfil:
-                            <input type="file" name="foto_perfil" accept="image/*">
-                        </label>
+
+                    <div class="registro-field">
+                        <label for="foto_perfil">Foto de perfil</label>
+                        <input type="file" id="foto_perfil" name="foto_perfil" class="registro-input" accept="image/*">
                     </div>
-                    <div class="form-actions">
-                        <button type="submit" class="submit-btn">Registrarse</button>
-                    </div>                </form>
+
+                    <button type="submit" class="registro-submit">Registrarse</button>
+                </form>
+            </div>
         </div>
-    </div>
-    <!-- ✅ FIN ZONA CON GRADIENTE ANIMADO -->
+   </div>
+   <!-- ✅ FIN ZONA CON GRADIENTE ANIMADO -->
 
     <?php 
-    // Definir la ruta base para el footer
     $base_path = '../';
-    include '../includes/footer.php'; 
+    include $base_path . 'includes/footer.php'; 
     ?>
 </body>
 </html>

@@ -1,6 +1,9 @@
 <?php
-require_once '../config/database.php';
 session_start();
+require_once '../config/database.php';
+
+$base_path = '../'; // Definimos base_path ya que estamos en un subdirectorio
+require_once $base_path . 'includes/header_template.php';
 
 // Corregido: usamos 'tipo' en vez de 'id_tipo_usuario'
 if (!isset($_SESSION['usuario']) || !isset($_SESSION['usuario']['id']) || $_SESSION['usuario']['tipo'] != 2) {
@@ -55,30 +58,10 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Perfil - Cliente</title>
     <link rel="stylesheet" href="vistas.css">
+    <link rel="stylesheet" href="../includes/responsive-header.css">
+    <link rel="stylesheet" href="../includes/footer.css">
 </head>
-<body>
-    <header>
-        <div class="header-container">
-        <div class="logo-container">
-                <a href="../index.php">
-                    <img src="../media/logo.png" alt="Logo FixItNow" class="logo">
-                </a>
-            </div>
-
-            <div class="search-container">
-                <div class="search-box">                    <input type="text" placeholder="Buscar por servicio o localidad..." class="search-input">
-                    <img src="../media/lupa.png" alt="Buscar" class="search-icon">
-                </div>
-            </div>            <div class="user-container">
-                <div class="profile-container">
-                    <?php include '../includes/profile_header.php'; ?>
-                    <a href="../includes/logout.php" class="submit-btn" style="margin-left: 10px;">Cerrar sesión</a>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <div class="container1">
+<body>    <div class="container1">
         <?php if (isset($_SESSION['mensaje'])): ?>
             <div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 15px; margin: 15px; border-radius: 5px; text-align: center;">
                 <?= htmlspecialchars($_SESSION['mensaje']) ?>
@@ -214,11 +197,6 @@ try {
             </div>
         </div>
     </div>
-
-    <?php 
-    // Definir la ruta base para el footer
-    $base_path = '../';
-    include '../includes/footer.php'; 
-    ?>
+    <?php include $base_path . 'includes/footer.php'; ?>
 </body>
 </html>

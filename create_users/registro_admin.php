@@ -49,129 +49,86 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Administrador - FixItNow</title>
     <link rel="stylesheet" href="../styles.css">
-    <link rel="icon" href="../media/logo.png">    <style>
-        .content {
-            position: relative;
-            z-index: 1;
-            color: orange;
-            text-align: center;
-            font-size: 2rem;
-            padding: 20px;
-        }
-        .form-grid {
-            background-color: #8585855c;
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            color: white;
-            width: 80%;
-            margin: auto;
-            margin-top: -5px;
-        }
-        .form-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-        .form-row label {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        input {
-            padding: 0.5rem;
-            border: none;
-            border-radius: 8px;
-            background-color: rgba(255, 255, 255, 0.8);
-        }
-        .submit-btn {
-            background-color: #ff5e00;
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-        .submit-btn:hover {
-            background-color: #e04e00;
-        }
-        .error-message {
-            background-color: rgba(255, 0, 0, 0.2);
-            border: 1px solid red;
-            border-radius: 8px;
-            padding: 10px;
-            color: white;
-        }
-    </style>
+    <link rel="stylesheet" href="../includes/responsive-header.css">
+    <link rel="stylesheet" href="../includes/footer.css">
+    <link rel="icon" type="image/png" href="../media/logo.png">
 </head>
-<body>
-
-
+<body class="app">
     <header>
         <div class="header-container">
             <div class="logo-container">
                 <a href="../index.php">
-                    <img src="../media/logo.png" alt="Logo FixItNow" class="logo">
+                    <img src="../media/logo.png" alt="Logo FixItNow" class="logo" style="height: 45px;">
                 </a>
             </div>
             <div class="login-profile-box">
                 <?php include '../includes/profile_header.php'; ?>
             </div>
-        </div>    </header>
-
-   <!-- ✅ INICIO ZONA CON GRADIENTE ANIMADO -->
+        </div>
+    </header><!-- ✅ INICIO ZONA CON GRADIENTE ANIMADO -->
    <div class="app-main">
-        <div class="content-wrapper">
-                <div class="content">
-                    <h1>Regístrate como Administrador</h1>
-                </div>
+        <div class="registro-container">
+            <div class="registro-form">
+                <h1 class="registro-title">Regístrate como Administrador</h1>
 
-                <form method="post" class="form-grid" enctype="multipart/form-data">
+                <form method="post" enctype="multipart/form-data">
                     <?php if (isset($error)): ?>
-                        <div class="error-message"><?= htmlspecialchars($error) ?></div>
+                        <div class="registro-error"><?= htmlspecialchars($error) ?></div>
                     <?php endif; ?>
 
-                    <div class="form-row">
-                        <label>Nombre:
-                            <input type="text" name="nombre" required>
-                        </label>
-                        <label>Apellido:
-                            <input type="text" name="apellido" required>
-                        </label>
-                        <label>NIF/CIF:
-                            <input type="text" name="nif" required placeholder="NIF personal o CIF de empresa">
-                        </label>
+                    <div class="registro-grid">
+                        <div class="registro-field">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" id="nombre" name="nombre" class="registro-input" required>
+                        </div>
+
+                        <div class="registro-field">
+                            <label for="apellido">Apellido</label>
+                            <input type="text" id="apellido" name="apellido" class="registro-input" required>
+                        </div>
+
+                        <div class="registro-field">
+                            <label for="nif">NIF/CIF</label>
+                            <input type="text" id="nif" name="nif" class="registro-input" required
+                                   placeholder="NIF personal o CIF de empresa">
+                        </div>
+
+                        <div class="registro-field">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" class="registro-input" required>
+                        </div>
+
+                        <div class="registro-field">
+                            <label for="password">Contraseña</label>
+                            <input type="password" id="password" name="password" class="registro-input" required
+                                   minlength="8" placeholder="Mínimo 8 caracteres">
+                        </div>
+
+                        <div class="registro-field">
+                            <label for="telefono">Teléfono</label>
+                            <input type="tel" id="telefono" name="telefono" class="registro-input">
+                        </div>
                     </div>
-                    <div class="form-row">
-                        <label>Email:
-                            <input type="email" name="email" required>
-                        </label>
-                        <label>Contraseña:
-                            <input type="password" name="password" required>
-                        </label>
-                        <label>Teléfono:
-                            <input type="tel" name="telefono">
-                        </label>
+
+                    <div class="registro-field">
+                        <label for="direccion">Dirección</label>
+                        <textarea id="direccion" name="direccion" class="registro-textarea" rows="2"></textarea>
                     </div>
-                    <div class="form-row">
-                        <label>Dirección:
-                            <textarea name="direccion" rows="1"></textarea>
-                        </label>
-                        <label>Foto de perfil:
-                            <input type="file" name="foto_perfil" accept="image/*">
-                        </label>
-                        <label>Código de Administrador:
-                            <input type="password" name="codigo_admin" required>
-                        </label>
+
+                    <div class="registro-field">
+                        <label for="foto_perfil">Foto de perfil</label>
+                        <input type="file" id="foto_perfil" name="foto_perfil" class="registro-input" accept="image/*">
                     </div>
-                    <div class="form-actions">
-                        <button type="submit" class="submit-btn">Registrarse</button>
+
+                    <div class="registro-field">
+                        <label for="codigo_admin">Código de Administrador</label>
+                        <input type="password" id="codigo_admin" name="codigo_admin" class="registro-input" required>
                     </div>
+
+                    <button type="submit" class="registro-submit">Registrarse</button>
                 </form>
+            </div>
+        </div>
         </div>
     </div>
     <!-- ✅ FIN ZONA CON GRADIENTE ANIMADO -->

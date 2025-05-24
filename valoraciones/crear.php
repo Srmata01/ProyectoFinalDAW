@@ -117,32 +117,10 @@ $tipo_usuario = $usuario_receptor ? ($usuario_receptor['tipo_usuario'] === 'Aut√
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Valorar Usuario - FixItNow</title>
     <link rel="stylesheet" href="../main.css">
-    <style>
-        body { background: linear-gradient(-45deg, rgba(255, 180, 110, 0.7), rgba(255, 220, 150, 0.7), rgba(255, 148, 91, 0.7), rgba(255, 255, 255, 0.7)); margin: 0; padding: 0; font-family: Arial, sans-serif; }
-        .valoraciones-container { max-width: 800px; margin: 150px auto 30px; padding: 30px; background-color: #fff; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
-        .valoraciones-title { text-align: center; margin-bottom: 30px; color: #333; font-size: 28px; position: relative; padding-bottom: 15px; }
-        .valoraciones-title:after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 80px; height: 3px; background: linear-gradient(to right, #FF8C42, #FFB347); }
-        .mensaje-box { padding: 15px; margin-bottom: 20px; border-radius: 5px; text-align: center; }
-        .mensaje-error { background-color: #ffdddd; color: #ff0000; }
-        .mensaje-success { background-color: #ddffdd; color: #009900; }
-        .form-group { margin-bottom: 20px; text-align: left; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; }
-        .star-rating { display: inline-flex; flex-direction: row-reverse; font-size: 32px; justify-content: center; width: 100%; margin-bottom: 20px; }
-        .star-rating input { display: none; }
-        .star-rating label { color: #ddd; cursor: pointer; padding: 0 5px; transition: color 0.2s; }
-        .star-rating :checked ~ label, .star-rating label:hover, .star-rating label:hover ~ label { color: #FFD700; }
-        textarea { width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 8px; resize: vertical; min-height: 150px; font-family: inherit; font-size: 16px; }
-        textarea:focus { border-color: #FF8C42; outline: none; }
-        .form-submit { width: 100%; padding: 14px; background: linear-gradient(to right, #FF8C42, #FFB347); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; margin-top: 15px; }
-        .form-submit:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255, 140, 66, 0.4); }
-        .usuario-info { display: flex; align-items: center; justify-content: center; margin-bottom: 30px; }
-        .usuario-foto { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-right: 20px; background-color: #f1f1f1; display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: bold; color: #555; }
-        .usuario-nombre { font-size: 20px; font-weight: bold; }
-        .usuario-tipo { font-size: 16px; color: #666; }
-        .form-actions { display: flex; gap: 10px; justify-content: center; }
-        .btn-secundario { padding: 14px; background-color: #6c757d; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; text-decoration: none; display: inline-block; text-align: center; flex: 1; }
-        .btn-secundario:hover { background-color: #5a6268; transform: translateY(-2px); }
-    </style>
+    <link rel="stylesheet" href="../includes/responsive-header.css">
+    <link rel="stylesheet" href="../includes/footer.css">
+    <link rel="stylesheet" href="../includes/compact-forms.css">
+    
 </head>
 
 <body>

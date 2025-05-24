@@ -74,103 +74,17 @@ try {
     <meta charset="UTF-8">
     <title>Perfil de <?= htmlspecialchars($autonomo['nombre']) ?> - FixItNow</title>
     <link rel="stylesheet" href="vistas.css">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../includes/responsive-header.css">
+    <link rel="stylesheet" href="../includes/footer.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
-    <style>
-        .perfil-autonomo {
-            background-color: white;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-        }
-        .info-principal {
-            display: flex;
-            align-items: start;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-        .foto-perfil {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-        .servicios-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        .servicio-card {
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            transition: transform 0.3s ease;
-        }
-        .servicio-card:hover {
-            transform: translateY(-5px);
-        }
-        /* Estilos para el slider */
-        .swiper {
-            width: 100%;
-            max-width: 800px; /* Limitamos el ancho máximo */
-            padding-top: 20px;
-            padding-bottom: 20px;
-            margin: 0 auto;
-        }
-        .swiper-slide {
-            background-position: center;
-            background-size: cover;
-            width: 200px; /* Reducimos el tamaño de las imágenes */
-            height: 200px;
-        }
-        .swiper-slide img {
-            display: block;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-        .portfolio-section {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #f8f9fa;
-            border-radius: 10px;
-        }
-        .portfolio-section h2 {
-            margin-bottom: 20px;
-            color: #FF9B00;
-            text-align: center;
-        }
-        /* Personalización de los controles del slider */
-        .swiper-button-next,
-        .swiper-button-prev {
-            color: #FF9B00;
-            transform: scale(0.7); /* Hacemos las flechas más pequeñas */
-        }
-        .swiper-pagination-bullet-active {
-            background: #FF9B00;
-        }
-    </style>
 </head>
-<body>
-    <header>
-        <div class="header-container">
-            <div class="logo-container">
-                <a href="../index.php">
-                    <img src="../media/logo.png" alt="Logo" class="logo">
-                </a>
-            </div>
-            <div class="user-container">
-                <div class="profile-container">
-                    <?php include '../includes/profile_header.php'; ?>
-                </div>
-            </div>
-        </div>
-    </header>
+<body>    <?php 
+        $base_path = '../';
+        include '../includes/header_template.php'; 
+    ?>
 
-    <div class="container1">
+    <div class="responsive-container">
         <div class="profile-columns-container">
             <div class="profile-column">
                 <div class="perfil-autonomo">
@@ -178,18 +92,19 @@ try {
                         <?php if (!empty($autonomo['foto_perfil'])): ?>
                             <img src="data:image/jpeg;base64,<?= base64_encode($autonomo['foto_perfil']) ?>" 
                                  alt="Foto de perfil" class="foto-perfil">
-                        <?php endif; ?>
-                        <div>                            <h1 class="document-title">
+                        <?php endif; ?>                        <div>                            <h1 class="detail-title">
                                 <?= htmlspecialchars($autonomo['nombre'] . ' ' . $autonomo['apellido']) ?>
                             </h1>
                             <?php if (isset($_GET['mostrar_contacto']) && $_GET['mostrar_contacto'] == 1): ?>
-                                <p><strong>Teléfono:</strong> <?= htmlspecialchars($autonomo['telefono']) ?></p>
-                                <p><strong>Email:</strong> <?= htmlspecialchars($autonomo['email']) ?></p>
+                                <div class="detail-section">
+                                    <p><strong>Teléfono:</strong> <?= htmlspecialchars($autonomo['telefono']) ?></p>
+                                    <p><strong>Email:</strong> <?= htmlspecialchars($autonomo['email']) ?></p>
+                                </div>
                             <?php endif; ?>
                             <?php if (!empty($autonomo['descripcion'])): ?>
-                                <div style="margin-top: 20px;">
+                                <div class="detail-section">
                                     <h3>Sobre mí</h3>
-                                    <p><?= nl2br(htmlspecialchars($autonomo['descripcion'])) ?></p>
+                                    <p class="sobre-mi"><?= nl2br(htmlspecialchars($autonomo['descripcion'])) ?></p>
                                 </div>
                             <?php endif; ?>
                         </div>
@@ -218,39 +133,47 @@ try {
                         mostrarValoraciones($autonomo['id_usuario']);
                     } else {
                         echo '<div class="error">Error: No se pudo obtener el ID del usuario para mostrar valoraciones</div>';
-                    }
-                    ?>
-
-                    <h2>Servicios ofrecidos (<?= $autonomo['total_servicios'] ?>)</h2>
+                    }                    ?>                    <h2 class="detail-title servicios-heading">Servicios ofrecidos (<?= $autonomo['total_servicios'] ?>)</h2>
                     <?php if (!empty($servicios)): ?>
-                        <div class="servicios-grid">
-                            <?php foreach ($servicios as $servicio): ?>
+                        <div class="servicios-grid">                            <?php foreach ($servicios as $servicio): ?>
                                 <a href="../services/ver_servicio.php?id=<?= $servicio['id_servicio'] ?>" 
-                                   class="servicio-card" style="text-decoration: none; color: inherit;">
-                                    <h3 style="color: #FF9B00;"><?= htmlspecialchars($servicio['nombre']) ?></h3>
+                                   class="servicio-card servicio-link">
+                                    <h3><?= htmlspecialchars($servicio['nombre']) ?></h3>
                                     <p><?= htmlspecialchars($servicio['descripcion']) ?></p>
-                                    <div style="margin-top: 15px;">
-                                        <strong style="color: #FF9B00; font-size: 1.2em;">
+                                    <div class="servicio-card-footer">
+                                        <strong class="servicio-precio">
                                             <?= number_format($servicio['precio'], 2) ?> €
                                         </strong>
-                                        <span style="color: #666; margin-left: 10px;">
+                                        <span class="servicio-duracion">
                                             <?= $servicio['duracion'] ?> min
                                         </span>
                                     </div>
                                 </a>
-                            <?php endforeach; ?>
-                        </div>
+                            <?php endforeach; ?>                        </div>
                     <?php else: ?>
-                        <p>Este profesional no tiene servicios activos actualmente.</p>
+                        <p class="detail-section servicio-empty">Este profesional no tiene servicios activos actualmente.</p>
                     <?php endif; ?>
                 </div>
             </div>
-        </div>
-    </div>
+        </div>    </div>
 
     <?php include '../includes/footer.php'; ?>
     
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        // Script para asegurar que el contenido tiene altura mínima para evitar que el footer suba demasiado
+        document.addEventListener('DOMContentLoaded', function() {
+            var contentHeight = document.querySelector('.responsive-container').offsetHeight;
+            var windowHeight = window.innerHeight;
+            var headerHeight = document.querySelector('header').offsetHeight;
+            var footerHeight = document.querySelector('footer').offsetHeight;
+            
+            if (contentHeight < windowHeight - headerHeight - footerHeight) {
+                document.querySelector('.responsive-container').style.minHeight = 
+                    (windowHeight - headerHeight - footerHeight) + 'px';
+            }
+        });
+    </script>
     <script>
         var swiper = new Swiper(".mySwiper", {
             effect: "coverflow",

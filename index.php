@@ -36,6 +36,7 @@ foreach ($servicios_recientes as &$servicio) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FixItNow</title>
     <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="includes/footer.css">
     <link rel="icon" type="image/png" href="media/logo.png">    <style>
         /* Grid de servicios - 4 en línea con centrado pero más compacto */        .servicios-grid {
             display: flex;
@@ -273,8 +274,6 @@ foreach ($servicios_recientes as &$servicio) {
             padding: var(--space-md) 0;
         }
         
-        /* Footer styles moved to main.css */
-        
         @media (max-width: 768px) {
             .compact-heading {
                 font-size: var(--font-size-lg);
@@ -283,15 +282,11 @@ foreach ($servicios_recientes as &$servicio) {
                 padding: 6px 16px;
                 font-size: var(--font-size-xs);
             }
-            
-            /* Footer responsive styles moved to main.css */
         }
         
         @media (max-width: 576px) {            .ver-todos-container {
                 margin: var(--space-sm) auto;
             }
-            
-            /* Small screen footer styles moved to main.css */
         }
     </style><?php 
     // Incluir el footer compartido (archivo en raíz, así que no necesita $base_path)

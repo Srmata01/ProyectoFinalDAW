@@ -1,0 +1,323 @@
+/* Estilos responsivos para cabeceras y elementos de perfil de usuario */
+
+/* Header responsive */
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-md, 1rem);
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-left {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.header-center {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.logo {
+    height: 60px;
+}
+
+/* Estilos para el buscador en el header */
+.header-search-container {
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
+    background-color: white;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border: 1px solid var(--color-border, #D2D2D2);
+    transition: all 0.3s ease;
+}
+
+.search-box:hover, .search-box:focus-within {
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    border-color: var(--color-primary, #FF9B00);
+}
+
+.search-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: none;
+    font-size: 0.9rem;
+    color: var(--color-text, #2d2d2d);
+    outline: none;
+}
+
+.search-icon {
+    width: 18px;
+    height: 18px;
+    margin: 0 12px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.search-icon:hover {
+    transform: scale(1.1);
+}
+
+/* Estilos para el perfil de usuario en el header */
+.user-container .profile-container {
+    display: flex;
+    align-items: center;
+}
+
+.profile-btn {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--color-text);
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    transition: background-color 0.2s;
+}
+
+.profile-btn:hover {
+    background-color: rgba(255, 155, 0, 0.1);
+}
+
+.profile-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary);
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 500;
+    overflow: hidden;
+}
+
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.user-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-text);
+}
+
+/* Estilo del contenedor de usuario con logout */
+.user-container {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm, 0.5rem);
+}
+
+.logout-btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: var(--color-primary, #FF9B00);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm, 4px);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+    white-space: nowrap;
+}
+
+.logout-btn:hover {
+    background-color: var(--color-primary-dark, #E08A00);
+}
+
+/* Media queries para cabecera responsiva */
+@media (max-width: 992px) {
+    .header-container {
+        padding: 0 var(--space-sm, 0.5rem);
+    }
+    
+    .header-search-container {
+        max-width: 400px;
+    }
+    
+    .search-input {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        padding: 0 var(--space-sm, 0.5rem);
+    }
+
+    .user-container {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.25rem;
+    }
+
+    .logout-btn {
+        padding: 0.35rem 0.75rem;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .header-container {
+        flex-wrap: wrap;
+        height: auto;
+        padding: 8px;
+    }
+    
+    .header-left {
+        flex: 1;
+        order: 1;
+    }
+    
+    .header-center {
+        flex: 0 0 100%;
+        order: 3;
+        margin: 5px 0;
+    }
+    
+    .header-right {
+        flex: 1;
+        order: 2;
+    }
+    
+    .header-search-container {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .header-right {
+        flex: 0;
+    }
+
+    .user-container {
+        position: relative;
+    }
+
+    .logout-btn {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        margin-top: 0.25rem;
+        white-space: nowrap;
+        z-index: 100;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-container {
+        height: auto;
+        padding: 5px;
+    }
+    
+    .logo {
+        height: 40px;
+    }
+      .user-avatar {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .user-name {
+        font-size: 0.7rem;
+        max-width: 100px;
+        display: inline-block;
+    }
+      .profile-btn {
+        padding: 4px 8px;
+        gap: 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    .user-name {
+        display: inline-block !important;
+        font-size: 0.75rem; /* Texto más pequeño */
+    }
+    
+    .header-container {
+        height: auto !important; /* Altura automática */
+        padding: 5px !important; /* Menos padding */
+    }
+    
+    .logo {
+        height: 60px !important; /* Logo más pequeño */
+    }
+    
+    .user-avatar {
+        width: 26px !important; /* Avatar más pequeño */
+        height: 26px !important;
+        font-size: 0.7rem !important;
+    }
+    
+    .profile-btn {
+        padding: 2px 4px !important;
+    }
+    
+    .search-input {
+        padding: 5px 8px !important;
+        font-size: 0.75rem !important;
+    }
+    
+    .search-icon {
+        width: 14px !important;
+        height: 14px !important;
+        margin: 0 8px !important;
+    }
+}
+
+@media (max-width: 320px) {
+    .user-name {
+        font-size: 0.65rem;
+        max-width: 70px; /* Limitar ancho */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .logo {
+        height: 50px !important;
+    }
+    
+    .search-input {
+        padding: 4px 6px !important;
+        font-size: 0.7rem !important;
+    }
+    
+    .search-icon {
+        width: 12px !important;
+        height: 12px !important;
+        margin: 0 6px !important;
+    }
+}
