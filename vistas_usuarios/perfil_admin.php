@@ -2,9 +2,6 @@
 session_start();
 require_once '../config/database.php';
 
-$base_path = '../'; // Definimos base_path ya que estamos en un subdirectorio
-require_once $base_path . 'includes/header_template.php';
-
 if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['tipo'] != 1) {
     header('Location: ../login.php');
     exit();
@@ -79,7 +76,10 @@ try {
         }
     </style>
 </head>
-<body class="app">
+<body class="app">    <?php 
+    $base_path = '../';
+    include '../includes/header_template.php';
+    ?>
     <div class="app-main">
         <div class="container1">
             <?php if (isset($_SESSION['mensaje'])): ?>

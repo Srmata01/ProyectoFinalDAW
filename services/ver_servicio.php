@@ -50,6 +50,7 @@ try {    $stmt = $pdo->prepare("
     <title><?= htmlspecialchars($servicio['nombre']) ?> - FixItNow</title>    <link rel="stylesheet" href="../vistas_usuarios/vistas.css">
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="../includes/responsive-header.css">
+    <link rel="stylesheet" href="../styles.css">
     <link rel="icon" type="image/png" href="../media/logo.png">
     <style>
         /* Estilos específicos para mejorar el centrado */        
