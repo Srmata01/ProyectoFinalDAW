@@ -137,9 +137,97 @@ try {
     <link rel="stylesheet" href="../includes/responsive-header.css">
     <link rel="stylesheet" href="../includes/compact-forms.css">
     <link rel="stylesheet" href="../includes/footer.css">
-    <link rel="stylesheet" href="admin.css">
     <link rel="icon" type="image/png" href="../media/logo.png">
     <script src="../services/js/buscador.js" defer></script>
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }        .container1 {
+            padding: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .document-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+        }
+        .document-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }.admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.15rem 0;
+            font-size: 0.7rem;
+            table-layout: fixed;
+        }        .admin-table th, .admin-table td {
+            border: 1px solid #eee;
+            padding: 0.15rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .admin-table th {
+            background-color: #f8f9fa;
+            text-align: left;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.35rem;
+        }
+        .admin-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .admin-table tr:hover {
+            background-color: #f1f1f1;
+        }
+        .estado-activo {
+            color: green;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+        .estado-inactivo {
+            color: red;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+        .alert {
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        .alert-success {
+            color: #3c763d;
+            background-color: #dff0d8;
+            border-color: #d6e9c6;
+        }
+        .alert-danger {
+            color: #a94442;
+            background-color: #f2dede;
+            border-color: #ebccd1;
+        }
+        .btn-editar, .btn-eliminar {
+            padding: 0.25rem 0.5rem !important;
+            font-size: 0.8rem !important;
+        }        .admin-section {
+            margin-bottom: 0.75rem;
+        }        .admin-actions {
+            margin-top: 0.5rem;
+            text-align: center;
+        }        .submit-btn {
+            font-size: 0.6rem;
+            padding: 0.1rem 0.2rem;
+            text-decoration: none;
+            border-radius: 2px;
+            display: inline-block;
+            min-width: 60px;
+            text-align: center;
+            color: white;
+        }
           .hide-mobile {
             display: table-cell;
         }        .user-card {
@@ -311,7 +399,7 @@ include '../includes/header_template.php';
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>              <div class="admin-actions">
-                <a href="../vistas_usuarios/perfil_admin.php" class="submit-btn">Volver</a>
+                <a href="../vistas_usuarios/perfil_admin.php" class="submit-btn" style="background-color: #6c757d;">Volver</a>
             </div>
         </div>
     </div>

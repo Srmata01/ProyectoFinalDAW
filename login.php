@@ -91,6 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <title>Iniciar Sesión</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="main.css">
+    <link rel="icon" type="image/png" href="../media/logo.png">
     <link rel="stylesheet" href="includes/responsive-header.css">
 </head>
 <body>

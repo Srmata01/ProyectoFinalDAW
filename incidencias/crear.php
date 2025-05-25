@@ -109,6 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../includes/responsive-header.css">
     <link rel="stylesheet" href="../includes/footer.css">
     <link rel="stylesheet" href="../includes/compact-forms.css">
+    <link rel="icon" type="image/png" href="../media/logo.png">
 </head>
 
 <body>

@@ -49,7 +49,9 @@ try {    $stmt = $pdo->prepare("
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($servicio['nombre']) ?> - FixItNow</title>    <link rel="stylesheet" href="../vistas_usuarios/vistas.css">
     <link rel="stylesheet" href="../styles.css">
-    <link rel="stylesheet" href="../includes/responsive-header.css"><style>
+    <link rel="stylesheet" href="../includes/responsive-header.css">
+    <link rel="icon" type="image/png" href="../media/logo.png">
+    <style>
         /* Estilos específicos para mejorar el centrado */        
         .profile-columns-container {
             width: 100%;

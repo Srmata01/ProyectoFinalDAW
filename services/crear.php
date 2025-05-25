@@ -54,6 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <title>Crear Servicio</title>
     <link rel="stylesheet" href="../vistas_usuarios/vistas.css">
+    <link rel="icon" type="image/png" href="../media/logo.png">
 </head>
 <body>
 <header>

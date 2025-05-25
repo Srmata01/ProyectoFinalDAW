@@ -70,6 +70,7 @@ try {
     <link rel="stylesheet" href="../vistas_usuarios/vistas.css">
     <link rel="stylesheet" href="../includes/responsive-header.css">
     <link rel="stylesheet" href="../includes/footer.css">
+    <link rel="icon" type="image/png" href="../media/logo.png">
     <style>
         body {
             background-color: #f5f5f5;

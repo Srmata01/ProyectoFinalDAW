@@ -3,11 +3,11 @@ $tipo = isset($_GET['tipo']) ? htmlspecialchars($_GET['tipo']) : 'usuario';
 ?>
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
+<head>    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro Exitoso</title>
-    <link rel="stylesheet" href="../styles.css">    <style>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" type="image/png" href="../media/logo.png"><style>
         body {
             margin: 0;
             padding: 0;

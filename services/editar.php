@@ -78,6 +78,7 @@ try {
     <link rel="stylesheet" href="../includes/compact-forms.css">
     <link rel="stylesheet" href="../vistas_usuarios/vistas.css">
     <link rel="stylesheet" href="../includes/footer.css">
+    <link rel="icon" type="image/png" href="../media/logo.png">
     <script src="../services/js/buscador.js" defer></script>
 </head>
 <body>

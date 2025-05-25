@@ -62,6 +62,7 @@ try {
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="../includes/responsive-header.css">
     <link rel="stylesheet" href="../includes/footer.css">
+    <link rel="icon" type="image/png" href="../media/logo.png">
 </head>
 <body>    <?php 
         $base_path = '../';

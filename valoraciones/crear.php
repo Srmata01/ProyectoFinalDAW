@@ -120,6 +120,7 @@ $tipo_usuario = $usuario_receptor ? ($usuario_receptor['tipo_usuario'] === 'Aut√
     <link rel="stylesheet" href="../includes/responsive-header.css">
     <link rel="stylesheet" href="../includes/footer.css">
     <link rel="stylesheet" href="../includes/compact-forms.css">
+    <link rel="icon" type="image/png" href="../media/logo.png">
     
 </head>
 
