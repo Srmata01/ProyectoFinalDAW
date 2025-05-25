@@ -211,60 +211,52 @@ try {
             border-color: #ebccd1;
         }
         .btn-editar, .btn-eliminar {
-            padding: 0.25rem 0.5rem !important;
-            font-size: 0.8rem !important;
-        }        .admin-section {
-            margin-bottom: 0.75rem;
-        }        .admin-actions {
-            margin-top: 0.5rem;
-            text-align: center;
-        }        .submit-btn {
-            font-size: 0.6rem;
-            padding: 0.1rem 0.2rem;
+            padding: 4px 8px;
+            font-size: 0.75rem;
             text-decoration: none;
-            border-radius: 2px;
+            border-radius: 4px;
+            color: white;
+            transition: background-color 0.2s, transform 0.1s;
             display: inline-block;
             min-width: 60px;
             text-align: center;
-            color: white;
+            margin: 0 2px;
         }
-          .hide-mobile {
-            display: table-cell;
-        }        .user-card {
+
+        .btn-editar {
+            background-color: var(--color-primary);
+        }
+
+        .btn-eliminar {
+            background-color: #dc3545;
+        }
+
+        .btn-editar:hover {
+            background-color: #e08e00;
+            transform: translateY(-1px);
+        }
+
+        .btn-eliminar:hover {
+            background-color: #c82333;
+            transform: translateY(-1px);
+        }
+
+        .admin-action-buttons {
+            display: flex;
+            gap: 4px;
+            justify-content: center;
+        }
+
+        .user-card {
+            display: none;
             background: white;
             border: 1px solid #eee;
-            padding: 0.75rem;
-            margin-bottom: 0.75rem;
-            border-radius: 4px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: var(--radius-md);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
-        .user-card-field {
-            margin-bottom: 0.5rem;
-        }
-        .user-card-label {
-            font-weight: 600;
-            color: #666;
-            font-size: 0.75rem;
-        }
-        .user-card-value {
-            color: #333;
-            font-size: 0.85rem;
-        }
-        .user-card-actions {
-            margin-top: 0.75rem;
-            display: flex;
-            gap: 0.5rem;
-        }
-        
-        .user-img {
-            width: 150px;
-            height: 150px;
-            border-radius: 4px;
-            object-fit: cover;
-            display: block;
-            margin: 0.5rem 0;
-        }
-        
+
         /* Responsive styles */
         @media (max-width: 768px) {
             .container1 {
@@ -289,9 +281,9 @@ try {
                 font-size: 0.9rem;
                 margin: 0.5rem 0;
             }            .btn-editar, .btn-eliminar {
-                padding: 0.25rem 0.5rem !important;
-                font-size: 0.75rem !important;
-                min-width: 40px;
+                padding: 6px 12px;
+                font-size: 0.8rem;
+                min-width: 80px;
             }            .submit-btn {
                 font-size: 0.55rem;
                 padding: 0.05rem 0.15rem;

@@ -68,10 +68,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </header><!-- ✅ INICIO ZONA CON GRADIENTE ANIMADO -->
    <div class="app-main">
         <div class="registro-container">
-            <div class="registro-form">
-                <h1 class="registro-title">Regístrate como Administrador</h1>
+            <div class="registro-form">                <h1 class="registro-title">Regístrate como Administrador</h1>
 
-                <form method="post" enctype="multipart/form-data">
+                <form method="post">
                     <?php if (isset($error)): ?>
                         <div class="registro-error"><?= htmlspecialchars($error) ?></div>
                     <?php endif; ?>
@@ -88,12 +87,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </div>
 
                         <div class="registro-field">
-                            <label for="nif">NIF/CIF</label>
-                            <input type="text" id="nif" name="nif" class="registro-input" required
-                                   placeholder="NIF personal o CIF de empresa">
-                        </div>
-
-                        <div class="registro-field">
                             <label for="email">Email</label>
                             <input type="email" id="email" name="email" class="registro-input" required>
                         </div>
@@ -105,6 +98,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </div>
 
                         <div class="registro-field">
+                            <label for="nif">NIF/CIF</label>
+                            <input type="text" id="nif" name="nif" class="registro-input" required
+                                   placeholder="NIF personal o CIF de empresa">
+                        </div>
+
+                        <div class="registro-field">
                             <label for="telefono">Teléfono</label>
                             <input type="tel" id="telefono" name="telefono" class="registro-input">
                         </div>
@@ -113,11 +112,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="registro-field">
                         <label for="direccion">Dirección</label>
                         <textarea id="direccion" name="direccion" class="registro-textarea" rows="2"></textarea>
-                    </div>
-
-                    <div class="registro-field">
-                        <label for="foto_perfil">Foto de perfil</label>
-                        <input type="file" id="foto_perfil" name="foto_perfil" class="registro-input" accept="image/*">
                     </div>
 
                     <div class="registro-field">

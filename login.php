@@ -104,8 +104,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="login-profile-box">
                 <?php include 'includes/profile_header.php'; ?>
             </div>
-        </div>    </header>    <div class="responsive-container" style="margin-top: 5rem;">
-        <div class="responsive-form-container">
+        </div>    </header>    <div class="responsive-container" style="margin-top: 3rem; min-height: calc(100vh - 200px); display: flex; align-items: center;">
+        <div class="responsive-form-container" style="max-width: 400px; margin: 0 auto; padding: 1.5rem;">
             <h2 class="form-title">Iniciar Sesión</h2>
 
             <?php if (!empty($error)): ?>
@@ -114,25 +114,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </div>
             <?php endif; ?>
 
-            <form method="POST" action="">
-                <div class="form-group">
-                    <label for="email">Correo electrónico:</label>
+            <form method="POST" action="">            <div class="form-group" style="margin-bottom: 1rem;">
+                    <label for="email" style="margin-bottom: 0.3rem;">Correo electrónico:</label>
                     <input type="email" name="email" id="email" required
                         value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" 
-                        placeholder="tucorreo@ejemplo.com">
+                        placeholder="tucorreo@ejemplo.com"
+                        style="padding: 0.5rem; border-radius: 4px;">
                 </div>
 
-                <div class="form-group">
-                    <label for="password">Contraseña:</label>
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label for="password" style="margin-bottom: 0.3rem;">Contraseña:</label>
                     <input type="password" name="password" id="password" required minlength="8" 
-                        placeholder="Tu contraseña">
+                        placeholder="Tu contraseña"
+                        style="padding: 0.5rem; border-radius: 4px;">
                 </div>
 
-                <button type="submit" class="submit-btn">Entrar</button>
-            </form>
-
-            <div class="option-links">
-                <p class="option-description">
+                <button type="submit" class="submit-btn" style="margin: 0.5rem 0;">Entrar</button>
+            </form>            <div class="option-links" style="margin-top: 1rem; text-align: center;">
+                <p class="option-description" style="margin-bottom: 0.5rem;">
                     <a>¿No tienes cuenta?</a>
                     <a href="create_users/index.php" class="register-link">Regístrate</a>
                 </p>
