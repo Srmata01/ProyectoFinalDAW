@@ -146,11 +146,9 @@ foreach ($servicios_recientes as &$servicio) {
                 </a>
             </div>            <div class="login-profile-box">
                 <?php include 'includes/profile_header.php'; ?>
-            </div>        </div>    </header>      
-      <!-- Sección de video y búsqueda -->    <div class="video-background">
+            </div>        </div>    </header>        <!-- Sección de video y búsqueda -->    <div class="video-background">
         <video autoplay muted loop playsinline>
-            <source src="media/videocorp1.mp4" type="video/mp4">
-            Tu navegador no soporta videos en HTML5.
+            <source src="media/videocorp1.webm" type="video/webm">
         </video>
         <div class="content">
             <h1>Encuentra a tu profesional cerca de ti</h1>

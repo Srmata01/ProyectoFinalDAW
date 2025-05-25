@@ -53,9 +53,8 @@ if (isset($_SESSION['usuario'])) {
                       strpos($_SERVER['PHP_SELF'], '/incidencias/') !== false ||
                       strpos($_SERVER['PHP_SELF'], '/valoraciones/') !== false ||
                       strpos($_SERVER['PHP_SELF'], '/admin/') !== false;
-    
-    // Usar una ruta absoluta desde la raíz del servidor para evitar problemas de redirección
-    $login_url = "/smata/ProyectoFinalDAW/login.php";
+      // Usar una ruta relativa para mayor compatibilidad con diferentes servidores
+    $login_url = $is_subdirectory ? "../login.php" : "login.php";
     ?>
     <a href="<?= $login_url ?>" class="profile-btn">
         <span class="user-name">Iniciar Sesión</span>
