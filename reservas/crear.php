@@ -152,10 +152,14 @@ $dias_js_json = json_encode($dias_js);
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reservar Servicio - FixItNow</title>
+    <link rel="stylesheet" href="../includes/responsive-header.css">
+    <link rel="stylesheet" href="../includes/compact-forms.css">
     <link rel="stylesheet" href="../vistas_usuarios/vistas.css">
+    <link rel="stylesheet" href="../includes/footer.css">
+    <script src="../services/js/buscador.js" defer></script>
     <style>
-        .reserva-container {
             background-color: white;
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -224,19 +228,10 @@ $dias_js_json = json_encode($dias_js);
         }
     </style>
 </head>
-<body>
-    <header>
-        <div class="header-container">
-            <div class="logo-container">
-                <a href="../index.php">
-                    <img src="../media/logo.png" alt="Logo FixItNow" class="logo">
-                </a>
-            </div>
-            <div class="user-container">
-                <?php include '../includes/profile_header.php'; ?>
-            </div>
-        </div>
-    </header>
+<body>    <?php 
+    $base_path = '../';
+    include '../includes/header_template.php';
+    ?>
 
     <div class="container1">
         <div class="profile-columns-container">

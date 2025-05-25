@@ -1,6 +1,9 @@
 <?php
-require_once '../config/database.php';
 session_start();
+require_once '../config/database.php';
+
+$base_path = '../'; // Definimos base_path ya que estamos en un subdirectorio
+require_once $base_path . 'includes/header_template.php';
 
 if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['tipo'] != 1) {
     header('Location: ../login.php');
@@ -33,8 +36,8 @@ try {
     // Obtener valoraciones (limitado a 5)
     $stmt = $pdo->prepare("
         SELECT v.*, 
-               e.nombre AS emisor_nombre, e.apellido AS emisor_apellido,
-               r.nombre AS receptor_nombre, r.apellido AS receptor_apellido
+               e.nombre as emisor_nombre, e.apellido as emisor_apellido,
+               r.nombre as receptor_nombre, r.apellido as receptor_apellido
         FROM valoraciones_usuarios v
         JOIN usuarios e ON v.id_emisor = e.id_usuario
         JOIN usuarios r ON v.id_receptor = r.id_usuario
@@ -63,267 +66,152 @@ try {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard Administrador</title>
-    <link rel="stylesheet" href="vistas.css">    <style>        .admin-dashboard {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(2, auto);
-            gap: 20px;
-            padding: 20px 0;
-        }
-        
-        .admin-card {
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            height: 400px;
-            display: flex;
-            flex-direction: column;
-        }
-          .admin-card h2 {
-            margin-top: 0;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #FF9B00;
-            color: #333;
-        }
-          .admin-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 15px;
-            flex: 1;
-            overflow: hidden;
-            table-layout: fixed;
-        }
-        
-        .admin-table th, .admin-table td {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        
-        .admin-table th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
-        
-        .admin-table tr:hover {
-            background-color: #f1f1f1;
-        }
-          .view-more-btn {
-            display: block;
-            text-align: center;
-            background-color: #FF9B00;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            margin-top: auto;
-        }
-          .view-more-btn:hover {
-            background-color: #e38a00;
-            transform: translateY(-2px);
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Administrador - FixItNow</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../includes/responsive-header.css">
+    <link rel="stylesheet" href="../includes/footer.css">
+    <link rel="stylesheet" href="vistas.css">
+    <style>
+        .container1 {
+            margin-top: 100px !important;
         }
     </style>
 </head>
-<body>
-    <header>
-        <div class="header-container">
-            <div class="logo-container">
-                <a href="../index.php">
-                    <img src="../media/logo.png" alt="Logo" class="logo">
-                </a>
-            </div>
-            <div class="user-container">
-                <div class="profile-container">
-                    <?php include '../includes/profile_header.php'; ?>
-                    <a href="../includes/logout.php" class="submit-btn" style="margin-left: 10px;">Cerrar sesión</a>
+<body class="app">
+    <div class="app-main">
+        <div class="container1">
+            <?php if (isset($_SESSION['mensaje'])): ?>
+                <div class="alert alert-<?php echo $_SESSION['mensaje_tipo']; ?>">
+                    <?php 
+                    echo $_SESSION['mensaje'];
+                    unset($_SESSION['mensaje']);
+                    unset($_SESSION['mensaje_tipo']);
+                    ?>
+                </div>
+            <?php endif; ?>
+
+            <h1 class="document-title">Panel de Administración</h1>
+            
+            <div class="admin-dashboard">
+                <div class="admin-card">
+                    <h2>Últimos Usuarios</h2>
+                    <div class="table-responsive">
+                        <table class="admin-table">
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Tipo</th>
+                                <th>Estado</th>
+                            </tr>
+                            <?php foreach ($usuarios as $usuario): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($usuario['nombre'] . ' ' . $usuario['apellido']); ?></td>
+                                    <td><?php echo htmlspecialchars($usuario['tipo_usuario']); ?></td>
+                                    <td><?php echo htmlspecialchars($usuario['estado_usuario']); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                            <?php for ($i = count($usuarios); $i < 5; $i++): ?>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            <?php endfor; ?>
+                        </table>
+                    </div>
+                    <a href="../admin/usuarios.php" class="view-more-btn">Ver todos</a>
+                </div>
+
+                <div class="admin-card">
+                    <h2>Últimos Servicios</h2>
+                    <div class="table-responsive">
+                        <table class="admin-table">
+                            <tr>
+                                <th>Servicio</th>
+                                <th>Autónomo</th>
+                                <th>Precio</th>
+                            </tr>
+                            <?php foreach ($servicios as $servicio): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($servicio['nombre']); ?></td>
+                                    <td><?php echo htmlspecialchars($servicio['autonomo_nombre'] . ' ' . $servicio['autonomo_apellido']); ?></td>
+                                    <td><?php echo htmlspecialchars($servicio['precio']); ?>€</td>
+                                </tr>
+                            <?php endforeach; ?>
+                            <?php for ($i = count($servicios); $i < 5; $i++): ?>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            <?php endfor; ?>
+                        </table>
+                    </div>
+                    <a href="../admin/servicios.php" class="view-more-btn">Ver todos</a>
+                </div>
+
+                <div class="admin-card">
+                    <h2>Últimas Valoraciones</h2>
+                    <div class="table-responsive">
+                        <table class="admin-table">
+                            <tr>
+                                <th>De</th>
+                                <th>Para</th>
+                                <th>Puntuación</th>
+                            </tr>
+                            <?php foreach ($valoraciones as $valoracion): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($valoracion['emisor_nombre'] . ' ' . $valoracion['emisor_apellido']); ?></td>
+                                    <td><?php echo htmlspecialchars($valoracion['receptor_nombre'] . ' ' . $valoracion['receptor_apellido']); ?></td>
+                                    <td>
+                                        <div class="valoracion-estrellas">
+                                            <?= str_repeat('★', (int)$valoracion['puntuacion']) . str_repeat('☆', 5 - (int)$valoracion['puntuacion']) ?>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                            <?php for ($i = count($valoraciones); $i < 5; $i++): ?>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            <?php endfor; ?>
+                        </table>
+                    </div>
+                    <a href="../admin/valoraciones.php" class="view-more-btn">Ver todas</a>
+                </div>
+
+                <div class="admin-card">
+                    <h2>Últimas Incidencias</h2>
+                    <div class="table-responsive">
+                        <table class="admin-table">
+                            <tr>
+                                <th>Persona</th>
+                                <th>Email</th>
+                                <th>Título</th>
+                            </tr>
+                            <?php foreach ($incidencias as $incidencia): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($incidencia['persona_incidencia']); ?></td>
+                                    <td><?php echo htmlspecialchars($incidencia['mail_contacto']); ?></td>
+                                    <td><?php echo htmlspecialchars($incidencia['titulo_incidencia']); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                            <?php for ($i = count($incidencias); $i < 5; $i++): ?>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            <?php endfor; ?>
+                        </table>
+                    </div>
+                    <a href="../admin/incidencias.php" class="view-more-btn">Ver todas</a>
                 </div>
             </div>
         </div>
-    </header>    <div class="container1">
-        <h1 class="document-title">Panel de Administración</h1>
-        
-        <div class="admin-dashboard">
-            <!-- Primera fila, primera columna: Usuarios -->
-            <div class="admin-card">
-                <h2>Usuarios</h2>
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Tipo</th>
-                            <th>Estado</th>
-                        </tr>
-                    </thead>                    <tbody>
-                        <?php if (count($usuarios) > 0): ?>
-                            <?php foreach ($usuarios as $usuario): ?>
-                                <tr>
-                                    <td><?= htmlspecialchars($usuario['nombre'] . ' ' . $usuario['apellido']) ?></td>
-                                    <td><?= htmlspecialchars($usuario['tipo_usuario']) ?></td>
-                                    <td><?= htmlspecialchars($usuario['estado_usuario']) ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                            <?php 
-                            // Añadir filas vacías si no hay suficientes usuarios
-                            for ($i = count($usuarios); $i < 5; $i++): ?>
-                                <tr>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                </tr>
-                            <?php endfor; ?>
-                        <?php else: ?>
-                            <?php for ($i = 0; $i < 5; $i++): ?>
-                                <tr>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                </tr>
-                            <?php endfor; ?>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
-                <a href="../admin/usuarios.php" class="view-more-btn">Gestionar Usuarios</a>
-            </div>
-
-            <!-- Primera fila, segunda columna: Servicios -->
-            <div class="admin-card">
-                <h2>Servicios</h2>
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Autónomo</th>
-                            <th>Precio</th>
-                        </tr>
-                    </thead>                    <tbody>
-                        <?php if (count($servicios) > 0): ?>
-                            <?php foreach ($servicios as $servicio): ?>
-                                <tr>
-                                    <td><?= htmlspecialchars($servicio['nombre']) ?></td>
-                                    <td><?= htmlspecialchars($servicio['autonomo_nombre'] . ' ' . $servicio['autonomo_apellido']) ?></td>
-                                    <td><?= htmlspecialchars($servicio['precio']) ?> €</td>
-                                </tr>
-                            <?php endforeach; ?>
-                            <?php 
-                            // Añadir filas vacías si no hay suficientes servicios
-                            for ($i = count($servicios); $i < 5; $i++): ?>
-                                <tr>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                </tr>
-                            <?php endfor; ?>
-                        <?php else: ?>
-                            <?php for ($i = 0; $i < 5; $i++): ?>
-                                <tr>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                </tr>
-                            <?php endfor; ?>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
-                <a href="../admin/servicios.php" class="view-more-btn">Gestionar Servicios</a>
-            </div>
-
-            <!-- Segunda fila, primera columna: Valoraciones -->
-            <div class="admin-card">
-                <h2>Valoraciones</h2>
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>Emisor</th>
-                            <th>Receptor</th>
-                            <th>Puntuación</th>
-                        </tr>
-                    </thead>                    <tbody>
-                        <?php if (count($valoraciones) > 0): ?>
-                            <?php foreach ($valoraciones as $valoracion): ?>
-                                <tr>
-                                    <td><?= htmlspecialchars($valoracion['emisor_nombre'] . ' ' . $valoracion['emisor_apellido']) ?></td>
-                                    <td><?= htmlspecialchars($valoracion['receptor_nombre'] . ' ' . $valoracion['receptor_apellido']) ?></td>
-                                    <td><?= str_repeat('★', (int)$valoracion['puntuacion']) . str_repeat('☆', 5 - (int)$valoracion['puntuacion']) ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                            <?php 
-                            // Añadir filas vacías si no hay suficientes valoraciones
-                            for ($i = count($valoraciones); $i < 5; $i++): ?>
-                                <tr>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                </tr>
-                            <?php endfor; ?>
-                        <?php else: ?>
-                            <?php for ($i = 0; $i < 5; $i++): ?>
-                                <tr>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                </tr>
-                            <?php endfor; ?>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
-                <a href="../admin/valoraciones.php" class="view-more-btn">Gestionar Valoraciones</a>
-            </div>
-
-            <!-- Segunda fila, segunda columna: Incidencias -->
-            <div class="admin-card">
-                <h2>Incidencias</h2>
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>Persona</th>
-                            <th>Título</th>
-                            <th>ID</th>
-                        </tr>
-                    </thead>                    <tbody>
-                        <?php if (count($incidencias) > 0): ?>
-                            <?php foreach ($incidencias as $incidencia): ?>
-                                <tr>
-                                    <td><?= htmlspecialchars($incidencia['persona_incidencia']) ?></td>
-                                    <td><?= htmlspecialchars($incidencia['titulo_incidencia']) ?></td>
-                                    <td><?= htmlspecialchars($incidencia['id_incidencia']) ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                            <?php 
-                            // Añadir filas vacías si no hay suficientes incidencias
-                            for ($i = count($incidencias); $i < 5; $i++): ?>
-                                <tr>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                </tr>
-                            <?php endfor; ?>
-                        <?php else: ?>
-                            <?php for ($i = 0; $i < 5; $i++): ?>
-                                <tr>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                </tr>
-                            <?php endfor; ?>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
-                <a href="../admin/incidencias.php" class="view-more-btn">Gestionar Incidencias</a>
-            </div>
-        </div>
     </div>
-
-    <?php 
-    // Definir la ruta base para el footer
-    $base_path = '../';
-    include '../includes/footer.php'; 
-    ?>
+    <?php include '../includes/footer.php'; ?>
 </body>
 </html>

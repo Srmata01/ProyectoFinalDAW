@@ -2,6 +2,8 @@
 require_once '../config/database.php';
 session_start();
 
+$base_path = '../'; // Definimos base_path ya que estamos en un subdirectorio
+
 // Validación de sesión
 if (!isset($_SESSION['usuario'])) {
     header('Location: ../login.php');
@@ -31,71 +33,22 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galería de Trabajos</title>
+    <link rel="stylesheet" href="../includes/responsive-header.css">
+    <link rel="stylesheet" href="../includes/compact-forms.css">
     <link rel="stylesheet" href="../vistas_usuarios/vistas.css">
-    <style>
-        .gallery-container {
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .gallery-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            padding: 20px;
-        }
-        .gallery-item {
-            position: relative;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .gallery-item img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-        }
-        .gallery-item .description {
-            padding: 10px;
-            background: rgba(255,255,255,0.9);
-            font-size: 0.9em;
-        }
-        .no-images {
-            text-align: center;
-            padding: 40px;
-            font-size: 1.2em;
-            color: #666;
-        }
-    </style>
+    <link rel="stylesheet" href="../includes/footer.css">
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <div class="logo-container">
-                <a href="../index.php">
-                    <img src="../media/logo.png" alt="Logo FixItNow" class="logo">
-                </a>
-            </div>
-            <div class="user-container">
-                <div class="profile-container">
-                    <?php include '../includes/profile_header.php'; ?>
-                </div>
-            </div>
-        </div>
-    </header>
+    <?php include '../includes/header_template.php'; ?>
 
-    <div class="gallery-container">
-        <div class="gallery-header">
+    <div class="gallery-container">        <div class="gallery-header">
             <h1>Galería de Trabajos - <?= htmlspecialchars($autonomo['nombre'] . ' ' . $autonomo['apellido']) ?></h1>
-            <?php if ($_SESSION['usuario']['id'] === $id_usuario): ?>
-                <a href="subir.php" class="submit-btn">Añadir Imágenes</a>
-            <?php endif; ?>
+            <div class="button-group">
+                <?php if ($_SESSION['usuario']['id'] === $id_usuario): ?>
+                    <a href="subir.php" class="submit-btn">Añadir Imágenes</a>
+                <?php endif; ?>
+                <a href="../vistas_usuarios/perfil_autonomo.php" class="submit-btn btn-secondary">Volver al perfil</a>
+            </div>
         </div>
 
         <?php if ($imagenes): ?>
@@ -112,16 +65,13 @@ try {
                     </div>
                 <?php endforeach; ?>
             </div>
-        <?php else: ?>            <div class="no-images">
+        <?php else: ?>
+            <div class="no-images">
                 <p>No hay imágenes en la galería.</p>
             </div>
         <?php endif; ?>
     </div>
 
-    <?php 
-    // Definir la ruta base para el footer
-    $base_path = '../';
-    include '../includes/footer.php'; 
-    ?>
+    <?php include '../includes/footer.php'; ?>
 </body>
 </html>

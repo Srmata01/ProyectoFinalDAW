@@ -133,67 +133,96 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administración de Usuarios - FixItNow</title>
-    <link rel="stylesheet" href="../vistas_usuarios/vistas.css">
-    <style>
-        .admin-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        .admin-table th, .admin-table td {
-            border: 1px solid #ddd;
-            padding: 12px;
-        }
-        .admin-table th {
-            background-color: #f2f2f2;
-            text-align: left;
-        }
-        .admin-table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        .admin-table tr:hover {
-            background-color: #f1f1f1;
-        }
-        .estado-activo {
-            color: green;
-            font-weight: bold;
-        }
-        .estado-inactivo {
-            color: red;
-            font-weight: bold;
-        }
-        .alert {
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 1px solid transparent;
+    <link rel="stylesheet" href="../vistas_usuarios/vistas.css">    
+    <link rel="stylesheet" href="../includes/responsive-header.css">
+    <link rel="stylesheet" href="../includes/compact-forms.css">
+    <link rel="stylesheet" href="../includes/footer.css">
+    <link rel="stylesheet" href="admin.css">
+    <link rel="icon" type="image/png" href="../media/logo.png">
+    <script src="../services/js/buscador.js" defer></script>
+          .hide-mobile {
+            display: table-cell;
+        }        .user-card {
+            background: white;
+            border: 1px solid #eee;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
             border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
-        .alert-success {
-            color: #3c763d;
-            background-color: #dff0d8;
-            border-color: #d6e9c6;
+        .user-card-field {
+            margin-bottom: 0.5rem;
         }
-        .alert-danger {
-            color: #a94442;
-            background-color: #f2dede;
-            border-color: #ebccd1;
+        .user-card-label {
+            font-weight: 600;
+            color: #666;
+            font-size: 0.75rem;
+        }
+        .user-card-value {
+            color: #333;
+            font-size: 0.85rem;
+        }
+        .user-card-actions {
+            margin-top: 0.75rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .user-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 4px;
+            object-fit: cover;
+            display: block;
+            margin: 0.5rem 0;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .container1 {
+                padding: 0.25rem;
+                max-width: 430px;
+            }
+            .document-container {
+                padding: 0.5rem;
+                border-radius: 0;
+            }
+            .admin-table {
+                display: none;
+            }
+            .user-card {
+                display: block;
+            }
+            .document-title {
+                font-size: 1rem;
+                margin-bottom: 0.75rem;
+            }
+            .admin-section h2 {
+                font-size: 0.9rem;
+                margin: 0.5rem 0;
+            }            .btn-editar, .btn-eliminar {
+                padding: 0.25rem 0.5rem !important;
+                font-size: 0.75rem !important;
+                min-width: 40px;
+            }            .submit-btn {
+                font-size: 0.55rem;
+                padding: 0.05rem 0.15rem;
+                min-width: 50px;
+            }
+            
+            .user-img {
+                width: 120px;
+                height: 120px;
+                margin: 0.5rem auto;
+            }
         }
     </style>
 </head>
-<body>    <header>
-        <div class="header-container">
-            <div class="logo-container">
-                <a href="../index.php">
-                    <img src="../media/logo.png" alt="Logo" class="logo">
-                </a>
-            </div>
-            <div class="user-container">
-                <div class="profile-container">
-                    <?php include '../includes/profile_header.php'; ?>
-                </div>
-            </div>
-        </div>
-    </header>
+<body>
+<?php
+$base_path = '../';
+include '../includes/header_template.php';
+?>
     
     <div class="container1">
         <div class="document-container">
@@ -210,42 +239,38 @@ try {
                 
                 <?php if (empty($usuarios)): ?>
                     <p>No hay usuarios registrados.</p>
-                <?php else: ?>
-                    <table class="admin-table">
+                <?php else: ?>                    <table class="admin-table">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Nombre</th>
                                 <th>Email</th>
-                                <th>Teléfono</th>
-                                <th>Tipo</th>
-                                <th>Estado</th>
+                                <th class="hide-mobile">Teléfono</th>
+                                <th class="hide-mobile">Tipo</th>
+                                <th class="hide-mobile">Estado</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($usuarios as $usuario): ?>
                                 <tr>
-                                    <td><?= $usuario['id_usuario'] ?></td>
                                     <td>
                                         <?= htmlspecialchars($usuario['nombre'] . ' ' . $usuario['apellido']) ?>
-                                    </td>
-                                    <td><?= htmlspecialchars($usuario['email']) ?></td>
-                                    <td><?= htmlspecialchars($usuario['telefono']) ?></td>
-                                    <td><?= htmlspecialchars($usuario['tipo_usuario']) ?></td>
-                                    <td class="estado-<?= strtolower($usuario['estado_usuario']) ?>">
+                                    </td>                                    <td><?= htmlspecialchars($usuario['email']) ?></td>
+                                    <td class="hide-mobile"><?= htmlspecialchars($usuario['telefono']) ?></td>
+                                    <td class="hide-mobile"><?= htmlspecialchars($usuario['tipo_usuario']) ?></td>
+                                    <td class="hide-mobile estado-<?= strtolower($usuario['estado_usuario']) ?>">
                                         <?= htmlspecialchars($usuario['estado_usuario']) ?>
-                                    </td>                                    <td>
-                                        <?php if ($usuario['id_usuario'] != $_SESSION['usuario']['id']): ?>
-                                            <div style="display: flex; gap: 10px;">                                                <a href="?accion=cambiar_estado&id_usuario=<?= $usuario['id_usuario'] ?>" 
+                                    </td><td>
+                                        <?php if ($usuario['id_usuario'] != $_SESSION['usuario']['id']): ?>                                            <div class="admin-action-buttons">
+                                                <a href="?accion=cambiar_estado&id_usuario=<?= $usuario['id_usuario'] ?>" 
                                                    onclick="return confirm('¿Estás seguro de cambiar el estado de este usuario?');"
-                                                   class="btn-editar" style="padding: 5px 10px; background-color: #FF9B00; color: white; text-decoration: none; border-radius: 4px;">
-                                                    <?= strtolower($usuario['estado_usuario']) == 'activo' ? 'Desactivar' : 'Activar' ?>
+                                                   class="btn-editar">
+                                                    <?= strtolower($usuario['estado_usuario']) == 'activo' ? 'Des.' : 'Act.' ?>
                                                 </a>
                                                 <a href="?accion=eliminar&id_usuario=<?= $usuario['id_usuario'] ?>" 
                                                    onclick="return confirm('¿Estás seguro de ELIMINAR este usuario? Esta acción no se puede deshacer.');"
-                                                   class="btn-eliminar" style="padding: 5px 10px; background-color: #dc3545; color: white; text-decoration: none; border-radius: 4px;">
-                                                    Eliminar
+                                                   class="btn-eliminar">
+                                                    Elim.
                                                 </a>
                                             </div>
                                         <?php else: ?>
@@ -254,13 +279,39 @@ try {
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
-                        </tbody>
-                    </table>
+                        </tbody>                    </table>
+
+                    <?php foreach ($usuarios as $usuario): ?>
+                        <div class="user-card">
+                            <div class="user-card-field">
+                                <div class="user-card-label">Nombre:</div>
+                                <div class="user-card-value"><?= htmlspecialchars($usuario['nombre'] . ' ' . $usuario['apellido']) ?></div>
+                            </div>
+                            <div class="user-card-field">
+                                <div class="user-card-label">Email:</div>
+                                <div class="user-card-value"><?= htmlspecialchars($usuario['email']) ?></div>
+                            </div>
+                            <div class="user-card-actions">
+                                <?php if ($usuario['id_usuario'] != $_SESSION['usuario']['id']): ?>
+                                    <a href="?accion=cambiar_estado&id_usuario=<?= $usuario['id_usuario'] ?>" 
+                                       onclick="return confirm('¿Estás seguro de cambiar el estado de este usuario?');"
+                                       class="btn-editar">
+                                        <?= strtolower($usuario['estado_usuario']) == 'activo' ? 'Desactivar' : 'Activar' ?>
+                                    </a>
+                                    <a href="?accion=eliminar&id_usuario=<?= $usuario['id_usuario'] ?>" 
+                                       onclick="return confirm('¿Estás seguro de ELIMINAR este usuario? Esta acción no se puede deshacer.');"
+                                       class="btn-eliminar">
+                                        Eliminar
+                                    </a>
+                                <?php else: ?>
+                                    <span>Usuario actual</span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                 <?php endif; ?>
-            </div>
-            
-            <div class="admin-actions">
-                <a href="../vistas_usuarios/perfil_admin.php" class="submit-btn" style="background-color: #6c757d;">Volver al Panel de Administración</a>
+            </div>              <div class="admin-actions">
+                <a href="../vistas_usuarios/perfil_admin.php" class="submit-btn">Volver</a>
             </div>
         </div>
     </div>

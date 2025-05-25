@@ -81,92 +81,18 @@ $dias_semana = [
 
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
+<head>    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Horarios - FixItNow</title>
+    <link rel="stylesheet" href="../includes/responsive-header.css">
+    <link rel="stylesheet" href="../includes/compact-forms.css">
     <link rel="stylesheet" href="../vistas_usuarios/vistas.css">
-    <style>
-        .horarios-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        .horario-card {
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-        .horario-info {
-            flex: 1;
-        }
-        .horario-acciones {
-            display: flex;
-            gap: 10px;
-        }
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 24px;
-        }
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 24px;
-        }
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 16px;
-            width: 16px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-        input:checked + .slider {
-            background-color: #FF9B00;
-        }
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
-        .time-group {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <div class="header-container">
-            <div class="logo-container">
-                <a href="../index.php">
-                    <img src="../media/logo.png" alt="Logo FixItNow" class="logo">
-                </a>
-            </div>
-            <div class="user-container">
-                <?php include '../includes/profile_header.php'; ?>
-            </div>
-        </div>
-    </header>
+    <link rel="stylesheet" href="../includes/footer.css">
+    <script src="../services/js/buscador.js" defer></script></head>
+<body>    <?php
+    $base_path = '../';
+    include '../includes/header_template.php';
+    ?>
 
     <div class="container1">
         <div class="profile-columns-container">
@@ -230,8 +156,7 @@ $dias_semana = [
                                         <strong><?= $dias_semana[$horario['dia_semana']] ?? 'Día '.$horario['dia_semana'] ?>:</strong>
                                         <?= substr($horario['hora_inicio'], 0, 5) ?> - <?= substr($horario['hora_fin'], 0, 5) ?>
                                     </div>
-                                    <div class="horario-acciones">
-                                        <form method="post" style="display: inline-block;">
+                                    <div class="horario-acciones">                        <form method="post" class="horario-form">
                                             <input type="hidden" name="accion" value="actualizar">
                                             <input type="hidden" name="id_horario" value="<?= $horario['id_horario'] ?>">
                                             
@@ -241,10 +166,10 @@ $dias_semana = [
                                             </label>
                                         </form>
                                         
-                                        <form method="post" style="display: inline-block;" onsubmit="return confirm('¿Estás seguro de eliminar este horario?');">
+                                        <form method="post" class="horario-form" onsubmit="return confirm('¿Estás seguro de eliminar este horario?');">
                                             <input type="hidden" name="accion" value="eliminar">
                                             <input type="hidden" name="id_horario" value="<?= $horario['id_horario'] ?>">
-                                            <button type="submit" class="submit-btn" style="background-color: #dc3545;">Eliminar</button>
+                                            <button type="submit" class="submit-btn btn-danger">Eliminar</button>
                                         </form>
                                     </div>
                                 </div>
@@ -254,9 +179,8 @@ $dias_semana = [
                         <p class="document-text">No tienes horarios configurados. Añade tus horarios disponibles para recibir reservas.</p>
                     <?php endif; ?>
                 </div>
-                
-                <div class="form-actions">
-                    <a href="../vistas_usuarios/perfil_autonomo.php" class="submit-btn" style="background-color: #6c757d;">Volver a mi perfil</a>
+                  <div class="form-actions">
+                    <a href="../vistas_usuarios/perfil_autonomo.php" class="submit-btn btn-secondary">Volver a mi perfil</a>
                 </div>
             </div>        </div>
     </div>

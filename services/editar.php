@@ -72,22 +72,19 @@ try {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Editar Servicio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Servicio - FixItNow</title>
+    <link rel="stylesheet" href="../includes/responsive-header.css">
+    <link rel="stylesheet" href="../includes/compact-forms.css">
     <link rel="stylesheet" href="../vistas_usuarios/vistas.css">
+    <link rel="stylesheet" href="../includes/footer.css">
+    <script src="../services/js/buscador.js" defer></script>
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <div class="logo-container">
-                <a href="../index.php">
-                    <img src="../media/logo.png" alt="Logo FixItNow" class="logo">
-                </a>
-            </div>
-            <div class="user-container">
-                <?php include '../includes/profile_header.php'; ?>
-            </div>
-        </div>
-    </header>
+    <?php 
+    $base_path = '../';
+    include '../includes/header_template.php';
+    ?>
 
     <div class="container1">
         <div class="profile-columns-container">
@@ -98,57 +95,37 @@ try {
                     <div class="error-message"><?= htmlspecialchars($error) ?></div>
                 <?php endif; ?>
 
-                <form method="post" class="form-grid">
-                    <div class="form-row">
-                        <label>
-                            <span>Nombre del servicio:</span>
-                            <input type="text" name="nombre" required 
-                                   value="<?= htmlspecialchars($servicio['nombre']) ?>">
-                        </label>
+                <form method="post" class="form-grid">                    <div class="form-row">
+                        <label>Nombre del servicio:</label>
+                        <input type="text" name="nombre" required 
+                               value="<?= htmlspecialchars($servicio['nombre']) ?>">
                     </div>
-                    
-                    <div class="form-row">
-                        <label>
-                            <span>Descripción:</span>
-                            <textarea name="descripcion" required rows="4"><?= htmlspecialchars($servicio['descripcion']) ?></textarea>
-                        </label>
+                      <div class="form-row">
+                        <label>Descripción:</label>
+                        <textarea name="descripcion" required rows="4"><?= htmlspecialchars($servicio['descripcion']) ?></textarea>
                     </div>
-                    
-                    <div class="form-row">
-                        <label>
-                            <span>Precio (€):</span>
-                            <input type="number" step="0.01" name="precio" required 
-                                   value="<?= htmlspecialchars($servicio['precio']) ?>">
-                        </label>
-                        
-                        <label>
-                            <span>Duración (minutos):</span>
-                            <input type="number" name="duracion" required 
-                                   value="<?= htmlspecialchars($servicio['duracion']) ?>">
-                        </label>
-                    </div>
-
-                    <div class="form-row">
-                        <label>
-                            <span>Estado:</span>
-                            <select name="estado" required>
-                                <option value="activo" <?= $servicio['estado'] === 'activo' ? 'selected' : '' ?>>Activo</option>
-                                <option value="inactivo" <?= $servicio['estado'] === 'inactivo' ? 'selected' : '' ?>>Inactivo</option>
-                            </select>
-                        </label>
-                    </div>
-
-                    <div class="form-row">
-                        <label>
-                            <span>Localidad:</span>
-                            <input type="text" name="localidad" required 
-                                   value="<?= htmlspecialchars($servicio['localidad']) ?>">
-                        </label>
-                    </div>
-                    
-                    <div class="form-actions">
+                      <div class="form-row">
+                        <label>Precio (€):</label>
+                        <input type="number" step="0.01" name="precio" required 
+                               value="<?= htmlspecialchars($servicio['precio']) ?>">
+                    </div>                    <div class="form-row">
+                        <label>Duración (minutos):</label>
+                        <input type="number" name="duracion" required 
+                               value="<?= htmlspecialchars($servicio['duracion']) ?>">
+                    </div>                    <div class="form-row">
+                        <label>Estado:</label>
+                        <select name="estado" required>
+                            <option value="activo" <?= $servicio['estado'] === 'activo' ? 'selected' : '' ?>>Activo</option>
+                            <option value="inactivo" <?= $servicio['estado'] === 'inactivo' ? 'selected' : '' ?>>Inactivo</option>
+                        </select>
+                    </div>                    <div class="form-row">
+                        <label>Localidad:</label>
+                        <input type="text" name="localidad" required 
+                               value="<?= htmlspecialchars($servicio['localidad']) ?>">
+                    </div>                      <div class="form-actions">
                         <button type="submit" class="submit-btn">Guardar Cambios</button>
-                        <a href="../vistas_usuarios/perfil_autonomo.php" class="submit-btn" style="background-color: #6c757d;">Cancelar</a>
+                        <a href="../vistas_usuarios/perfil_autonomo.php" class="submit-btn btn-secondary">Cancelar</a>
+                        <a href="../services/index.php" class="submit-btn" style="background-color: var(--color-primary-light);">Ver Todos los Servicios</a>
                     </div>
                 </form>
             </div>

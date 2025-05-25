@@ -1,6 +1,9 @@
 <?php
-require_once '../config/database.php';
 session_start();
+require_once '../config/database.php';
+
+$base_path = '../'; // Definimos base_path ya que estamos en un subdirectorio
+require_once $base_path . 'includes/header_template.php';
 
 if (!isset($_SESSION['usuario'])) {
     $_SESSION['redirect_after_login'] = $_SERVER['REQUEST_URI'];
@@ -44,10 +47,9 @@ try {    $stmt = $pdo->prepare("
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($servicio['nombre']) ?> - FixItNow</title>
-    <link rel="stylesheet" href="../vistas_usuarios/vistas.css">
+    <title><?= htmlspecialchars($servicio['nombre']) ?> - FixItNow</title>    <link rel="stylesheet" href="../vistas_usuarios/vistas.css">
     <link rel="stylesheet" href="../styles.css">
-    <link rel="stylesheet" href="../includes/responsive-header.css">    <style>
+    <link rel="stylesheet" href="../includes/responsive-header.css"><style>
         /* Estilos específicos para mejorar el centrado */        
         .profile-columns-container {
             width: 100%;
@@ -83,22 +85,8 @@ try {    $stmt = $pdo->prepare("
         }
     </style>
 </head>
-<body>
-    <header>
-        <div class="header-container">            <div class="logo-container">
-                <a href="../index.php">
-                    <img src="../media/logo.png" alt="Logo" class="logo">
-                </a>
-            </div>
-            <div class="user-container">
-                <div class="profile-container">
-                    <div class="login-profile-box">
-                        <?php include '../includes/profile_header.php'; ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header><div class="responsive-container">
+<body class="app">
+    <div class="app-main"><div class="responsive-container">
         <div class="profile-columns-container">
             <div class="profile-column">
                 <div class="responsive-detail">

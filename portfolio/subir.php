@@ -2,6 +2,8 @@
 require_once '../config/database.php';
 session_start();
 
+$base_path = '../'; // Definimos base_path ya que estamos en un subdirectorio
+
 // Validación de sesión y tipo de usuario
 if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['tipo'] != 3) {
     header('Location: ../login.php');
@@ -26,18 +28,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         
                         $stmt = $pdo->prepare("INSERT INTO portfolios (id_usuario, imagen, descripcion) VALUES (?, ?, ?)");
                         $stmt->execute([$_SESSION['usuario']['id'], $imagen, $descripcion]);
+                        
+                        $mensaje = "Las imágenes se han subido correctamente.";
                     } else {
                         $error .= "El archivo " . htmlspecialchars($_FILES['imagenes']['name'][$i]) . " no es una imagen válida.<br>";
                     }
+                } else {
+                    $error .= "Error al subir " . htmlspecialchars($_FILES['imagenes']['name'][$i]) . ".<br>";
                 }
-            }
-            
-            if (empty($error)) {
-                $mensaje = "Imágenes subidas correctamente";
             }
         }
     } catch (PDOException $e) {
-        $error = "Error al subir las imágenes: " . $e->getMessage();
+        $error = "Error en la base de datos: " . $e->getMessage();
     }
 }
 ?>
@@ -47,106 +49,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subir Imágenes</title>
+    <title>Subir Imágenes al Portfolio</title>
+    <link rel="stylesheet" href="../includes/responsive-header.css">
+    <link rel="stylesheet" href="../includes/compact-forms.css">
     <link rel="stylesheet" href="../vistas_usuarios/vistas.css">
-    <style>
-        .upload-container {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 20px;
-        }
-        .upload-form {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-        .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            min-height: 100px;
-        }
-        .message {
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-        }
-        .success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        .error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-    </style>
+    <link rel="stylesheet" href="../includes/footer.css">
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <div class="logo-container">
-                <a href="../index.php">
-                    <img src="../media/logo.png" alt="Logo FixItNow" class="logo">
-                </a>
-            </div>
-            <div class="user-container">
-                <div class="profile-container">
-                    <?php include '../includes/profile_header.php'; ?>
-                </div>
-            </div>
-        </div>
-    </header>
+    <?php include '../includes/header_template.php'; ?>
 
-    <div class="upload-container">
-        <h1>Subir Imágenes a la Galería</h1>
+    <div class="gallery-container">
+        <h1>Subir Imágenes al Portfolio</h1>
         
         <?php if ($mensaje): ?>
-            <div class="message success">
-                <?= $mensaje ?>
-            </div>
+            <div class="success-message"><?= $mensaje ?></div>
         <?php endif; ?>
         
         <?php if ($error): ?>
-            <div class="message error">
-                <?= $error ?>
-            </div>
+            <div class="error-message"><?= $error ?></div>
         <?php endif; ?>
 
-        <div class="upload-form">
-            <form method="POST" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="imagenes">Seleccionar Imágenes:</label>
-                    <input type="file" name="imagenes[]" id="imagenes" multiple accept="image/*" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="descripcion">Descripción (opcional):</label>
-                    <textarea name="descripcion" id="descripcion" placeholder="Añade una descripción para tus imágenes..."></textarea>
-                </div>
-
-                <div class="form-actions">
-                    <button type="submit" class="submit-btn">Subir Imágenes</button>
-                    <a href="index.php" class="submit-btn" style="background-color: #6c757d;">Volver a la Galería</a>
-                </div>
-            </form>        </div>
+        <form action="subir.php" method="POST" enctype="multipart/form-data" class="upload-form">
+            <div class="form-group">
+                <label for="imagenes">Seleccionar Imágenes:</label>
+                <input type="file" id="imagenes" name="imagenes[]" accept="image/*" multiple required>
+            </div>
+            
+            <div class="form-group">
+                <label for="descripcion">Descripción:</label>
+                <textarea id="descripcion" name="descripcion" rows="4" placeholder="Describe brevemente los trabajos realizados"></textarea>
+            </div>
+            
+            <div class="button-group">
+                <button type="submit" class="submit-btn">Subir Imágenes</button>
+                <a href="index.php" class="cancel-btn">Volver al Portfolio</a>
+            </div>
+        </form>
     </div>
 
-    <?php 
-    // Definir la ruta base para el footer
-    $base_path = '../';
-    include '../includes/footer.php'; 
-    ?>
+    <?php include '../includes/footer.php'; ?>
 </body>
 </html>

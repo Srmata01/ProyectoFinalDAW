@@ -61,20 +61,22 @@ try {
     <link rel="stylesheet" href="../includes/responsive-header.css">
     <link rel="stylesheet" href="../includes/footer.css">
 </head>
-<body>    <div class="container1">
-        <?php if (isset($_SESSION['mensaje'])): ?>
-            <div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 15px; margin: 15px; border-radius: 5px; text-align: center;">
-                <?= htmlspecialchars($_SESSION['mensaje']) ?>
-            </div>
-            <?php unset($_SESSION['mensaje']); ?>
-        <?php endif; ?>
+<body class="app">
+    <div class="app-main">
+        <div class="container1">
+            <?php if (isset($_SESSION['mensaje'])): ?>
+                <div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 15px; margin: 15px; border-radius: 5px; text-align: center;">
+                    <?= htmlspecialchars($_SESSION['mensaje']) ?>
+                </div>
+                <?php unset($_SESSION['mensaje']); ?>
+            <?php endif; ?>
 
-        <?php if (isset($_SESSION['error'])): ?>
-            <div class="alert alert-danger" style="background-color: #f8d7da; color: #721c24; padding: 15px; margin: 15px; border-radius: 5px; text-align: center;">
-                <?= htmlspecialchars($_SESSION['error']) ?>
-            </div>
-            <?php unset($_SESSION['error']); ?>
-        <?php endif; ?>
+            <?php if (isset($_SESSION['error'])): ?>
+                <div class="alert alert-danger" style="background-color: #f8d7da; color: #721c24; padding: 15px; margin: 15px; border-radius: 5px; text-align: center;">
+                    <?= htmlspecialchars($_SESSION['error']) ?>
+                </div>
+                <?php unset($_SESSION['error']); ?>
+            <?php endif; ?>
         
         <div class="profile-columns-container">
             <!-- Columna izquierda: Datos del cliente -->
@@ -130,10 +132,10 @@ try {
 
             <!-- Columna derecha: Reservas -->
             <div class="profile-column">
-                <h2 class="document-title">Mis Reservas</h2>
-                <?php if (!empty($reservas)): ?>
-                    <div class="form-grid">
-                        <table>                            <thead>
+                <h2 class="document-title">Mis Reservas</h2>                <?php if (!empty($reservas)): ?>
+                    <div class="reservas-table-container responsive-cards">
+                        <table class="reservas-table">                            
+                            <thead>
                                 <tr>
                                     <th>Servicio</th>
                                     <th>Autónomo</th>
@@ -143,31 +145,30 @@ try {
                                     <th>Precio</th>
                                     <th>Estado</th>
                                     <th>Confirmación</th>
-                                    <th>Acciones</th>
+                                    <th class="actions-column">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($reservas as $reserva): ?>
                                     <?php
-                                    // Estilo para la fila según el estado de confirmación
-                                    $estilo_fila = '';
-                                    $estado_texto = '';
+                                    // Definir clases de estado
+                                    $estado_class = '';
                                     
                                     if ($reserva['estado_confirmacion'] == 'pendiente') {
-                                        $estilo_fila = 'background-color: #fff3cd;'; // Amarillo claro
-                                        $estado_texto = '<span style="color: #856404; font-weight: bold;">Pendiente</span>';
+                                        $estado_class = 'reserva-pendiente';
+                                        $estado_texto = '<span class="reserva-estado reserva-pendiente">Pendiente</span>';
                                     } elseif ($reserva['estado_confirmacion'] == 'aceptada') {
-                                        $estado_texto = '<span style="color: #155724; font-weight: bold;">Aceptada</span>';
+                                        $estado_class = 'reserva-aceptada';
+                                        $estado_texto = '<span class="reserva-estado reserva-aceptada">Aceptada</span>';
                                     } elseif ($reserva['estado_confirmacion'] == 'rechazada') {
-                                        $estilo_fila = 'background-color: #f8d7da;'; // Rojo claro
-                                        $estado_texto = '<span style="color: #721c24; font-weight: bold;">Rechazada</span>';
+                                        $estado_class = 'reserva-rechazada';
+                                        $estado_texto = '<span class="reserva-estado reserva-rechazada">Rechazada</span>';
                                     }
-                                    ?>                                    <tr style="<?= $estilo_fila ?>">
+                                    ?>                                    <tr>
                                         <td><?= htmlspecialchars($reserva['servicio'] ?? '') ?></td>
-                                        <td>
-                                            <a href="../vistas_usuarios/ver_autonomo.php?id=<?= $reserva['id_autonomo'] ?? '' ?>" 
+                                        <td>                                            <a href="../vistas_usuarios/ver_autonomo.php?id=<?= $reserva['id_autonomo'] ?? '' ?>" 
                                                title="Ver perfil del profesional" 
-                                               style="color: var(--color-primary); text-decoration: underline;">
+                                               class="document-link">
                                                 <?= htmlspecialchars($reserva['autonomo'] ?? '') ?>
                                             </a>
                                         </td>
@@ -175,19 +176,62 @@ try {
                                         <td><?= htmlspecialchars($reserva['hora_inicio_formateada'] ?? '') ?></td>
                                         <td><?= htmlspecialchars($reserva['hora_fin_formateada'] ?? '') ?></td>
                                         <td><?= isset($reserva['precio']) ? number_format($reserva['precio'], 2) . ' €' : '' ?></td>
-                                        <td><?= isset($reserva['estado']) ? ucfirst(htmlspecialchars($reserva['estado'])) : '' ?></td>                                        <td><?= $estado_texto ?></td>
-                                        <td class="form-actions">
-                                            <?php if (($reserva['estado'] ?? '') == 'pendiente' && $reserva['estado_confirmacion'] != 'rechazada'): ?>
-                                                <a href="../reservas/cancelar.php?id=<?= $reserva['id_reserva'] ?? '' ?>" class="submit-btn" style="padding: 8px 12px; font-size: 14px;">Cancelar</a>
-                                            <?php endif; ?>
-                                            <?php if ($reserva['estado_confirmacion'] == 'aceptada'): ?>
-                                                <a href="contactar.php?id=<?= $reserva['id_servicio'] ?? '' ?>" class="submit-btn" style="padding: 8px 12px; font-size: 14px; background-color: var(--color-text-light);">Contactar</a>
-                                            <?php endif; ?>
+                                        <td><?= isset($reserva['estado']) ? ucfirst(htmlspecialchars($reserva['estado'])) : '' ?></td>                                        <td><?= $estado_texto ?></td>                                        <td class="actions-column">
+                                            <div class="button-group">
+                                                <?php if (($reserva['estado'] ?? '') == 'pendiente' && $reserva['estado_confirmacion'] != 'rechazada'): ?>
+                                                    <a href="../reservas/cancelar.php?id=<?= $reserva['id_reserva'] ?? '' ?>" class="delete-btn">Cancelar</a>
+                                                <?php endif; ?>
+                                                <?php if ($reserva['estado_confirmacion'] == 'aceptada'): ?>
+                                                    <a href="contactar.php?id=<?= $reserva['id_servicio'] ?? '' ?>" class="submit-btn">Contactar</a>
+                                                <?php endif; ?>
+                                            </div>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
-                        </table>
+                        </table>                    </div>
+
+                    <!-- Versión móvil con tarjetas -->
+                    <div class="reservas-card-container responsive-cards">
+                        <?php foreach ($reservas as $reserva): ?>
+                            <?php
+                            // Definir clases de estado
+                            $estado_class = '';
+                            
+                            if ($reserva['estado_confirmacion'] == 'pendiente') {
+                                $estado_class = 'reserva-pendiente';
+                                $estado_texto = '<span class="reserva-estado reserva-pendiente">Pendiente</span>';
+                            } elseif ($reserva['estado_confirmacion'] == 'aceptada') {
+                                $estado_class = 'reserva-aceptada';
+                                $estado_texto = '<span class="reserva-estado reserva-aceptada">Aceptada</span>';
+                            } elseif ($reserva['estado_confirmacion'] == 'rechazada') {
+                                $estado_class = 'reserva-rechazada';
+                                $estado_texto = '<span class="reserva-estado reserva-rechazada">Rechazada</span>';
+                            }
+                            ?>
+                            <div class="reservas-card">
+                                <div class="reservas-card-header">
+                                    <div class="reservas-card-title"><?= htmlspecialchars($reserva['servicio'] ?? '') ?></div>
+                                    <?= $estado_texto ?>
+                                </div>
+                                <div class="reservas-card-body">
+                                    <p><strong>Autónomo:</strong> <?= htmlspecialchars($reserva['autonomo'] ?? '') ?></p>
+                                    <p><strong>Fecha:</strong> <?= htmlspecialchars($reserva['fecha_formateada'] ?? '') ?></p>
+                                    <p><strong>Horario:</strong> <?= htmlspecialchars($reserva['hora_inicio_formateada'] ?? '') ?> - <?= htmlspecialchars($reserva['hora_fin_formateada'] ?? '') ?></p>
+                                    <p><strong>Precio:</strong> <?= isset($reserva['precio']) ? number_format($reserva['precio'], 2) . ' €' : '' ?></p>
+                                </div>
+                                <div class="reservas-card-footer">
+                                    <div class="reservas-card-actions">
+                                        <?php if (($reserva['estado'] ?? '') == 'pendiente' && $reserva['estado_confirmacion'] != 'rechazada'): ?>
+                                            <a href="../reservas/cancelar.php?id=<?= $reserva['id_reserva'] ?? '' ?>" class="delete-btn">Cancelar</a>
+                                        <?php endif; ?>
+                                        <?php if ($reserva['estado_confirmacion'] == 'aceptada'): ?>
+                                            <a href="contactar.php?id=<?= $reserva['id_servicio'] ?? '' ?>" class="submit-btn">Contactar</a>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
                 <?php else: ?>
                     <p class="document-text">No tienes reservas actualmente.</p>
