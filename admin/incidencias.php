@@ -59,11 +59,15 @@ try {
     <link rel="stylesheet" href="../includes/compact-forms.css">
     <link rel="stylesheet" href="../includes/footer.css">
     <link rel="icon" type="image/png" href="../media/logo.png">
-    <script src="../services/js/buscador.js" defer></script>
-    <style>
+    <script src="../services/js/buscador.js" defer></script>    <style>
         /* Estilos generales */
         body {
             background-color: #f5f5f5;
+        }
+
+        /* Vista móvil por defecto oculta */
+        .mobile-cards {
+            display: none;
         }
         
         /* Contenedores principales */
@@ -162,7 +166,31 @@ try {
             border-top: 1px solid #eee;
         }
         
-        /* Responsive */
+        /* Botón resolver con estilo verde */
+        .btn-resolver {
+            background-color: #2ecc71;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            min-width: 60px;
+            line-height: 1.2;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .btn-resolver:hover {
+            background-color: #27ae60;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Responsive styles */
         @media (max-width: 768px) {
             .container1 {
                 padding: 0.25rem;
@@ -174,49 +202,28 @@ try {
                 border-radius: 0;
             }
             
+            /* Ocultar tabla en móvil */
             .admin-table {
                 display: none;
             }
             
+            /* Mostrar cards en móvil */
             .mobile-cards {
                 display: block;
             }
             
-            .document-title {
-                font-size: 1.1rem;
-                margin-bottom: 1rem;
+            /* Ajustes de tamaño para botones en móvil */
+            .btn-resolver {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+                min-width: 80px;
             }
             
-            .admin-section h2 {
-                font-size: 1rem;
-                margin: 0.75rem 0;
-                color: #444;
+            .submit-btn {
+                font-size: 0.55rem;
+                padding: 0.05rem 0.15rem;
+                min-width: 50px;
             }
-                  .btn-resolver {
-            padding: 3px 6px;
-            font-size: 0.75rem;
-            min-width: 50px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
-            line-height: 1.2;
-            transition: background-color 0.2s;
-        }
-        
-        .btn-resolver:hover {
-            background-color: #218838;
-        }
-        
-        .submit-btn[style*="background-color: #6c757d"] {
-            font-size: 0.7rem;
-            padding: 0.25rem 0.5rem;
-            min-width: 40px;
-        }
         }
     </style>
 </head>
