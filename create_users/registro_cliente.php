@@ -1,48 +1,64 @@
 <?php 
 require_once '../config/database.php';
-require_once '../includes/validaciones.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Variables para almacenar valores validados
     $error = '';
-    $foto_perfil = null;
     
     // Validar nombre
-    if (!($nombre = validarNombreApellido($_POST['nombre']))) {
+    $nombre = trim($_POST['nombre']);
+    if (empty($nombre)) {
+        $error = "El nombre es obligatorio";
+    } elseif (!preg_match('/^[A-Za-zÁáÉéÍíÓóÚúÑñ\s]+$/', $nombre)) {
         $error = "El nombre solo debe contener letras y espacios";
     }
     
     // Validar apellido
-    if (!$error && !($apellido = validarNombreApellido($_POST['apellido']))) {
+    $apellido = trim($_POST['apellido']);
+    if (!$error && empty($apellido)) {
+        $error = "El apellido es obligatorio";
+    } elseif (!$error && !preg_match('/^[A-Za-zÁáÉéÍíÓóÚúÑñ\s]+$/', $apellido)) {
         $error = "El apellido solo debe contener letras y espacios";
     }
     
     // Validar email
-    if (!$error && !($email = validarEmail($_POST['email']))) {
+    $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
+    if (!$error && empty($email)) {
+        $error = "El email es obligatorio";
+    } elseif (!$error && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = "El formato del email no es válido";
     }
     
+    // Validar contraseña
+    $password = $_POST['password'];
+    if (!$error && (strlen($password) < 8 || !preg_match('/[A-Z]/', $password) || 
+        !preg_match('/[a-z]/', $password) || !preg_match('/[0-9]/', $password))) {
+        $error = "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número";
+    }
+    
     // Validar DNI/NIF
-    if (!$error && !($nif = validarDNINIF($_POST['nif']))) {
-        $error = "El formato del DNI/NIF no es válido";
+    $nif = strtoupper(trim($_POST['nif']));
+    if (!$error && empty($nif)) {
+        $error = "El DNI/NIF es obligatorio";
+    } elseif (!$error && !preg_match('/^[0-9]{8}[A-Z]$/', $nif)) {
+        $error = "El formato del DNI no es válido";
+    } else {
+        $letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+        if ($letras[((int)substr($nif, 0, 8)) % 23] !== $nif[8]) {
+            $error = "El DNI no es válido (letra incorrecta)";
+        }
     }
     
     // Validar teléfono (opcional)
-    if (!$error && !empty($_POST['telefono']) && !($telefono = validarTelefono($_POST['telefono']))) {
-        $error = "El formato del teléfono no es válido";
+    $telefono = trim($_POST['telefono'] ?? '');
+    if (!$error && !empty($telefono)) {
+        $telefono = str_replace([' ', '-'], '', $telefono);
+        if (!preg_match('/^[679][0-9]{8}$/', $telefono)) {
+            $error = "El formato del teléfono no es válido (debe ser un número español)";
+        }
     }
     
-    // Validar dirección (opcional)
-    if (!$error && !empty($_POST['direccion']) && !($direccion = validarDireccion($_POST['direccion']))) {
-        $error = "La dirección contiene caracteres no permitidos";
-    }
-    
-    // Validar contraseña
-    if (!$error && !validarPassword($_POST['password'])) {
-        $error = "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número";
-    } else {
-        $password = $_POST['password'];
-    }
+    // Validar dirección
+    $direccion = trim($_POST['direccion'] ?? '');
 
     // Procesar foto de perfil
     if (!$error && isset($_FILES['foto_perfil']) && $_FILES['foto_perfil']['error'] === UPLOAD_ERR_OK) {
