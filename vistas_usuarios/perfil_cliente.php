@@ -64,9 +64,8 @@ try {
 </head>
 <body class="app">
     <div class="app-main">
-        <div class="container1">
-            <?php if (isset($_SESSION['mensaje'])): ?>
-                <div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 15px; margin: 15px; border-radius: 5px; text-align: center;">
+        <div class="container1">            <?php if (isset($_SESSION['mensaje'])): ?>
+                <div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 15px; margin: 15px 0; border-radius: 5px; text-align: center; font-weight: 500;">
                     <?= htmlspecialchars($_SESSION['mensaje']) ?>
                 </div>
                 <?php unset($_SESSION['mensaje']); ?>

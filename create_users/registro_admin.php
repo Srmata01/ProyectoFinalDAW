@@ -1,20 +1,43 @@
 <?php 
 require_once '../config/database.php';
+require_once '../includes/validaciones.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $nombre = $_POST['nombre'];
-    $apellido = $_POST['apellido'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $codigo_admin = $_POST['codigo_admin'] ?? '';
-
-    if (empty($nombre) || empty($apellido) || empty($email) || empty($password) || empty($codigo_admin)) {
-        $error = "Todos los campos obligatorios deben ser completados";
-    } elseif (strlen($password) < 8) {
-        $error = "La contraseña debe tener al menos 8 caracteres";
-    } elseif ($codigo_admin !== ADMIN_CODE) {
-        $error = "Código de administrador incorrecto";
+    // Variables para almacenar valores validados
+    $error = '';
+    
+    // Validar nombre
+    if (!($nombre = validarNombreApellido($_POST['nombre']))) {
+        $error = "El nombre solo debe contener letras y espacios";
+    }
+    
+    // Validar apellido
+    if (!$error && !($apellido = validarNombreApellido($_POST['apellido']))) {
+        $error = "El apellido solo debe contener letras y espacios";
+    }
+    
+    // Validar email
+    if (!$error && !($email = validarEmail($_POST['email']))) {
+        $error = "El formato del email no es válido";
+    }
+    
+    // Validar contraseña
+    if (!$error && !validarPassword($_POST['password'])) {
+        $error = "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número";
     } else {
+        $password = $_POST['password'];
+    }
+    
+    // Validar código de administrador
+    $codigo_admin = $_POST['codigo_admin'] ?? '';
+    if (!$error && empty($codigo_admin)) {
+        $error = "El código de administrador es obligatorio";
+    } elseif (!$error && $codigo_admin !== ADMIN_CODE) {
+        $error = "Código de administrador incorrecto";
+    }
+    
+    // Si no hay errores, continuar con el registro
+    if (!$error) {
         try {
             $stmt = $pdo->prepare("SELECT id_usuario FROM usuarios WHERE email = ?");
             $stmt->execute([$email]);

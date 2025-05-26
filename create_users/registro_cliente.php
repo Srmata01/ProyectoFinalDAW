@@ -1,30 +1,63 @@
 <?php 
 require_once '../config/database.php';
+require_once '../includes/validaciones.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $nombre = $_POST['nombre'];
-    $apellido = $_POST['apellido'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $telefono = $_POST['telefono'] ?? '';
-    $direccion = $_POST['direccion'] ?? '';
-    $nif = $_POST['nif'] ?? '';
+    // Variables para almacenar valores validados
+    $error = '';
     $foto_perfil = null;
+    
+    // Validar nombre
+    if (!($nombre = validarNombreApellido($_POST['nombre']))) {
+        $error = "El nombre solo debe contener letras y espacios";
+    }
+    
+    // Validar apellido
+    if (!$error && !($apellido = validarNombreApellido($_POST['apellido']))) {
+        $error = "El apellido solo debe contener letras y espacios";
+    }
+    
+    // Validar email
+    if (!$error && !($email = validarEmail($_POST['email']))) {
+        $error = "El formato del email no es válido";
+    }
+    
+    // Validar DNI/NIF
+    if (!$error && !($nif = validarDNINIF($_POST['nif']))) {
+        $error = "El formato del DNI/NIF no es válido";
+    }
+    
+    // Validar teléfono (opcional)
+    if (!$error && !empty($_POST['telefono']) && !($telefono = validarTelefono($_POST['telefono']))) {
+        $error = "El formato del teléfono no es válido";
+    }
+    
+    // Validar dirección (opcional)
+    if (!$error && !empty($_POST['direccion']) && !($direccion = validarDireccion($_POST['direccion']))) {
+        $error = "La dirección contiene caracteres no permitidos";
+    }
+    
+    // Validar contraseña
+    if (!$error && !validarPassword($_POST['password'])) {
+        $error = "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número";
+    } else {
+        $password = $_POST['password'];
+    }
 
-    if (isset($_FILES['foto_perfil']) && $_FILES['foto_perfil']['error'] === UPLOAD_ERR_OK) {
+    // Procesar foto de perfil
+    if (!$error && isset($_FILES['foto_perfil']) && $_FILES['foto_perfil']['error'] === UPLOAD_ERR_OK) {
         $foto_temp = $_FILES['foto_perfil']['tmp_name'];
         $foto_tipo = $_FILES['foto_perfil']['type'];
 
         if (strpos($foto_tipo, 'image/') === 0) {
             $foto_perfil = file_get_contents($foto_temp);
+        } else {
+            $error = "El archivo debe ser una imagen válida";
         }
     }
 
-    if (empty($nombre) || empty($apellido) || empty($email) || empty($password) || empty($nif)) {
-        $error = "Todos los campos obligatorios deben ser completados";
-    } elseif (strlen($password) < 8) {
-        $error = "La contraseña debe tener al menos 8 caracteres";
-    } else {
+    // Si no hay errores, continuar con el registro
+    if (!$error) {
         try {
             $stmt = $pdo->prepare("SELECT id_usuario FROM usuarios WHERE email = ?");
             $stmt->execute([$email]);

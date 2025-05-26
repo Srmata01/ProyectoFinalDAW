@@ -23,6 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         if (strtolower($usuario['estado']) != 'activo') {
             $error = "No puedes crear servicios porque tu cuenta está inactiva. Contacta con el administrador.";
+        } else if ($_POST['duracion'] > 420) {
+            $error = "La duración del servicio no puede exceder los 420 minutos (7 horas).";
         } else {
             $stmt = $pdo->prepare("
                 INSERT INTO servicios 
@@ -71,17 +73,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             animation: moveBackground 8s ease infinite;
         }        .container1 {
             max-width: 600px;
-            margin: 15px auto;
+            margin: 40px auto 80px auto;
             padding: 0 10px;
         }
 
         .form-container {
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border-radius: var(--radius-md);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            margin: 0 auto;
-            padding: 15px;
+            border-radius: var(--radius-md);            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin: 30px auto;
+            padding: 25px;
             background-color: rgba(255, 255, 255, 0.1);
         }
 
@@ -165,11 +166,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             .container1 {
                 padding: 10px;
                 margin-top: 10px;
-                margin-bottom: 120px;
+                margin-bottom: 150px;
             }
 
             .form-container {
                 padding: 10px;
+                margin-bottom: 50px;
             }
 
             .form-grid {
@@ -195,8 +197,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php
     $base_path = '../';
     include '../includes/header_template.php';
-    ?><div class="container1">
-        <div class="form-container">
+    ?>
+    <div class="app-main" style="padding-bottom: 50px;">
+        <div class="container1">
+            <div class="form-container">
             <h2 class="document-title">Crear Nuevo Servicio</h2>
             
             <?php if (isset($error)): ?>
@@ -222,9 +226,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </label>
                 </div>
                 <div class="form-row">
-                        <label>
-                            <span>Duración (minutos):</span>
-                            <input type="number" name="duracion" required placeholder="Ej: 60">
+                        <label>                        <span>Duración (minutos)</span>
+                            <input type="number" name="duracion" required placeholder="Ej: 60" min="1" max="420" 
+                                oninvalid="this.setCustomValidity('La duración debe estar entre 1 y 420 minutos')"
+                                oninput="this.setCustomValidity('')">
                         </label>
                 </div>
                 <div class="form-row">
@@ -237,9 +242,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <button type="submit" class="submit-btn">Crear Servicio</button>
                     <a href="../vistas_usuarios/perfil_autonomo.php" class="submit-btn" style="background-color: #6c757d !important;">Cancelar</a>
                 </div>
-            </form>
-        </div>
-    </div>    <?php 
+            </form>        </div>
+    </div>
+</div>    <?php 
     // Definir la ruta base para el footer
     $base_path = '../';
     include '../includes/footer.php'; 
