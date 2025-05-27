@@ -32,9 +32,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST['password'];
     if (!$error && (strlen($password) < 8 || !preg_match('/[A-Z]/', $password) || 
         !preg_match('/[a-z]/', $password) || !preg_match('/[0-9]/', $password))) {
-        $error = "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número";
+        $error = "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número";    }    // Validar teléfono(opcional)
+    $telefono = trim($_POST['telefono'] ?? '');
+    if (!$error && !empty($telefono)) {
+        $telefono = str_replace([' ', '-', '+'], '', $telefono);
+        if (!preg_match('/^[0-9]{9}$/', $telefono)) {
+            $error = "El teléfono debe tener 9 números";
+        }
     }
-    
+
+    // Validar dirección
+    $direccion = trim($_POST['direccion'] ?? '');
+
     // Validar código de administrador
     $codigo_admin = $_POST['codigo_admin'] ?? '';
     if (!$error && empty($codigo_admin)) {
@@ -51,15 +60,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
             if ($stmt->rowCount() > 0) {
                 $error = "Este email ya está registrado";
-            } else {
-                $stmt = $pdo->prepare("INSERT INTO usuarios 
-                      (nombre, apellido, email, contraseña, id_tipo_usuario, id_estado_usuario) 
-                      VALUES (?, ?, ?, ?, 1, 1)");
+            } else {                $stmt = $pdo->prepare("INSERT INTO usuarios 
+                      (nombre, apellido, email, contraseña, telefono, direccion, id_tipo_usuario, id_estado_usuario) 
+                      VALUES (?, ?, ?, ?, ?, ?, 1, 1)");
                 $stmt->execute([
                     $nombre,
                     $apellido,
                     $email,
-                    password_hash($password, PASSWORD_DEFAULT)
+                    password_hash($password, PASSWORD_DEFAULT),
+                    $telefono,
+                    $direccion
                 ]);
                 
                 header("Location: registro_exitoso.php?tipo=administrador");
@@ -119,34 +129,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <div class="registro-field">
                             <label for="email">Email</label>
                             <input type="email" id="email" name="email" class="registro-input" required>
-                        </div>
-
-                        <div class="registro-field">
+                        </div>                        <div class="registro-field">
                             <label for="password">Contraseña</label>
                             <input type="password" id="password" name="password" class="registro-input" required
                                    minlength="8" placeholder="Mínimo 8 caracteres">
                         </div>
 
                         <div class="registro-field">
-                            <label for="nif">NIF/CIF</label>
-                            <input type="text" id="nif" name="nif" class="registro-input" required
-                                   placeholder="NIF personal o CIF de empresa">
-                        </div>
-
-                        <div class="registro-field">
                             <label for="telefono">Teléfono</label>
                             <input type="tel" id="telefono" name="telefono" class="registro-input">
                         </div>
+
+                        <div class="registro-field">
+                        <label for="codigo_admin">Código de Administrador</label>
+                        <input type="password" id="codigo_admin" name="codigo_admin" class="registro-input" required>
+                    </div>
                     </div>
 
                     <div class="registro-field">
                         <label for="direccion">Dirección</label>
                         <textarea id="direccion" name="direccion" class="registro-textarea" rows="2"></textarea>
-                    </div>
-
-                    <div class="registro-field">
-                        <label for="codigo_admin">Código de Administrador</label>
-                        <input type="password" id="codigo_admin" name="codigo_admin" class="registro-input" required>
                     </div>
 
                     <button type="submit" class="registro-submit">Registrarse</button>

@@ -33,27 +33,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!$error && (strlen($password) < 8 || !preg_match('/[A-Z]/', $password) || 
         !preg_match('/[a-z]/', $password) || !preg_match('/[0-9]/', $password))) {
         $error = "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número";
-    }
-    
-    // Validar DNI/NIF
+    }    // Validar DNI/NIF
     $nif = strtoupper(trim($_POST['nif']));
     if (!$error && empty($nif)) {
         $error = "El DNI/NIF es obligatorio";
     } elseif (!$error && !preg_match('/^[0-9]{8}[A-Z]$/', $nif)) {
-        $error = "El formato del DNI no es válido";
-    } else {
-        $letras = "TRWAGMYFPDXBNJZSQVHLCKE";
-        if ($letras[((int)substr($nif, 0, 8)) % 23] !== $nif[8]) {
-            $error = "El DNI no es válido (letra incorrecta)";
-        }
-    }
-    
-    // Validar teléfono (opcional)
+        $error = "El formato del DNI no es válido (debe contener 8 números y una letra)";
+    }    // Validar teléfono (opcional)
     $telefono = trim($_POST['telefono'] ?? '');
     if (!$error && !empty($telefono)) {
-        $telefono = str_replace([' ', '-'], '', $telefono);
-        if (!preg_match('/^[679][0-9]{8}$/', $telefono)) {
-            $error = "El formato del teléfono no es válido (debe ser un número español)";
+        $telefono = str_replace([' ', '-', '+'], '', $telefono);
+        if (!preg_match('/^[0-9]{9}$/', $telefono)) {
+            $error = "El teléfono debe tener 9 números";
         }
     }
     

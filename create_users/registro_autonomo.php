@@ -33,44 +33,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!$error && (strlen($password) < 8 || !preg_match('/[A-Z]/', $password) || 
         !preg_match('/[a-z]/', $password) || !preg_match('/[0-9]/', $password))) {
         $error = "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número";
-    }
-    
-    // Validar NIF/CIF
+    }    // Validar NIF/CIF
     $nif = strtoupper(trim($_POST['nif']));
     if (!$error && empty($nif)) {
-        $error = "El NIF/CIF es obligatorio";
-    } elseif (!$error) {
-        // Validar CIF
-        if (preg_match('/^[ABCDEFGHJKLMNPQRSUVW][0-9]{7}[0-9A-J]$/', $nif)) {
-            // Es un CIF válido
-        }
-        // Validar NIF
-        elseif (preg_match('/^[0-9]{8}[A-Z]$/', $nif)) {
-            $letras = "TRWAGMYFPDXBNJZSQVHLCKE";
-            if ($letras[((int)substr($nif, 0, 8)) % 23] !== $nif[8]) {
-                $error = "El NIF no es válido (letra incorrecta)";
-            }
-        }
-        // Validar NIE
-        elseif (preg_match('/^[XYZ][0-9]{7}[A-Z]$/', $nif)) {
-            $num = str_replace(['X','Y','Z'], ['0','1','2'], substr($nif, 0, 1)) . substr($nif, 1, 7);
-            $letras = "TRWAGMYFPDXBNJZSQVHLCKE";
-            if ($letras[((int)$num) % 23] !== $nif[8]) {
-                $error = "El NIE no es válido (letra incorrecta)";
-            }
-        } else {
-            $error = "El formato del NIF/CIF no es válido";
-        }
-    }
-    
-    // Validar teléfono (requerido para autónomos)
+        $error = "El DNI/NIF es obligatorio";
+    } elseif (!$error && !preg_match('/^[A-Z][0-9]{7}[A-Z0-9]$/', $nif)) {
+        $error = "El formato del NIF no es válido (debe contener una letra, 7 números y terminar en letra o número)";
+    }// Validar teléfono (requerido para autónomos)
     $telefono = trim($_POST['telefono'] ?? '');
     if (!$error && empty($telefono)) {
         $error = "El teléfono es obligatorio para profesionales";
     } elseif (!$error) {
-        $telefono = str_replace([' ', '-'], '', $telefono);
-        if (!preg_match('/^[679][0-9]{8}$/', $telefono)) {
-            $error = "El formato del teléfono no es válido (debe ser un número español)";
+        $telefono = str_replace([' ', '-', '+'], '', $telefono);
+        if (!preg_match('/^[0-9]{9}$/', $telefono)) {
+            $error = "El teléfono debe tener 9 números";
         }
     }
     
