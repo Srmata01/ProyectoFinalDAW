@@ -13,49 +13,65 @@
     <script src="../services/js/buscador.js" defer></script>
 </head>
 
-<style>
+<style>    .app-main {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: calc(100vh - 80px); /* Resta la altura del header */
+        padding: 40px 0;
+    }
+
     .grid-layout {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
+        gap: 30px;
         padding: 20px;
-        max-width: 1000px;
+        max-width: 1200px;
         margin: 0 auto;
+        width: 100%;
     }
 
     .option-card {
+        position: relative;
+        display: block;
+        text-decoration: none;
         background-color: rgba(200, 200, 200, 0.4);
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         text-align: center;
-        padding: 15px;
-        border-radius: 4px;
-        transition: transform 0.2s ease;
+        padding: 25px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
         max-width: 300px;
         margin: 0 auto;
+        color: inherit;
     }
 
     .option-card:hover {
         transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        background-color: rgba(220, 220, 220, 0.5);
     }
 
     .option-image {
         width: 100%;
         max-width: 200px;
         height: auto;
-        border-radius: 8px;
-        margin-bottom: 10px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease;
+    }
+
+    .option-card:hover .option-image {
+        transform: scale(1.05);
     }
 
     .option-title {
-        margin-bottom: 10px;
-    }
-
-    .option-title a {
+        margin-bottom: 15px;
         color: rgb(78, 78, 78);
-        text-decoration: none;
-        font-size: 1.2rem;
+        font-size: 1.3rem;
+        font-weight: 600;
     }
 
     .document-container3 {
@@ -146,28 +162,21 @@
             <h1 class="document-title">Cómo quieres unirte a nosotros?</h1>
         </div>
 
-        <div class="document-container3 grid-layout">
-            <div class="option-card">
-                <h2 class="option-title"><a href="registro_cliente.php" class="option-link">Cliente</a></h2>
-                <br>
+        <div class="document-container3 grid-layout">            <a href="registro_cliente.php" class="option-card">
+                <h2 class="option-title">Cliente</h2>
                 <img src="../media/cliente.jpg" alt="Cliente" class="option-image">
-                <br><br>
                 <p class="option-description">Busca y contrata servicios</p>
-            </div>
-            <div class="option-card">
-                <h2 class="option-title"><a href="registro_autonomo.php" class="option-link">Autónomo</a></h2>
-                <br>
+            </a>
+            <a href="registro_autonomo.php" class="option-card">
+                <h2 class="option-title">Autónomo</h2>
                 <img src="../media/autonomo.jpg" alt="Autónomo" class="option-image">
-                <br><br>
                 <p class="option-description">Ofrece tus servicios profesionales</p>
-            </div>
-            <div class="option-card">
-                <h2 class="option-title"><a href="registro_admin.php" class="option-link">Administrador</a></h2>
-                <br>
+            </a>
+            <a href="registro_admin.php" class="option-card">
+                <h2 class="option-title">Administrador</h2>
                 <img src="../media/admin.jpg" alt="Administrador" class="option-image">
-                <br><br>
                 <p class="option-description">Gestiona la plataforma</p>
-            </div>
+            </a>
         </div>
 
         <!-- Bloque de registro debajo de las cards -->
